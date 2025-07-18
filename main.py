@@ -22,7 +22,7 @@ diagnostic_messages = [
 try:
     print("🟡 Sending request to GPT...")
     response = client.chat.completions.create(
-        model="gpt-4",
+        model="gpt-3.5-turbo",
         messages=diagnostic_messages,
         temperature=0.2
     )

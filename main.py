@@ -1,4 +1,4 @@
-# ✅ Tehomia Diagnostic GPT Interface (Compatible with OpenAI ≥ 1.0.0)
+# ✅ Tehomia Diagnostic GPT Interface (Clean + Safe)
 
 from openai import OpenAI
 import os
@@ -18,16 +18,16 @@ diagnostic_messages = [
     {"role": "user", "content": "Generate a sample recipe object and output:\n📦 Pipeline Debug - Cuisine\n📄 Pipeline Debug - Title\n🖼️ Pipeline Debug - Static Image\n🚀 Final Response JSON"}
 ]
 
-# 🚀 Execute call
+# 🚀 Execute call with checkpoints
 try:
+    print("🟡 Sending request to GPT...")
     response = client.chat.completions.create(
         model="gpt-4",
         messages=diagnostic_messages,
         temperature=0.2
     )
-
-    # 📤 Print result
-    print("\n📤 RESPONSE FROM GPT:\n")
+    print("🟢 Got response, printing now...")
+    print("\n✅ RESPONSE FROM GPT:\n")
     print(response.choices[0].message.content)
 
 except Exception as e:

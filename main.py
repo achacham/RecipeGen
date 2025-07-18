@@ -47,4 +47,4 @@ def run_diagnostics():
         print(e)
 
 # 🔁 Trigger when script is run directly
-if __name__ == "__main__
+if __name__ == "__main__":

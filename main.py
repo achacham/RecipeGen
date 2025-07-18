@@ -3,8 +3,10 @@
 import openai
 import os
 
-# Secure API key from Replit Secrets
-openai.api_key = os.environ['OPENAI_API_KEY']
+from dotenv import load_dotenv
+load_dotenv()
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
 
 # Sample diagnostic payload
 diagnostic_messages = [

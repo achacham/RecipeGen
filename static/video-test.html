@@ -1,0 +1,66 @@
+<!-- static/video-test.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>🎬 Video Scene Test</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; background: #f4f4f4; }
+    textarea, button { width: 100%; margin-top: 10px; font-size: 16px; }
+    video { width: 100%; margin-top: 20px; background: black; }
+    #log { margin-top: 20px; background: #fff; padding: 10px; border: 1px solid #ccc; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+
+  <h1>Higgsfield Video Prompt Tester</h1>
+
+  <label>JSON Payload:</label>
+  <textarea id="payload" rows="12">
+{
+  "ingredients": ["carnaroli rice", "porcini mushrooms", "garlic", "parsley", "olive oil", "vegetable broth"],
+  "style": {
+    "cookStyle": "Italian",
+    "cookAttire": "white apron and chef's hat",
+    "cookware": "copper risotto pan",
+    "duration": 12,
+    "music": "gentle mandolin with soft strings",
+    "lighting": "golden kitchen light"
+  }
+}
+  </textarea>
+
+  <button onclick="generateVideo()">Generate Video Scene</button>
+
+  <video id="videoPlayer" controls autoplay loop></video>
+
+  <div id="log"></div>
+
+  <script>
+    async function generateVideo() {
+      const payload = JSON.parse(document.getElementById('payload').value);
+      document.getElementById('log').textContent = "⏳ Sending request...";
+
+      try {
+        const res = await fetch('/video', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const result = await res.json();
+        if (result.videoUrl) {
+          document.getElementById('videoPlayer').src = result.videoUrl;
+          document.getElementById('log').textContent = "✅ Video loaded:\n" + JSON.stringify(result, null, 2);
+        } else {
+          document.getElementById('videoPlayer').src = '';
+          document.getElementById('log').textContent = "❌ Failed:\n" + JSON.stringify(result, null, 2);
+        }
+      } catch (err) {
+        document.getElementById('log').textContent = "❌ Error:\n" + err;
+      }
+    }
+  </script>
+
+</body>
+</html>

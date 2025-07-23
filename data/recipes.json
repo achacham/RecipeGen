@@ -1,0 +1,34 @@
+[
+  {
+    "id": 1,
+    "category": "Pasta",
+    "title": "Spaghetti Carbonara",
+    "description": "Creamy, classic Roman pasta",
+    "ingredients": ["Spaghetti", "Eggs", "Pancetta", "Parmesan", "Black pepper"],
+    "image_url": "https://placehold.co/200x140?text=Spaghetti+Carbonara"
+  },
+  {
+    "id": 2,
+    "category": "Pasta",
+    "title": "Penne Arrabbiata",
+    "description": "Spicy tomato and garlic",
+    "ingredients": ["Penne", "Tomatoes", "Garlic", "Chili flakes", "Parsley"],
+    "image_url": "https://placehold.co/200x140?text=Penne+Arrabbiata"
+  },
+  {
+    "id": 3,
+    "category": "Soup",
+    "title": "Butternut Squash Soup",
+    "description": "Sweet and savory autumn soup",
+    "ingredients": ["Butternut squash", "Onion", "Garlic", "Vegetable stock", "Cream"],
+    "image_url": "https://placehold.co/200x140?text=Butternut+Squash+Soup"
+  },
+  {
+    "id": 4,
+    "category": "Risotto",
+    "title": "Mushroom Risotto",
+    "description": "Earthy and indulgent",
+    "ingredients": ["Arborio rice", "Mushrooms", "Onion", "White wine", "Parmesan"],
+    "image_url": "https://placehold.co/200x140?text=Mushroom+Risotto"
+  }
+]

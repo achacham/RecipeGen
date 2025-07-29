@@ -1,0 +1,67 @@
+{
+  "Jewish": {
+    "common": ["potato", "onion", "egg", "matzo", "beef", "chicken", "carrots", "dill"],
+    "specialties": ["challah", "gefilte fish", "horseradish", "brisket", "kugel ingredients"],
+    "holidays": ["apples", "honey", "pomegranate", "dates", "wine"]
+  },
+
+  "Korean": {
+    "common": ["kimchi", "gochujang", "sesame oil", "soy sauce", "garlic", "ginger"],
+    "specialties": ["Korean pear", "perilla leaves", "doenjang", "rice cakes", "seaweed"],
+    "proteins": ["bulgogi beef", "pork belly", "tofu", "eggs", "fish"]
+  },
+
+  "Persian": {
+    "common": ["saffron", "lamb", "walnuts", "pomegranate", "rice", "fresh herbs"],
+    "specialties": ["barberries", "rose water", "pistachios", "dates", "dried lime"],
+    "proteins": ["lamb", "chicken", "fish", "yogurt", "cheese"]
+  },
+
+  "Thai": {
+    "common": ["lemongrass", "fish sauce", "chili", "coconut milk", "lime", "basil"],
+    "specialties": ["galangal", "kaffir lime leaves", "tamarind", "palm sugar", "Thai eggplant"],
+    "proteins": ["shrimp", "chicken", "pork", "beef", "tofu"]
+  },
+
+  "Italian": {
+    "common": ["tomatoes", "basil", "mozzarella", "olive oil", "pasta", "garlic"],
+    "specialties": ["parmesan", "prosciutto", "balsamic vinegar", "pine nuts", "anchovies"],
+    "proteins": ["beef", "pork", "seafood", "eggs", "various cheeses"]
+  },
+
+  "French": {
+    "common": ["butter", "wine", "herbs", "cream", "mushrooms", "shallots"],
+    "specialties": ["truffle", "foie gras", "crème fraîche", "cognac", "capers"],
+    "proteins": ["duck", "beef", "fish", "chicken", "cheese"]
+  },
+
+  "Brazilian": {
+    "common": ["black beans", "rice", "peppers", "lime", "cilantro", "coconut"],
+    "specialties": ["cassava", "açaí", "dendê oil", "farofa", "guaraná"],
+    "proteins": ["beef", "pork", "chicken", "fish", "shrimp"]
+  },
+
+  "Mexican": {
+    "common": ["corn", "beans", "chili peppers", "lime", "cilantro", "onion"],
+    "specialties": ["masa harina", "epazote", "tomatillo", "Mexican chocolate", "nopal"],
+    "proteins": ["beef", "pork", "chicken", "fish", "cheese"]
+  },
+
+  "Indian": {
+    "common": ["turmeric", "cumin", "coriander", "ginger", "garlic", "onion"],
+    "specialties": ["garam masala", "cardamom", "fenugreek", "curry leaves", "tamarind"],
+    "proteins": ["chicken", "lamb", "lentils", "paneer", "yogurt"]
+  },
+
+  "Japanese": {
+    "common": ["soy sauce", "miso", "rice", "seaweed", "ginger", "wasabi"],
+    "specialties": ["mirin", "sake", "dashi", "nori", "shiitake mushrooms"],
+    "proteins": ["tofu", "fish", "eggs", "beef", "pork"]
+  },
+
+  "Greek": {
+    "common": ["olive oil", "lemon", "oregano", "feta cheese", "tomatoes", "onion"],
+    "specialties": ["kalamata olives", "phyllo dough", "ouzo", "honey", "yogurt"],
+    "proteins": ["lamb", "fish", "chicken", "cheese", "eggs"]
+  }
+}

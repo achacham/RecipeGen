@@ -1,26 +1,28 @@
 [
-   {
+  {
     "name": "Anchovy",
     "slug": "anchovy",
     "type": "fish",
     "cuisine": ["brazilian", "greek", "russian", "spanish", "mediterranean", "portuguese"],
-    "image": "anchovy.jpg"
-   },
-   {
+    "image": "anchovy.jpg",
+    "kashrut": "kosher",
+    "notes": "Permitted if scales present and species is kosher. Verify each type."
+  },
+  {
     "name": "Apple",
     "slug": "apple",
     "type": "fruit",
     "cuisine": ["indian", "danish", "dutch", "chinese"],
     "image": "apple.jpg"
   },
-    {
+  {
     "name": "Basil",
     "slug": "basil",
     "type": "herb",
     "cuisine": ["brazilian", "italian", "thai", "american"],
     "image": "basil.jpg"
   },
-   {
+  {
     "name": "Basmati Rice",
     "slug": "basmati_rice",
     "type": "grain",
@@ -31,8 +33,10 @@
     "name": "Beef",
     "slug": "beef",
     "type": "meats",
-    "cuisine": ["brazilian", "austrian", "hungarian", "polish", "jewish", "jamaican", "southeast asian",  "french", "chinese", "thai", "korean", "japanese", "romanian", "russian", "american"],
-    "image": "beef.jpg"
+    "cuisine": ["brazilian", "austrian", "hungarian", "polish", "jewish", "jamaican", "southeast asian", "french", "chinese", "thai", "korean", "japanese", "romanian", "russian", "american"],
+    "image": "beef.jpg",
+    "kashrut": "kosher",
+    "notes": "Only kosher with shechita and supervision. Not with dairy."
   },
   {
     "name": "Black Beans",
@@ -49,18 +53,21 @@
     "image": "black_pepper.jpg"
   },
   {
-  "name": "Bordeaux",
-  "slug": "bordeaux",
-  "type": "wine",
-  "cuisine": ["french"],
-  "image": "bordeaux.jpg"
-},
+    "name": "Bordeaux",
+    "slug": "bordeaux",
+    "type": "wine",
+    "cuisine": ["french"],
+    "image": "bordeaux.jpg",
+    "notes": "All grape wine requires kosher supervision."
+  },
   {
     "name": "Butter",
     "slug": "butter",
     "type": "milk product",
     "cuisine": ["french", "japanese", "mediterranean", "american", "indian", "middle eastern"],
-    "image": "butter.jpg"
+    "image": "butter.jpg",
+    "kashrut": "kosher",
+    "notes": "Requires kosher certification. Never with meat."
   },
   {
     "name": "Cabbage",
@@ -81,7 +88,9 @@
     "slug": "chicken",
     "type": "meats",
     "cuisine": ["brazilian", "chinese", "cuban", "russian", "southeast asian", "thai", "american", "french", "jewish"],
-    "image": "chicken.jpg"
+    "image": "chicken.jpg",
+    "kashrut": "kosher",
+    "notes": "Only kosher with shechita and supervision. Never with dairy."
   },
   {
     "name": "Chili Peppers",
@@ -118,7 +127,15 @@
     "cuisine": ["brazilian", "indian"],
     "image": "coriander.jpg"
   },
-    {
+  {
+    "name": "Crab",
+    "slug": "crab",
+    "type": "seafood",
+    "cuisine": ["brazilian", "chinese", "japanese", "american", "caribbean", "italian", "indian", "korean", "singaporean", "thai", "vietnamese"],
+    "image": "crab.jpg",
+    "kashrut": "non-kosher"
+  },
+  {
     "name": "Cumin",
     "slug": "cumin",
     "type": "spice",
@@ -137,7 +154,9 @@
     "slug": "emmental_cheese",
     "type": "milk product",
     "cuisine": ["french", "austrian", "finnish", "swiss"],
-    "image": "emmental_cheese.jpg"
+    "image": "emmental_cheese.jpg",
+    "kashrut": "kosher",
+    "notes": "Requires kosher certification due to rennet."
   },
   {
     "name": "Fenugreek",
@@ -151,9 +170,11 @@
     "slug": "fish_sauce",
     "type": "culinary components",
     "cuisine": ["korean", "thai"],
-    "image": "fish_sauce.jpg"
+    "image": "fish_sauce.jpg",
+    "kashrut": "non-kosher",
+    "notes": "Almost always not kosher; usually contains non-kosher fish."
   },
-    {
+  {
     "name": "Galangal",
     "slug": "galangal",
     "type": "spice",
@@ -186,14 +207,18 @@
     "slug": "honey",
     "type": "sweetener",
     "cuisine": ["greek", "jewish", "korean", "russian"],
-    "image": "honey.jpg"
+    "image": "honey.jpg",
+    "kashrut": "contextual",
+    "notes": "Usually kosher if pure. Flavored or processed honey requires supervision."
   },
   {
     "name": "Lamb",
     "slug": "lamb",
     "type": "meats",
     "cuisine": ["greek", "russian", "jewish", "mediterranean", "american"],
-    "image": "lamb.jpg"
+    "image": "lamb.jpg",
+    "kashrut": "kosher",
+    "notes": "Kosher only with shechita and supervision."
   },
   {
     "name": "Lemongrass",
@@ -214,14 +239,18 @@
     "slug": "merlot",
     "type": "wine",
     "cuisine": ["french", "italian"],
-    "image": "merlot.jpg"
+    "image": "merlot.jpg",
+    "kashrut": "requires-supervision",
+    "notes": "All grape wine requires kosher supervision."
   },
   {
     "name": "Milk",
     "slug": "milk",
     "type": "milk product",
     "cuisine": ["french", "austrian", "finnish", "swiss", "american", "dutch"],
-    "image": "milk.jpg"
+    "image": "milk.jpg",
+    "kashrut": "kosher",
+    "notes": "Ideally chalav Yisrael; not with meat."
   },
   {
     "name": "Mint",
@@ -251,7 +280,7 @@
     "cuisine": ["greek", "italian"],
     "image": "olives.jpg"
   },
-    {
+  {
     "name": "Onions",
     "slug": "onions",
     "type": "vegetable",
@@ -294,26 +323,30 @@
     "image": "pasta.jpg"
   },
   {
-  "name": "Peanut",
-  "slug": "peanut",
-  "type": "legume",
-  "cuisine": ["african", "southeast asian", "chinese", "brazilian"],
-  "image": "peanut.jpg"
-} ,
-{
+    "name": "Peanut",
+    "slug": "peanut",
+    "type": "legume",
+    "cuisine": ["african", "southeast asian", "chinese", "brazilian"],
+    "image": "peanut.jpg"
+  },
+  {
     "name": "Pork",
     "slug": "pork",
     "type": "meats",
     "cuisine": ["brazilian", "thai", "chinese", "austrian", "korean", "cuban", "russian", "southeast asian", "american"],
-    "image": "pork.jpg"
+    "image": "pork.jpg",
+    "kashrut": "non-kosher",
+    "notes": "Always not kosher."
   },
   {
-  "name": "Port Wine",
-  "slug": "port_wine",
-  "type": "wine",
-  "cuisine": ["portuguese", "brazilian"],
-  "image": "port_wine.jpg"
- },
+    "name": "Port Wine",
+    "slug": "port_wine",
+    "type": "wine",
+    "cuisine": ["portuguese", "brazilian"],
+    "image": "port_wine.jpg",
+    "kashrut": "requires-supervision",
+    "notes": "All grape wine requires kosher supervision."
+  },
   {
     "name": "Potatoes",
     "slug": "potatoes",
@@ -326,7 +359,9 @@
     "slug": "red_wine",
     "type": "wine",
     "cuisine": ["french", "italian"],
-    "image": "red_wine.jpg"
+    "image": "red_wine.jpg",
+    "kashrut": "requires-supervision",
+    "notes": "All grape wine requires kosher supervision."
   },
   {
     "name": "Rosemary",
@@ -336,19 +371,23 @@
     "image": "rosemary.jpg"
   },
   {
-  "name": "Sake",
-  "slug": "sake",
-  "type": "wine",
-  "cuisine": ["japanese"],
-  "image": "sake.jpg"
-},
-   {
+    "name": "Sake",
+    "slug": "sake",
+    "type": "wine",
+    "cuisine": ["japanese"],
+    "image": "sake.jpg",
+    "kashrut": "requires-supervision",
+    "notes": "Requires kosher certification due to additives."
+  },
+  {
     "name": "Salmon",
     "slug": "salmon",
     "type": "fish",
     "cuisine": ["japanese", "jewish", "scandinavian", "caribbean", "spanish", "italian", "brazilian", "american"],
-    "image": "salmon.jpg"
-   },
+    "image": "salmon.jpg",
+    "kashrut": "kosher",
+    "notes": "Kosher species, always check for scales."
+  },
   {
     "name": "Scallions",
     "slug": "scallions",
@@ -359,7 +398,7 @@
   {
     "name": "Sesame Oil",
     "slug": "sesame_oil",
-    "type": "",
+    "type": "culinary components",
     "cuisine": ["chinese", "korean"],
     "image": "sesame_oil.jpg"
   },
@@ -371,33 +410,39 @@
     "image": "shallot.jpg"
   },
   {
-  "name": "Sherry",
-  "slug": "sherry",
-  "type": "wine",
-  "cuisine": ["spanish", "french"],
-  "image": "sherry.jpg"
-},
-{
+    "name": "Sherry",
+    "slug": "sherry",
+    "type": "wine",
+    "cuisine": ["spanish", "french"],
+    "image": "sherry.jpg",
+    "kashrut": "requires-supervision",
+    "notes": "All grape wine requires kosher supervision."
+  },
+  {
     "name": "Sour Cream",
     "slug": "sour_cream",
     "type": "milk product",
     "cuisine": ["russian", "mexican", "french", "american"],
-    "image": "sour_cream.jpg"
+    "image": "sour_cream.jpg",
+    "kashrut": "kosher",
+    "notes": "Requires kosher certification. Never with meat."
   },
   {
     "name": "Soy Sauce",
     "slug": "soy_sauce",
     "type": "culinary components",
     "cuisine": ["chinese", "korean"],
-    "image": "soy_sauce.jpg"
+    "image": "soy_sauce.jpg",
+    "kashrut": "contextual",
+    "notes": "Some brands may use wine or flavorings that require supervision."
   },
   {
-  "name": "Tamarind",
-  "slug": "tamarind",
-  "type": "fruit",
-  "cuisine": ["thai", "indian", "mexican", "caribbean"],
-  "image": "tamarind.jpg"
- },
+    "name": "Tamarind",
+    "slug": "tamarind",
+    "type": "fruit",
+    "cuisine": ["thai", "indian", "mexican", "caribbean"],
+    "image": "tamarind.jpg"
+  },
   {
     "name": "Tarragon",
     "slug": "tarragon",
@@ -431,9 +476,11 @@
     "slug": "veal",
     "type": "meats",
     "cuisine": ["french", "turkish", "italian", "austrian", "mediterranean", "hungarian", "spanish", "portuguese"],
-    "image": "veal.jpg"
+    "image": "veal.jpg",
+    "kashrut": "requires-supervision",
+    "notes": "Only kosher with shechita and supervision."
   },
-    {
+  {
     "name": "White Mushrooms",
     "slug": "white_mushrooms",
     "type": "fungi",
@@ -448,19 +495,23 @@
     "image": "white_rice.jpg"
   },
   {
-  "name": "Rice Wine",
-  "slug": "rice_wine",
-  "type": "wine",
-  "cuisine": ["chinese", "korean", "vietnamese"],
-  "image": "rice_wine.jpg"
-},
+    "name": "Rice Wine",
+    "slug": "rice_wine",
+    "type": "wine",
+    "cuisine": ["chinese", "korean", "vietnamese"],
+    "image": "rice_wine.jpg",
+    "kashrut": "requires-supervision",
+    "notes": "All grape/rice wine requires kosher supervision."
+  },
   {
-  "name": "White Wine",
-  "slug": "white_wine",
-  "type": "wine",
-  "cuisine": ["french", "italian", "spanish"],
-  "image": "white_wine.jpg"
-},
+    "name": "White Wine",
+    "slug": "white_wine",
+    "type": "wine",
+    "cuisine": ["french", "italian", "spanish"],
+    "image": "white_wine.jpg",
+    "kashrut": "requires-supervision",
+    "notes": "All grape wine requires kosher supervision."
+  },
   {
     "name": "Zucchini",
     "slug": "zucchini",

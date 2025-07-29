@@ -5,18 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>RecipeGen — Choose Ingredients</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Typing‑indicator + bottom padding CSS -->
+  
   <style>
-    @keyframes dotDotDot {
-      0%,20%   { content: ""; }
-      40%      { content: "."; }
-      60%      { content: ".."; }
-      80%,100% { content: "..."; }
+    /* === PHASED LOADER STYLES === */
+    .phased-loader {
+      font-size: 1rem;
+      font-weight: 500;
+      color: #333;
+      padding: 10px;
+      text-align: center;
     }
-    .typing {
-      font-style: italic;
-      color: #4A5568; /* text-gray-600 */
+
+    .loader-dot::after {
+      content: '';
+      display: inline-block;
+      animation: dotdotdot 1.4s steps(4, end) infinite;
     }
+
+    @keyframes dotdotdot {
+      0%, 20% { content: ""; }
+      40% { content: "."; }
+      60% { content: ".."; }
+      80%, 100% { content: "..."; }
+    }
+
     .typing::after {
       display: inline-block;
       width: 1em;
@@ -24,15 +36,60 @@
       animation: dotDotDot 1s steps(1,end) infinite;
       content: "";
     }
-    /* ensure chat replies never hide under the input */
-    #chatMessages {
-      padding-bottom: 3rem;
+
+    .caret { transition: transform 0.3s ease; }
+    .caret.rotate { transform: rotate(90deg); }
+    .user-label {
+      color: #2563eb;
+      font-weight: bold;
+      margin-right: 0.5em;
+    }
+    .bot-label {
+      color: #16a34a;
+      font-weight: bold;
+      margin-right: 0.5em;
+    }
+
+    @keyframes dotDotDot {
+      0%,20%   { content: ""; }
+      40%      { content: "."; }
+      60%      { content: ".."; }
+      80%,100% { content: "..."; }
     }
   </style>
 </head>
 <body class="bg-white text-gray-900 font-sans">
 
-  <!-- 🟩 NAVIGATION BAR -->
+<!-- DISH-TYPE SELECTOR GRID (ENTRY SCREEN) -->
+<section id="dishTypeSelector"
+         class="min-h-screen flex flex-col items-center justify-center bg-white absolute top-0 left-0 w-full z-50"
+         style="background:rgba(255,255,255,0.98);">
+  <div class="max-w-3xl w-full text-center mb-8">
+    <h2 class="text-4xl md:text-5xl font-bold text-neutral-dark mb-4">
+      What would you like to cook today?
+    </h2>
+    <p class="text-lg text-gray-600 mb-6">
+      Choose a meal type and we'll help you create the perfect recipe.
+    </p>
+  </div>
+  <div id="dishTypeGrid"
+       class="grid grid-cols-2 md:grid-cols-3 gap-6 w-full max-w-3xl px-4">
+    <!-- Cards will be filled by JavaScript below -->
+  </div>
+</section>
+
+<!-- MAIN INTERFACE WRAPPER -->
+<div id="mainInterface" style="display:none;">
+
+  <!-- CHANGE DISH BUTTON -->
+  <div class="w-full flex items-center bg-yellow-100 border-b border-yellow-200 py-4 px-6">
+    <button id="backToDishBtn"
+            class="flex items-center text-white bg-yellow-600 hover:bg-yellow-700 px-6 py-2 rounded shadow font-bold text-base border border-yellow-700 transition-all">
+      ← Change Dish Type
+    </button>
+  </div>
+
+  <!-- NAVIGATION BAR -->
   <header class="bg-green-600 text-white shadow">
     <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
       <h1 class="text-xl font-bold tracking-wide">RecipeGen</h1>
@@ -45,320 +102,612 @@
     </div>
   </header>
 
-  <!-- 🔐 LOGIN BOX -->
-  <div id="loginBox" class="fixed top-24 right-6 bg-white border border-gray-300 shadow-md rounded p-4 w-72 hidden z-50">
+  <!-- LOGIN BOX -->
+  <div id="loginBox"
+       class="fixed top-24 right-6 bg-white border border-gray-300 shadow-md rounded p-4 w-72 hidden z-50">
     <h2 class="font-bold text-lg mb-2">User Login</h2>
-    <input type="text" id="username" placeholder="Username" class="w-full mb-2 border px-3 py-1 rounded" />
-    <input type="password" id="password" placeholder="Password" class="w-full mb-2 border px-3 py-1 rounded" />
-    <button id="submitLogin" class="bg-green-600 text-white w-full py-2 rounded">Login</button>
+    <input type="text" id="username" placeholder="Username"
+           class="w-full mb-2 border px-3 py-1 rounded" />
+    <input type="password" id="password" placeholder="Password"
+           class="w-full mb-2 border px-3 py-1 rounded" />
+    <button id="submitLogin"
+            class="bg-green-600 text-white w-full py-2 rounded">Login</button>
   </div>
 
-  <!-- 🧭 DUAL MODE SELECTION -->
+  <!-- CUISINE SELECT -->
   <section class="max-w-6xl mx-auto mt-6 px-4">
     <div class="flex items-center space-x-4">
       <label for="cuisineSelect" class="text-lg font-medium">Select a Cuisine:</label>
-      <select id="cuisineSelect" class="border border-gray-300 rounded px-3 py-2">
+      <!-- Options are dynamically populated from ingredients.json -->
+      <select id="cuisineSelect"
+              class="border border-gray-300 rounded px-3 py-2">
         <option value="">-- Choose Cuisine --</option>
       </select>
-      <button id="surpriseBtn" class="ml-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+      <button id="surpriseBtn"
+              class="ml-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
         Surprise Me!
       </button>
     </div>
   </section>
 
-  <!-- 🥗 VERTICAL CATEGORY MENU -->
+  <!-- CATEGORY MENU -->
   <aside id="typeFilter"
-         class="fixed top-32 left-0 w-64 p-4 bg-white border-r border-gray-200 z-40
-                overflow-y-auto h-[calc(100vh-8rem)]">
-    <!-- grouped categories injected here -->
+         class="fixed top-32 left-0 bg-white border-r border-gray-200 z-40 overflow-y-auto h-[calc(100vh-8rem)] space-y-2 text-sm font-medium"
+         style="width:256px;min-width:256px;max-width:256px;box-sizing:border-box;">
+    <div class="space-y-1 w-full" style="box-sizing:border-box;">
+      <button onclick="toggleSubmenu()"
+              class="w-full flex justify-between items-center bg-gray-200 px-4 py-2 rounded hover:bg-gray-300"
+              style="box-sizing:border-box;">
+        Protein <span id="proteinCaret" class="caret">▸</span>
+      </button>
+      <div id="proteinSubmenu" class="hidden mt-2" style="box-sizing:border-box;">
+        <button onclick="filterByType('meats')"
+                class="text-left w-full px-4 py-2 rounded bg-gray-100 text-sm hover:bg-gray-200 transition-colors"
+                style="box-sizing:border-box;">
+          Meats
+        </button>
+        <button onclick="filterByType('fish')"
+                class="text-left w-full px-4 py-2 rounded bg-gray-100 text-sm hover:bg-gray-200 transition-colors"
+                style="box-sizing:border-box;">
+          Fish
+        </button>
+      </div>
+    </div>
   </aside>
 
-  <!-- 🧺 INGREDIENT GRID -->
+  <!-- MAIN GRID AREA -->
   <section class="max-w-6xl mx-auto px-4 ml-72 mt-4 mb-28">
-    <div id="ingredientGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-      <!-- dynamically injected -->
+    <div class="mb-4 flex gap-4">
+      <button id="generateVideoBtn"
+              class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 text-sm">
+        🎥 Generate Video
+      </button>
+      <button id="generateRecipeBtn"
+              class="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-800 text-sm">
+        🍽️ Generate Recipe
+      </button>
+    </div>
+
+    <!-- Ingredient Grid -->
+    <div id="ingredientGrid"
+         class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+    </div>
+
+    <!-- Video Display -->
+    <div class="mt-6">
+      <video id="videoPlayer" controls
+             class="w-full rounded shadow hidden">
+        <source id="videoSource" src="" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+
+    <!-- VIDEO PREVIEW BOX -->
+    <div id="videoBox" class="mt-6 hidden">
+      <h3 class="text-lg font-semibold mb-2">🍽️ Your AI-Generated Cooking Scene:</h3>
+      <div id="phasedLoader" class="phased-loader loader-dot mb-4"></div>
+      <video id="videoPreview" controls class="w-full rounded shadow"></video>
     </div>
   </section>
 
-  <!-- 🧾 FLOATING SELECTION BAR -->
-  <div id="selectionBar" class="fixed bottom-0 left-0 w-full bg-gray-100 border-t border-gray-300 py-4 px-6 shadow-md flex justify-between items-center z-40 hidden">
+  <!-- FLOATING SELECTION BAR -->
+  <div id="selectionBar"
+       class="fixed bottom-0 left-0 w-full bg-gray-100 border-t border-gray-300 py-4 px-6 shadow-md flex justify-between items-center z-40 hidden">
     <div class="text-sm font-medium">
       <span id="selectionCount">0 ingredients selected</span> |
       <span id="priceDisplay">$0.00</span>
     </div>
-    <button id="clearBtn" class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">Clear All</button>
+    <button id="clearBtn"
+            class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">
+      Clear All
+    </button>
   </div>
 
-  <!-- 💬 CHAT BOX -->
-  <div id="chatBox" class="fixed bottom-4 right-4 w-80 h-64 bg-green-100 border border-green-600 shadow-lg rounded flex flex-col z-50">
-    <div class="bg-green-600 text-white px-4 py-2 font-bold rounded-t">Ask RecipeGen</div>
-    <div id="chatMessages" class="flex-1 p-3 overflow-y-auto text-sm"></div>
+  <!-- CHAT BOX -->
+  <div id="chatBox"
+       class="fixed bottom-4 right-4 w-80 h-64 bg-green-100 border border-green-600 shadow-lg rounded flex flex-col z-50">
+    <div class="bg-green-600 text-white px-4 py-2 font-bold rounded-t">
+      Ask RecipeGen
+    </div>
+    <div id="chatMessages"
+         class="flex-1 p-3 overflow-y-auto text-sm"></div>
     <div class="p-2 border-t flex">
-      <input type="text" id="chatInput" placeholder="Ask a question..." class="flex-1 px-2 py-1 border rounded mr-2 text-sm" />
-      <button id="sendChat" class="bg-green-600 text-white px-3 py-1 rounded">Send</button>
+      <input type="text" id="chatInput"
+             placeholder="Ask a question..."
+             class="flex-1 px-2 py-1 border rounded mr-2 text-sm" />
+      <button id="sendChat"
+              class="bg-green-600 text-white px-3 py-1 rounded">Send</button>
     </div>
   </div>
 
-  <!-- 🧠 SCRIPT -->
-  <script>
-    // —— Ingredient & filter logic —— //
-    const grid           = document.getElementById("ingredientGrid");
-    const cuisineSelect  = document.getElementById("cuisineSelect");
-    const typeFilter     = document.getElementById("typeFilter");
-    const selectionBar   = document.getElementById("selectionBar");
-    const clearBtn       = document.getElementById("clearBtn");
-    let ingredients = [], selected = new Set();
+</div> <!-- END #mainInterface -->
 
-    // 1️⃣ Define grouped categories matching your JSON types
-    const typeGroups = {
-      "Proteins":            ["meats","fish"],
-      "Vegetables":          ["vegetable"],
-      "Fruits":              ["fruit"],
-      "Herbs":               ["herb"],
-      "Spices":              ["spice"],
-      "Culinary Components": ["culinary components"],
-      "Grains":              ["grain"],
-      "Legumes":             ["legume"],
-      "Dairy":               ["milk product"],
-      "Wines":               ["wine"],
-      "Fungi":               ["fungi"],
-      "Sweeteners":          ["sweetener"]
-    };
 
-    // 2️⃣ Fetch ingredients, then initialize UI
-    fetch("/ingredients")
-      .then(res => res.json())
-      .then(data => {
-        ingredients = data;
-        populateCuisineOptions();
-        populateTypeFilter();
-        renderIngredients(data);
-      });
+<!-- Kosher Validation Modal -->
+<div id="kosherModal"
+     class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50 hidden">
+  <div class="bg-white rounded-lg shadow-2xl p-6 max-w-lg w-full border-2 border-green-700">
+    <div id="kosherModalTitle" class="text-2xl font-bold text-green-800 mb-2"></div>
+    <div id="kosherModalMsg" class="text-gray-700 whitespace-pre-line mb-6"></div>
+    <button id="closeKosherModal"
+            class="bg-green-700 text-white px-5 py-2 rounded shadow hover:bg-green-800 w-full font-bold text-lg">
+      OK
+    </button>
+  </div>
+</div>
 
-    function populateCuisineOptions() {
-      const cuisines = new Set();
-      ingredients.forEach(i => i.cuisine.forEach(c => cuisines.add(c)));
-      [...cuisines].sort().forEach(c => {
-        const opt = document.createElement("option");
-        opt.value = c;
-        opt.textContent = c.charAt(0).toUpperCase() + c.slice(1);
-        cuisineSelect.appendChild(opt);
-      });
-    }
+<!-- [UNCHANGED HEAD CONTENT ABOVE] -->
+<script>
+  // Global variables
+  const grid = document.getElementById("ingredientGrid");
+  const cuisineSelect = document.getElementById("cuisineSelect");
+  const selectionBar = document.getElementById("selectionBar");
+  const clearBtn = document.getElementById("clearBtn");
+  const selected = new Set();
+  let ingredients = [];
+  let ingredientsReady = false;
+  let selectedDishType = null; // Track selected dish type
 
-    // 3️⃣ Refined populateTypeFilter: single‑child flat, multi‑child collapsible
-    function populateTypeFilter() {
-      typeFilter.innerHTML = "";
-      Object.entries(typeGroups).forEach(([groupLabel, types]) => {
-        const present = types.filter(t =>
-          ingredients.some(i => i.type.toLowerCase() === t.toLowerCase())
-        );
-        if (!present.length) return;
+  // Helper to show kosher modal with support for multiple errors
+function showKosherModal(title, msg) {
+  document.getElementById("kosherModalTitle").textContent = title;
+  const content = Array.isArray(msg)
+    ? msg.map(e => `<div>- ${e}</div>`).join("")
+    : msg;
+  document.getElementById("kosherModalMsg").innerHTML = content;
+  document.getElementById("kosherModal").classList.remove("hidden");
+}
 
-        if (present.length === 1) {
-          // single child → flat button
-          const type = present[0];
-          const btn  = document.createElement("button");
-          btn.textContent = capitalize(type);
-          btn.className = "w-full px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 text-sm font-medium";
-          btn.onclick   = () => renderIngredients(
-            ingredients.filter(i => i.type === type)
-          );
-          typeFilter.appendChild(btn);
+// Make sure the close button works
+document.getElementById("closeKosherModal").onclick = () => {
+  document.getElementById("kosherModal").classList.add("hidden");
+};
 
-        } else {
-          // multiple children → <details>
-          const section = document.createElement("details");
-          section.className = "mb-3";
+// Main click handler for recipe generation
+document.getElementById("generateRecipeBtn").onclick = async () => {
+  // Show initial loader
+  document.getElementById("videoBox").classList.remove("hidden");
+  document.getElementById("phasedLoader").innerText = "🎥 Generating your video";
+  document.getElementById("phasedLoader").classList.add("loader-dot");
+  document.getElementById("videoPreview").style.display = "none";
 
-          const summary = document.createElement("summary");
-          summary.textContent = groupLabel;
-          summary.className = "cursor-pointer font-semibold text-gray-700";
-          section.appendChild(summary);
+  const cuisine = document.getElementById("cuisineSelect").value;
+  const ingredients = Array.from(selected);
 
-          const list = document.createElement("div");
-          list.className = "mt-2 space-y-1";
+  console.log("🔥 CLICK TRIGGERED");
+  console.log("Cuisine selected:", cuisine);
+  console.log("Ingredients selected:", ingredients);
+  console.log("Dish type selected:", selectedDishType);
 
-          present.forEach(type => {
-            const btn = document.createElement("button");
-            btn.textContent = capitalize(type);
-            btn.className = "w-full px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 text-sm font-medium";
-            btn.onclick = () => renderIngredients(
-              ingredients.filter(i => i.type === type)
-            );
-            list.appendChild(btn);
-          });
+  // Kosher validation for Jewish cuisine
+  if (cuisine.toLowerCase() === "jewish") {
+    console.log("🕎 Jewish cuisine detected. Validating ingredients:", ingredients);
 
-          section.appendChild(list);
-          typeFilter.appendChild(section);
-        }
-      });
-    }
-
-    function capitalize(str) {
-      return str.split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
-    }
-
-    function renderIngredients(data) {
-      grid.innerHTML = "";
-      const grouped = {};
-      data.forEach(i => {
-        if (!grouped[i.type]) grouped[i.type] = [];
-        grouped[i.type].push(i);
-      });
-      for (const type in grouped) {
-        const header = document.createElement("h2");
-        header.textContent = capitalize(type);
-        header.className = "col-span-full text-lg font-bold mt-6";
-        grid.appendChild(header);
-        grouped[type].forEach(i => {
-          const card = document.createElement("div");
-          card.className = "relative border rounded shadow hover:scale-105 transition-transform";
-          card.onclick = () => toggleSelection(i.slug, card);
-
-          const img = document.createElement("img");
-          img.src = `/static/images/ingredients/${i.image}`;
-          img.className = "w-full h-36 object-cover rounded-t";
-          img.alt = i.name;
-
-          const name = document.createElement("div");
-          name.textContent = i.name;
-          name.className = "text-center py-2 text-sm font-medium";
-
-          const check = document.createElement("div");
-          check.className = "absolute top-2 right-2 w-5 h-5 rounded-full bg-green-500 hidden";
-          check.id = `check-${i.slug}`;
-
-          card.appendChild(img);
-          card.appendChild(name);
-          card.appendChild(check);
-          grid.appendChild(card);
-        });
-      }
-    }
-
-    function toggleSelection(slug, card) {
-      if (selected.has(slug)) {
-        selected.delete(slug);
-        document.getElementById(`check-${slug}`).style.display = "none";
-      } else {
-        selected.add(slug);
-        document.getElementById(`check-${slug}`).style.display = "block";
-      }
-      updateSelectionBar();
-    }
-
-    function updateSelectionBar() {
-      const count = selected.size;
-      document.getElementById("selectionCount").textContent =
-        `${count} ingredient${count !== 1 ? "s" : ""} selected`;
-      selectionBar.style.display = count > 0 ? "flex" : "none";
-    }
-
-    cuisineSelect.onchange = e =>
-      renderIngredients(ingredients.filter(i => i.cuisine.includes(e.target.value)));
-
-    document.getElementById("surpriseBtn").onclick = () => {
-      const cs = [...new Set(ingredients.flatMap(i => i.cuisine))];
-      const rnd = cs[Math.floor(Math.random() * cs.length)];
-      cuisineSelect.value = rnd;
-      renderIngredients(ingredients.filter(i => i.cuisine.includes(rnd)));
-    };
-
-    clearBtn.onclick = () => {
-      selected.clear();
-      document.querySelectorAll("[id^='check-']").forEach(el => el.style.display = "none");
-      updateSelectionBar();
-    };
-
-    // —— Login UI —— //
-    document.getElementById("loginToggle").onclick = () =>
-      document.getElementById("loginBox").classList.toggle("hidden");
-
-    document.getElementById("submitLogin").onclick = () => {
-      fetch("/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          username: document.getElementById("username").value,
-          password: document.getElementById("password").value
-        })
-      })
-      .then(r => r.json())
-      .then(res => alert(res.message || "Login successful!"));
-    };
-
-    // —— Chat behavior with typing animation, top‑of‑reply scroll, and Enter‑key support —— //
-    const input      = document.getElementById("chatInput");
-    const sendBtn    = document.getElementById("sendChat");
-    const chatWindow = document.getElementById("chatMessages");
-
-    input.addEventListener("keydown", e => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        sendBtn.click();
-      }
+    const resp = await fetch("/validate_ingredients", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ingredients, mode: "jewish" })
     });
 
-    sendBtn.onclick = () => {
-      const message = input.value.trim();
-      if (!message) return;
+    const { problems } = await resp.json();
+    console.log("🕎 Validation problems returned:", problems);
+    
+    const errs = problems.filter(p => p.error);
+    const warns = problems.filter(p => p.warning);
 
-      // show user
-      chatWindow.innerHTML += `
-        <div class="mb-1 text-right text-sm text-gray-800">
-          <strong>You:</strong> ${message}
-        </div>`;
-      input.value = "";
-      chatWindow.scrollTop = chatWindow.scrollHeight;
+    console.log("🚫 Errors found:", errs);
+    console.log("⚠️ Warnings found:", warns);
 
-      // typing indicator
-      const indicator = document.createElement("div");
-      indicator.id = "typingIndicator";
-      indicator.className = "text-left text-sm text-gray-600 italic";
-      chatWindow.appendChild(indicator);
-      chatWindow.scrollTop = chatWindow.scrollHeight;
+    if (errs.length) {
+      const allErrors = errs.map(p => p.error);
+      showKosherModal("Kosher Violations Detected", [
+        "❌ The following ingredient combinations are not kosher:",
+        ...allErrors
+      ]);
+      return;
+    }
 
-      let dots = 0;
-      const dotInterval = setInterval(() => {
-        dots = (dots + 1) % 4;
-        indicator.textContent = "Bot is thinking" + ".".repeat(dots);
-      }, 500);
+    if (warns.length) {
+      const allWarnings = warns.map(p => p.warning + (p.slug ? ` (${p.slug})` : ""));
+      showKosherModal("Kosher Warning", [
+        "⚠️ These ingredients may require supervision:",
+        ...allWarnings
+      ]);
+      return;
+    }
 
-      // fetch reply
-      fetch("/chat", {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message })
+    console.log("✅ Kosher validation passed. Proceeding to video generation...");
+  }
+
+  console.log("🌐 Non-Jewish cuisine — skipping validation.");
+
+  // [Rest of your video generation code stays exactly the same...]
+  const videoBox = document.getElementById("videoBox");
+  const videoPreview = document.getElementById("videoPreview");
+  const loader = document.getElementById("phasedLoader");
+
+  videoBox.classList.remove("hidden");
+  videoPreview.src = "";
+  loader.classList.remove("loader-dot");
+  loader.innerText = "👨‍🍳 Summoning a culturally authentic cook";
+
+  const steps = [
+    "🍳 Selecting cookware",
+    "🧂 Fetching spices",
+    "🎥 Framing cinematic shot",
+    "🎶 Preparing traditional ambiance",
+    "🔥 Cooking with AI precision",
+    "🎬 Rendering your food scene"
+  ];
+  let stepIndex = 0;
+  const loaderInterval = setInterval(() => {
+    loader.innerText = steps[stepIndex % steps.length];
+    stepIndex++;
+  }, 2000);
+
+  try {
+  const response = await fetch("/generate_video", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ 
+      cuisine, 
+      ingredients,
+      dish_type: selectedDishType
+    })
+  });
+
+  clearInterval(loaderInterval);
+
+  // WRONG: const result = await response.json();
+  // RIGHT: Handle video file directly
+  if (response.ok) {
+    const videoBlob = await response.blob();
+    const videoUrl = URL.createObjectURL(videoBlob);
+    
+    loader.innerText = "✅ Video Ready!";
+    videoPreview.src = videoUrl;
+    videoPreview.style.display = "block";
+  } else {
+    loader.innerText = "❌ Video generation failed.";
+  }
+} catch (error) {
+  clearInterval(loaderInterval);
+  loader.innerText = "❌ Error contacting video server.";
+  console.error("Video generation error:", error);
+}
+};
+
+// Ingredient fetch & rendering
+  fetch("/ingredients")
+    .then(res => res.json())
+    .then(data => {
+      ingredients = data;
+      populateCuisineOptions();
+      populateTypeButtons();
+      renderIngredients(ingredients);
+      ingredientsReady = true;
+    });
+
+  function populateCuisineOptions() {
+    const c = new Set();
+    ingredients.forEach(i => i.cuisine.forEach(x => c.add(x)));
+    [...c].sort().forEach(cc => {
+      const o = document.createElement("option");
+      o.value = cc;
+      o.textContent = cc.charAt(0).toUpperCase() + cc.slice(1);
+      cuisineSelect.appendChild(o);
+    });
+  }
+
+  function populateTypeButtons() {
+    const types = [...new Set(ingredients.map(i => i.type))].sort();
+    types.forEach(t => {
+      if (t === "meat" || t === "fish") return;
+      const b = document.createElement("button");
+      b.textContent = t.charAt(0).toUpperCase() + t.slice(1);
+      b.className = "w-full px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 text-sm font-medium";
+      b.onclick = () => renderIngredients(ingredients.filter(i => i.type === t));
+      document.getElementById("typeFilter").appendChild(b);
+    });
+  }
+
+  function renderIngredients(data) {
+    grid.innerHTML = "";
+
+    data.forEach(i => {
+      const card = document.createElement("div");
+      card.className = "relative border rounded shadow hover:scale-105 transition-transform";
+      card.onclick = () => toggleSelection(i.slug, card);
+
+      const img = document.createElement("img");
+      img.src = `/static/images/ingredients/${i.image}`;
+      img.className = "w-full h-36 object-cover rounded-t";
+      img.alt = i.name;
+
+      const name = document.createElement("div");
+      name.textContent = i.name;
+      name.className = "text-center py-2 text-sm font-medium";
+
+      const check = document.createElement("div");
+      check.id = `check-${i.slug}`;
+      check.className = "absolute top-2 right-2 w-5 h-5 rounded-full bg-green-500";
+      check.style.display = selected.has(i.slug) ? "block" : "none";
+
+      // If selected, apply visual highlight
+      if (selected.has(i.slug)) {
+        card.classList.add("ring-2", "ring-green-500");
+      }
+
+      card.append(img, name, check);
+      grid.appendChild(card);
+    });
+  }
+
+  function toggleSelection(slug, card) {
+    const c = document.getElementById(`check-${slug}`);
+    if (selected.has(slug)) {
+      selected.delete(slug);
+      c.style.display = "none";
+      card.classList.remove("ring-2", "ring-green-500");
+    } else {
+      selected.add(slug);
+      c.style.display = "block";
+      card.classList.add("ring-2", "ring-green-500");
+    }
+    updateSelectionBar();
+  }
+
+  function updateSelectionBar() {
+    const n = selected.size;
+    document.getElementById("selectionCount").textContent = `${n} ingredient${n !== 1 ? "s" : ""} selected`;
+    selectionBar.style.display = n > 0 ? "flex" : "none";
+  }
+
+  cuisineSelect.onchange = e => {
+    // Clear previous selections on cuisine switch
+    selected.clear();
+    document.querySelectorAll("[id^='check-']").forEach(el => el.style.display = "none");
+    document.querySelectorAll(".ring-green-500").forEach(el => {
+      el.classList.remove("ring-2", "ring-green-500");
+    });
+    updateSelectionBar();
+
+    // Load filtered ingredients
+    renderIngredients(ingredients.filter(i => i.cuisine.includes(e.target.value)));
+  };
+
+  document.getElementById("surpriseBtn").onclick = () => {
+    const allC = [...new Set(ingredients.flatMap(i => i.cuisine))];
+    const rnd = allC[Math.floor(Math.random() * allC.length)];
+    cuisineSelect.value = rnd;
+    renderIngredients(ingredients.filter(i => i.cuisine.includes(rnd)));
+  };
+
+  clearBtn.onclick = () => {
+    selected.clear();
+    document.querySelectorAll("[id^='check-']").forEach(el => el.style.display = "none");
+    document.querySelectorAll(".ring-green-500").forEach(el => {
+      el.classList.remove("ring-2", "ring-green-500");
+    });
+    updateSelectionBar();
+  };
+
+  function toggleSubmenu() {
+    const sm = document.getElementById("proteinSubmenu");
+    const ct = document.getElementById("proteinCaret");
+    if (sm.classList.contains("hidden")) {
+      sm.classList.remove("hidden");
+      ct.textContent = "▾";
+    } else {
+      sm.classList.add("hidden");
+      ct.textContent = "▸";
+    }
+  }
+
+  function filterByType(type) {
+    renderIngredients(ingredients.filter(i => i.type === type));
+  }
+
+  // === Generate Video ===
+  document.getElementById("generateVideoBtn").onclick = async () => {
+    const res = await fetch("/generate_video", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ 
+        ingredients: Array.from(selected),
+        dish_type: selectedDishType
       })
-      .then(r => r.json())
-      .then(res => {
-        clearInterval(dotInterval);
-        indicator.remove();
+    });
+    const data = await res.json();
+    const vid = document.getElementById("videoPlayer");
+    const src = document.getElementById("videoSource");
+    src.src = data.video_url;
+    vid.load();
+    vid.classList.remove("hidden");
+  };
 
-        // append bot reply
-        const replyDiv = document.createElement("div");
-        replyDiv.className = "mb-2 text-left text-sm text-gray-700";
-        replyDiv.innerHTML = `<strong>Bot:</strong> ${res.reply}`;
-        chatWindow.appendChild(replyDiv);
-
-        // scroll so the top of the reply is visible
-        replyDiv.scrollIntoView({ block: "start" });
+  // Login toggle & submission
+  document.getElementById("loginToggle").onclick = () =>
+    document.getElementById("loginBox").classList.toggle("hidden");
+  
+  document.getElementById("submitLogin").onclick = () => {
+    fetch("/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username: document.getElementById("username").value,
+        password: document.getElementById("password").value
       })
-      .catch(err => {
-        clearInterval(dotInterval);
-        indicator.remove();
+    })
+    .then(r => r.json())
+    .then(res => alert(res.message || "Login successful!"));
+  };
 
-        const errDiv = document.createElement("div");
-        errDiv.className = "mb-2 text-left text-sm text-red-600";
-        errDiv.innerHTML = `<strong>Bot:</strong> Error—please try again.`;
-        chatWindow.appendChild(errDiv);
+  // Chat logic
+  const messages = document.getElementById("chatMessages");
+  if (messages && messages.childElementCount === 0) {
+    const welcome = document.createElement("div");
+    welcome.innerHTML =
+      '<span class="bot-label">RecipeGen:</span> Hi! Ask me anything about ingredients, cuisines, or how to use RecipeGen.';
+    messages.appendChild(welcome);
+  }
+  
+  document.getElementById("sendChat").onclick = async () => {
+    const input = document.getElementById("chatInput");
+    const text = input.value.trim();
+    if (!text) return;
+    
+    const userMsg = document.createElement("div");
+    userMsg.innerHTML = '<span class="user-label">You:</span> ' + text;
+    messages.appendChild(userMsg);
+    input.value = "";
+    
+    const botMsg = document.createElement("div");
+    botMsg.innerHTML = '<span class="bot-label">RecipeGen:</span> <span class="typing"></span>';
+    messages.appendChild(botMsg);
+    messages.scrollTop = messages.scrollHeight;
+    
+    const res = await fetch("/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: text })
+    });
+    const data = await res.json();
+    botMsg.innerHTML = '<span class="bot-label">RecipeGen:</span> ' + data.reply;
+    botMsg.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+  
+  document.getElementById("chatInput").addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      document.getElementById("sendChat").click();
+    }
+  });
 
-        // scroll to top of error
-        errDiv.scrollIntoView({ block: "start" });
-      });
-    };
-  </script>
+  // === Dish‑Type Selector Logic ===
+  const dishTypes = [
+    {
+      id: "curry",
+      name: "Curry",
+      description: "Aromatic and flavorful",
+      image: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300"
+    },
+    {
+      id: "pasta",
+      name: "Pasta",
+      description: "Classic Italian comfort",
+      image: "https://images.unsplash.com/photo-1551183053-bf91a1d81141?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300"
+    },
+    {
+      id: "risotto",
+      name: "Risotto",
+      description: "Creamy and rich",
+      image: "https://images.unsplash.com/photo-1476124369491-e7addf5db371?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300"
+    },
+    {
+      id: "soup",
+      name: "Soup",
+      description: "Warming and nourishing",
+      image: "https://images.unsplash.com/photo-1547592166-23ac45744acd?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300"
+    },
+    {
+      id: "sandwich",
+      name: "Sandwich",
+      description: "Fresh and satisfying",
+      image: "https://images.unsplash.com/photo-1539252554453-80ab65ce3586?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300"
+    },
+    {
+      id: "salad",
+      name: "Salad",
+      description: "Light and refreshing",
+      image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300"
+    },
+    {
+      id: "baked-dish",
+      name: "Baked Dish",
+      description: "Oven-baked goodness",
+      image: "https://images.unsplash.com/photo-1574894709920-11b28e7367e3?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300"
+    },
+    {
+      id: "stir-fry",
+      name: "Stir-Fry",
+      description: "Quick and vibrant",
+      image: "https://images.unsplash.com/photo-1512058564366-18510be2db19?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300"
+    },
+    {
+      id: "bowl",
+      name: "Bowl",
+      description: "Balanced and hearty",
+      image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300"
+    },
+    {
+      id: "wrap",
+      name: "Wrap",
+      description: "Portable and delicious",
+      image: "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300"
+    },
+    {
+      id: "skewer",
+      name: "Skewer",
+      description: "Grilled and smoky",
+      image: "https://images.unsplash.com/photo-1529042410759-befb1204b468?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300"
+    },
+    {
+      id: "dessert",
+      name: "Dessert",
+      description: "Sweet and indulgent",
+      image: "https://images.unsplash.com/photo-1551024506-0bccd828d307?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300"
+    }
+  ];
+
+  function showDishTypeSelector() {
+    document.getElementById("mainInterface").style.display = "none";
+    document.getElementById("dishTypeSelector").style.display = "flex";
+    window.scrollTo(0, 0);
+  }
+
+  function showMainInterface() {
+    document.getElementById("dishTypeSelector").style.display = "none";
+    document.getElementById("mainInterface").style.display = "block";
+    window.scrollTo(0, 0);
+  }
+
+  function handleDishCardClick(dishType) {
+    selectedDishType = dishType; // Store selected dish type
+    if (cuisineSelect) cuisineSelect.value = "";
+    renderIngredients(ingredients);
+    showMainInterface();
+    console.log("Selected dish type:", dishType);
+  }
+
+  document.addEventListener("DOMContentLoaded", function() {
+    const dishTypeGrid = document.getElementById("dishTypeGrid");
+    dishTypes.forEach(dt => {
+      const card = document.createElement("div");
+      card.className = "dish-card cursor-pointer rounded-lg overflow-hidden shadow-lg hover:shadow-2xl bg-white transition-all flex flex-col p-4";
+      card.onclick = () => handleDishCardClick(dt.id); // Pass dish type ID
+      
+      const img = document.createElement("img");
+      img.src = dt.image;
+      img.alt = dt.name;
+      img.className = "w-full h-40 object-cover rounded";
+      
+      const name = document.createElement("div");
+      name.className = "font-bold text-lg mt-2";
+      name.textContent = dt.name;
+      
+      const desc = document.createElement("div");
+      desc.className = "text-gray-600 text-sm mb-4";
+      desc.textContent = dt.description;
+      
+      card.append(img, name, desc);
+      dishTypeGrid.appendChild(card);
+    });
+
+    const backBtn = document.getElementById("backToDishBtn");
+    if (backBtn) backBtn.onclick = showDishTypeSelector;
+  });
+</script>
+
 </body>
 </html>

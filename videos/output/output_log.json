@@ -1,0 +1,426 @@
+[
+  {
+    "generation_id": "d5bec5cb-6c78-4081-b5e0-64e91a0719c5",
+    "timestamp": "2025-07-28T07:13:53.148667",
+    "cuisine": "Persian",
+    "ingredients": [
+      "saffron",
+      "chicken",
+      "rice"
+    ],
+    "parameters": {
+      "scene_style": "cinematic",
+      "lighting": "warm studio",
+      "music": null,
+      "cook_type": null,
+      "duration": 8
+    },
+    "prompt": "A cinematic wide-angle cooking scene in a warm, professional studio lighting kitchen. A elegant Persian cook with graceful movements prepares a Persian dish with saffron, chicken, and rice. The scene features ornate serving dishes, saffron container, traditional mortar and pestle, copper pots, Persian carpets visible and has Persian classical instrumental with tar and santur ambiance. The chef uses traditional techniques with natural, authentic movements. Photorealistic, high-quality cinematography.",
+    "success": false,
+    "video_url": null,
+    "local_path": null,
+    "error": "❌ Fal API error: 404 Client Error: Not Found for url: https://queue.fal.run/",
+    "provider": "fal"
+  },
+  {
+    "generation_id": "60235bdb-2c65-4443-a5b8-e87c315bef0e",
+    "timestamp": "2025-07-28T07:32:07.920245",
+    "cuisine": "Persian",
+    "ingredients": [
+      "saffron",
+      "chicken",
+      "rice"
+    ],
+    "parameters": {
+      "scene_style": "cinematic",
+      "lighting": "warm studio",
+      "duration": 8
+    },
+    "prompt": "A cinematic wide-angle cooking scene in a warm, professional studio lighting kitchen. A elegant Persian cook with graceful movements prepares a Persian dish with saffron, chicken, and rice. The scene features ornate serving dishes, saffron container, traditional mortar and pestle, copper pots, Persian carpets visible and has Persian classical instrumental with tar and santur ambiance. The chef uses traditional techniques with natural, authentic movements. Photorealistic, high-quality cinematography.",
+    "success": false,
+    "video_url": null,
+    "local_path": null,
+    "error": "HTTP 404: 404: Not Found",
+    "provider": "fal"
+  },
+  {
+    "generation_id": "4551b856-14ce-4796-9b3f-0730718f7f6b",
+    "timestamp": "2025-07-28T07:40:31.886615",
+    "cuisine": "Persian",
+    "ingredients": [
+      "saffron",
+      "chicken",
+      "rice"
+    ],
+    "parameters": {
+      "scene_style": "cinematic",
+      "lighting": "warm studio",
+      "duration": 8
+    },
+    "prompt": "A cinematic wide-angle cooking scene in a warm, professional studio lighting kitchen. A elegant Persian cook with graceful movements prepares a Persian dish with saffron, chicken, and rice. The scene features ornate serving dishes, saffron container, traditional mortar and pestle, copper pots, Persian carpets visible and has Persian classical instrumental with tar and santur ambiance. The chef uses traditional techniques with natural, authentic movements. Photorealistic, high-quality cinematography.",
+    "success": false,
+    "video_url": null,
+    "local_path": null,
+    "error": "HTTP 404: 404: Not Found",
+    "provider": "fal"
+  },
+  {
+    "generation_id": "bab28dc3-bbde-493e-8ad3-395075df2c18",
+    "timestamp": "2025-07-28T07:51:15.548083",
+    "cuisine": "Persian",
+    "ingredients": [
+      "saffron",
+      "chicken",
+      "rice"
+    ],
+    "parameters": {
+      "scene_style": "cinematic",
+      "lighting": "warm studio",
+      "duration": 8
+    },
+    "prompt": "A cinematic wide-angle cooking scene in a warm, professional studio lighting kitchen. A elegant Persian cook with graceful movements prepares a Persian dish with saffron, chicken, and rice. The scene features ornate serving dishes, saffron container, traditional mortar and pestle, copper pots, Persian carpets visible and has Persian classical instrumental with tar and santur ambiance. The chef uses traditional techniques with natural, authentic movements. Photorealistic, high-quality cinematography.",
+    "success": false,
+    "video_url": null,
+    "local_path": null,
+    "error": "Fal API error: Please set the FAL_KEY environment variable to your API key, or set the FAL_KEY_ID and FAL_KEY_SECRET environment variables.",
+    "provider": "fal"
+  },
+  {
+    "generation_id": "432bc42d-ef7f-4688-8168-32d4b1fe7728",
+    "timestamp": "2025-07-28T07:52:55.212596",
+    "cuisine": "Persian",
+    "ingredients": [
+      "saffron",
+      "chicken",
+      "rice"
+    ],
+    "parameters": {
+      "scene_style": "cinematic",
+      "lighting": "warm studio",
+      "duration": 8
+    },
+    "prompt": "A cinematic wide-angle cooking scene in a warm, professional studio lighting kitchen. A elegant Persian cook with graceful movements prepares a Persian dish with saffron, chicken, and rice. The scene features ornate serving dishes, saffron container, traditional mortar and pestle, copper pots, Persian carpets visible and has Persian classical instrumental with tar and santur ambiance. The chef uses traditional techniques with natural, authentic movements. Photorealistic, high-quality cinematography.",
+    "success": true,
+    "video_url": "https://v3.fal.media/files/kangaroo/wsq-FO7b2LjniJNXGfan8_output.mp4",
+    "local_path": "D:\\RecipeGen\\Tehomia-chatgpt-diagnostics-remix\\videos\\output\\persian_20250728_075400_432bc42d.mp4",
+    "error": null,
+    "provider": "fal"
+  },
+  {
+    "generation_id": "f9514cd1-ece8-4ad1-88b9-1deecb982a9e",
+    "timestamp": "2025-07-28T08:28:28.382732",
+    "cuisine": "Brazilian",
+    "ingredients": [
+      "beef",
+      "black beans",
+      "chili peppers"
+    ],
+    "parameters": {
+      "scene_style": "cinematic",
+      "lighting": "warm studio",
+      "duration": 8,
+      "music": "Brazilian Samba music with cuica and tambourine",
+      "cook_type": "joyful Brazilian cook, a plump black woman with a radiant smile wearing a traditional white headwrap bandanna"
+    },
+    "prompt": "A cinematic wide-angle cooking scene in a warm, professional studio lighting kitchen. A joyful Brazilian cook, a plump black woman with a radiant smile wearing a traditional white headwrap bandanna prepares a Brazilian dish with beef, black beans, and chili peppers. The scene features colorful ceramic bowls, wooden spoons, clay pots, tropical fruits, cachaça bottles and has Brazilian Samba music with cuica and tambourine ambiance. The chef uses traditional techniques with natural, authentic movements. Photorealistic, high-quality cinematography.",
+    "success": true,
+    "video_url": "https://v3.fal.media/files/panda/cedLFQwPgNgDW1Mt17xmX_output.mp4",
+    "local_path": "D:\\RecipeGen\\Tehomia-chatgpt-diagnostics-remix\\videos\\output\\brazilian_20250728_082913_f9514cd1.mp4",
+    "error": null,
+    "provider": "fal"
+  },
+  {
+    "generation_id": "30250a40-71e6-415e-9fd6-2a8866389fa5",
+    "timestamp": "2025-07-28T08:42:21.159265",
+    "cuisine": "Italian",
+    "ingredients": [
+      "tomatoes",
+      "basil",
+      "mozzarella"
+    ],
+    "parameters": {
+      "scene_style": "cinematic",
+      "lighting": "warm studio",
+      "duration": 8
+    },
+    "prompt": "A cinematic wide-angle cooking scene in a warm, professional studio lighting kitchen. A passionate Italian nonna with flour-dusted hands prepares a Italian dish with tomatoes, basil, and mozzarella. The scene features pasta machine, wooden cutting board, olive oil bottles, parmesan grater, wine bottles and has soft Italian folk instrumental with mandolin ambiance. The chef uses traditional techniques with natural, authentic movements. Photorealistic, high-quality cinematography.",
+    "success": false,
+    "video_url": null,
+    "local_path": null,
+    "error": "Fal API error: User is locked. Reason: Exhausted balance. Top up your balance at fal.ai/dashboard/billing.",
+    "provider": "fal"
+  },
+  {
+    "generation_id": "2610ee44-ab36-4e78-b12e-2373ee05c2dc",
+    "timestamp": "2025-07-28T08:49:12.012360",
+    "cuisine": "Italian",
+    "ingredients": [
+      "tomatoes",
+      "basil",
+      "mozzarella"
+    ],
+    "parameters": {
+      "scene_style": "cinematic",
+      "lighting": "warm studio",
+      "duration": 8
+    },
+    "prompt": "A cinematic wide-angle cooking scene in a warm, professional studio lighting kitchen. A passionate Italian nonna with flour-dusted hands prepares a Italian dish with tomatoes, basil, and mozzarella. The scene features pasta machine, wooden cutting board, olive oil bottles, parmesan grater, wine bottles and has soft Italian folk instrumental with mandolin ambiance. The chef uses traditional techniques with natural, authentic movements. Photorealistic, high-quality cinematography.",
+    "success": true,
+    "video_url": "https://v3.fal.media/files/monkey/tgsnXALVRPB6ulfKX9tBg_output.mp4",
+    "local_path": "D:\\RecipeGen\\Tehomia-chatgpt-diagnostics-remix\\videos\\output\\italian_20250728_085001_2610ee44.mp4",
+    "error": null,
+    "provider": "fal"
+  },
+  {
+    "generation_id": "4733312a-2afc-478c-a1f8-3c8bec155fcb",
+    "timestamp": "2025-07-28T08:56:20.754405",
+    "cuisine": "Italian",
+    "ingredients": [
+      "tomatoes",
+      "basil",
+      "mozzarella"
+    ],
+    "parameters": {
+      "scene_style": "cinematic",
+      "lighting": "warm studio",
+      "duration": 8
+    },
+    "prompt": "A cinematic wide-angle cooking scene in a warm, professional studio lighting kitchen. A passionate Italian nonna with flour-dusted hands prepares a Italian dish with tomatoes, basil, and mozzarella. The scene features pasta machine, wooden cutting board, olive oil bottles, parmesan grater, wine bottles and has soft Italian folk instrumental with mandolin ambiance. The chef uses traditional techniques with natural, authentic movements. Photorealistic, high-quality cinematography.",
+    "success": false,
+    "video_url": null,
+    "local_path": null,
+    "error": "Fal API error: [{'loc': ['body', 'duration'], 'msg': \"unexpected value; permitted: '5'\", 'type': 'value_error.const', 'ctx': {'given': '8', 'permitted': ['5']}}]",
+    "provider": "fal"
+  },
+  {
+    "generation_id": "871997a9-a5c2-4f0c-95cd-e4689a1d7afb",
+    "timestamp": "2025-07-28T08:56:53.372366",
+    "cuisine": "Italian",
+    "ingredients": [
+      "tomatoes",
+      "basil",
+      "mozzarella"
+    ],
+    "parameters": {
+      "scene_style": "cinematic",
+      "lighting": "warm studio",
+      "duration": 8
+    },
+    "prompt": "A cinematic wide-angle cooking scene in a warm, professional studio lighting kitchen. A passionate Italian nonna with flour-dusted hands prepares a Italian dish with tomatoes, basil, and mozzarella. The scene features pasta machine, wooden cutting board, olive oil bottles, parmesan grater, wine bottles and has soft Italian folk instrumental with mandolin ambiance. The chef uses traditional techniques with natural, authentic movements. Photorealistic, high-quality cinematography.",
+    "success": false,
+    "video_url": null,
+    "local_path": null,
+    "error": "Fal API error: [{'loc': ['body', 'duration'], 'msg': \"unexpected value; permitted: '5'\", 'type': 'value_error.const', 'ctx': {'given': '8', 'permitted': ['5']}}]",
+    "provider": "fal"
+  },
+  {
+    "generation_id": "af77f597-2799-4dc7-924a-cd99ae5b3886",
+    "timestamp": "2025-07-28T09:27:12.821710",
+    "cuisine": "Italian",
+    "ingredients": [
+      "tomatoes",
+      "basil",
+      "mozzarella"
+    ],
+    "parameters": {
+      "scene_style": "cinematic",
+      "lighting": "warm studio",
+      "duration": 8
+    },
+    "prompt": "A cinematic wide-angle cooking scene in a warm, professional studio lighting kitchen. A passionate Italian nonna with flour-dusted hands prepares a Italian dish with tomatoes, basil, and mozzarella. The scene features pasta machine, wooden cutting board, olive oil bottles, parmesan grater, wine bottles and has soft Italian folk instrumental with mandolin ambiance. The chef uses traditional techniques with natural, authentic movements. Photorealistic, high-quality cinematography.",
+    "success": false,
+    "video_url": null,
+    "local_path": null,
+    "error": "Fal API error: [{'loc': ['body', 'duration'], 'msg': \"unexpected value; permitted: '5s', '9s'\", 'type': 'value_error.const', 'ctx': {'given': 8, 'permitted': ['5s', '9s']}}]",
+    "provider": "fal"
+  },
+  {
+    "generation_id": "28332612-62ff-4bcb-9fe2-abfda38a8f7d",
+    "timestamp": "2025-07-28T09:27:41.431750",
+    "cuisine": "Italian",
+    "ingredients": [
+      "tomatoes",
+      "basil",
+      "mozzarella"
+    ],
+    "parameters": {
+      "scene_style": "cinematic",
+      "lighting": "warm studio",
+      "duration": 9
+    },
+    "prompt": "A cinematic wide-angle cooking scene in a warm, professional studio lighting kitchen. A passionate Italian nonna with flour-dusted hands prepares a Italian dish with tomatoes, basil, and mozzarella. The scene features pasta machine, wooden cutting board, olive oil bottles, parmesan grater, wine bottles and has soft Italian folk instrumental with mandolin ambiance. The chef uses traditional techniques with natural, authentic movements. Photorealistic, high-quality cinematography.",
+    "success": false,
+    "video_url": null,
+    "local_path": null,
+    "error": "Fal API error: [{'loc': ['body', 'duration'], 'msg': \"unexpected value; permitted: '5s', '9s'\", 'type': 'value_error.const', 'ctx': {'given': 9, 'permitted': ['5s', '9s']}}]",
+    "provider": "fal"
+  },
+  {
+    "generation_id": "4c90c8b1-6c1f-4adf-abb2-21f4ed37e4fb",
+    "timestamp": "2025-07-28T09:48:04.059831",
+    "cuisine": "Italian",
+    "ingredients": [
+      "tomatoes",
+      "basil",
+      "mozzarella"
+    ],
+    "parameters": {
+      "scene_style": "cinematic",
+      "lighting": "warm studio",
+      "duration": 9
+    },
+    "prompt": "A cinematic wide-angle cooking scene in a warm, professional studio lighting kitchen. A passionate Italian nonna with flour-dusted hands prepares a Italian dish with tomatoes, basil, and mozzarella. The scene features pasta machine, wooden cutting board, olive oil bottles, parmesan grater, wine bottles and has soft Italian folk instrumental with mandolin ambiance. The chef uses traditional techniques with natural, authentic movements. Photorealistic, high-quality cinematography.",
+    "success": false,
+    "video_url": null,
+    "local_path": null,
+    "error": "Fal API error: [{'loc': ['body', 'duration'], 'msg': \"unexpected value; permitted: '5s', '6s', '7s', '8s'\", 'type': 'value_error.const', 'ctx': {'given': '9s', 'permitted': ['5s', '6s', '7s', '8s']}}]",
+    "provider": "fal"
+  },
+  {
+    "generation_id": "a1ee85ec-31a2-4d8b-9976-b901839a0700",
+    "timestamp": "2025-07-28T09:50:19.803871",
+    "cuisine": "Italian",
+    "ingredients": [
+      "tomatoes",
+      "basil",
+      "mozzarella"
+    ],
+    "parameters": {
+      "scene_style": "cinematic",
+      "lighting": "warm studio",
+      "duration": 8
+    },
+    "prompt": "A cinematic wide-angle cooking scene in a warm, professional studio lighting kitchen. A passionate Italian nonna with flour-dusted hands prepares a Italian dish with tomatoes, basil, and mozzarella. The scene features pasta machine, wooden cutting board, olive oil bottles, parmesan grater, wine bottles and has soft Italian folk instrumental with mandolin ambiance. The chef uses traditional techniques with natural, authentic movements. Photorealistic, high-quality cinematography.",
+    "success": true,
+    "video_url": "https://v3.fal.media/files/kangaroo/ciWhwIuOP_kABHFla9mRf_output.mp4",
+    "local_path": "D:\\RecipeGen\\Tehomia-chatgpt-diagnostics-remix\\videos\\output\\italian_20250728_095104_a1ee85ec.mp4",
+    "error": null,
+    "provider": "fal"
+  },
+  {
+    "generation_id": "25a9e1b5-6c26-4465-bc1a-10bea65ed875",
+    "timestamp": "2025-07-28T09:57:50.150411",
+    "cuisine": "Italian",
+    "ingredients": [
+      "tomatoes",
+      "basil",
+      "mozzarella"
+    ],
+    "parameters": {
+      "scene_style": "cinematic",
+      "lighting": "warm studio",
+      "duration": 8
+    },
+    "prompt": "A cinematic wide-angle cooking scene in a warm, professional studio lighting kitchen. A passionate Italian nonna with flour-dusted hands prepares a Italian dish with tomatoes, basil, and mozzarella. The scene features pasta machine, wooden cutting board, olive oil bottles, parmesan grater, wine bottles and has soft Italian folk instrumental with mandolin ambiance. The chef uses traditional techniques with natural, authentic movements. Photorealistic, high-quality cinematography.",
+    "success": true,
+    "video_url": "https://v3.fal.media/files/monkey/zd_jzvgtgQNFZqhMtuW0l_output.mp4",
+    "local_path": "D:\\RecipeGen\\Tehomia-chatgpt-diagnostics-remix\\videos\\output\\italian_20250728_095855_25a9e1b5.mp4",
+    "error": null,
+    "provider": "fal"
+  },
+  {
+    "generation_id": "bd94b9dc-c217-4277-bcbf-297d02c461f3",
+    "timestamp": "2025-07-28T10:10:04.022283",
+    "cuisine": "Italian",
+    "ingredients": [
+      "tomatoes",
+      "basil",
+      "mozzarella"
+    ],
+    "parameters": {
+      "scene_style": "cinematic",
+      "lighting": "warm studio",
+      "duration": 8
+    },
+    "prompt": "A cinematic wide-angle cooking scene in a warm, professional studio lighting kitchen. A passionate Italian nonna with flour-dusted hands prepares a Italian dish with tomatoes, basil, and mozzarella. The scene features pasta machine, wooden cutting board, olive oil bottles, parmesan grater, wine bottles and has soft Italian folk instrumental with mandolin ambiance. The chef uses traditional techniques with natural, authentic movements. Photorealistic, high-quality cinematography.",
+    "success": true,
+    "video_url": "https://v3.fal.media/files/rabbit/ngd0eKmc9Zif1I1R-bALd_output.mp4",
+    "local_path": "D:\\RecipeGen\\Tehomia-chatgpt-diagnostics-remix\\videos\\output\\italian_20250728_101109_bd94b9dc.mp4",
+    "error": null,
+    "provider": "fal"
+  },
+  {
+    "generation_id": "0beb7b22-ecfd-42a1-a596-6680eb583f33",
+    "timestamp": "2025-07-28T10:12:58.684148",
+    "cuisine": "Italian",
+    "ingredients": [
+      "tomatoes",
+      "basil",
+      "mozzarella"
+    ],
+    "parameters": {
+      "scene_style": "cinematic",
+      "lighting": "warm studio",
+      "duration": 8
+    },
+    "prompt": "A cinematic wide-angle cooking scene cooking scene showing a traditional Italian cook using a HOT STOVE and HEATED PAN to cook a Italian dish with tomatoes, basil, and mozzarella. The chef is shown lighting burners, heating olive oil in a sizzling pan, sautéing ingredients in the hot pan, stirring ingredients while they cook over flame, adding seasonings to bubbling hot food, and serving the cooked dish. Steam rises from hot pans, oil sizzles audibly, flames are visible under cookware. The scene features traditional cookware with PROMINENT regional music playing clearly in the background. The cook's full face and hands are clearly visible throughout. Dynamic cooking movements with visible fire, steam, bubbling, and authentic hot cooking techniques. Photorealistic, high-quality cinematography.",
+    "success": true,
+    "video_url": "https://v3.fal.media/files/elephant/Zdr4vnwP1Q3rxUWrfZ7IQ_output.mp4",
+    "local_path": "D:\\RecipeGen\\Tehomia-chatgpt-diagnostics-remix\\videos\\output\\italian_20250728_101408_0beb7b22.mp4",
+    "error": null,
+    "provider": "fal"
+  },
+  {
+    "generation_id": "c4e7e05f-2fff-4f9c-bc37-8fb349fd651a",
+    "timestamp": "2025-07-28T10:29:35.875320",
+    "cuisine": "Italian",
+    "ingredients": [
+      "tomatoes",
+      "basil",
+      "mozzarella"
+    ],
+    "parameters": {
+      "scene_style": "cinematic",
+      "lighting": "warm studio",
+      "duration": 8
+    },
+    "prompt": "A cinematic wide-angle cooking scene cooking scene showing a traditional Italian nonna (elderly Italian woman) wearing an apron using a HOT STOVE and HEATED PAN to cook a Italian dish with tomatoes, basil, and mozzarella. The chef is shown lighting burners, heating olive oil in a sizzling pan, sautéing ingredients in the hot pan, stirring ingredients while they cook over flame, adding seasonings to bubbling hot food, and serving the cooked dish. Steam rises from hot pans, oil sizzles audibly, flames are visible under cookware. The scene features traditional cookware with PROMINENT, LOUD regional music playing clearly and audibly throughout the scene, mixed with cooking sounds. The cook's full face and hands are clearly visible throughout. Dynamic cooking movements with visible fire, steam, bubbling, and authentic hot cooking techniques. Photorealistic, high-quality cinematography.",
+    "success": true,
+    "video_url": "https://v3.fal.media/files/panda/Z9M9Zt0B0F-cY6t7LfIFH_output.mp4",
+    "local_path": "D:\\RecipeGen\\Tehomia-chatgpt-diagnostics-remix\\videos\\output\\italian_20250728_103040_c4e7e05f.mp4",
+    "error": null,
+    "provider": "fal"
+  },
+  {
+    "generation_id": "db21bfc8-17cb-4948-9bea-3fd4ef529ce2",
+    "timestamp": "2025-07-28T12:13:10.804432",
+    "cuisine": "Italian",
+    "ingredients": [
+      "tomatoes",
+      "basil",
+      "mozzarella"
+    ],
+    "parameters": {
+      "scene_style": "cinematic",
+      "lighting": "warm studio",
+      "duration": 8
+    },
+    "prompt": "A cinematic wide-angle cooking scene cooking scene showing a passionate Italian nonna (elderly grandmother) with flour-dusted hands using a HOT STOVE and HEATED PAN to cook a Italian dish with tomatoes, basil, and mozzarella. The chef is shown lighting burners, heating cooking oil in a sizzling pan, sautéing ingredients in the hot pan, stirring ingredients while they cook over flame, adding seasonings to bubbling hot food, and serving the cooked dish. Steam rises from hot pans, oil sizzles audibly, flames are visible under cookware. The scene features pasta machine, wooden cutting board, olive oil bottles, parmesan grater, wine bottles with VERY LOUD, DOMINANT traditional Italian folk music with mandolin and accordion as the primary audio track playing clearly throughout the entire scene, louder than cooking sounds. The cook's full face and hands are clearly visible throughout. Dynamic cooking movements with visible fire, steam, bubbling, and authentic hot cooking techniques. Photorealistic, high-quality cinematography.",
+    "success": true,
+    "video_url": "https://v3.fal.media/files/elephant/X7TBLkSBxkr_CiYLUL6Rc_output.mp4",
+    "local_path": "D:\\RecipeGen\\Tehomia-chatgpt-diagnostics-remix\\videos\\output\\italian_20250728_121416_db21bfc8.mp4",
+    "error": null,
+    "provider": "fal"
+  },
+  {
+    "generation_id": "2165fdd0-d227-40a4-b339-b9f03917d7de",
+    "timestamp": "2025-07-28T12:28:16.264006",
+    "cuisine": "Italian",
+    "ingredients": [
+      "tomatoes",
+      "basil",
+      "mozzarella"
+    ],
+    "parameters": {
+      "scene_style": "cinematic",
+      "lighting": "warm studio",
+      "duration": 8
+    },
+    "prompt": "A cinematic wide-angle cooking scene cooking scene showing a passionate Italian nonna (elderly grandmother) with flour-dusted hands using a HOT STOVE and HEATED PAN to cook a Italian dish with tomatoes, basil, and mozzarella. The chef is shown lighting burners, heating cooking oil in a sizzling pan, sautéing ingredients in the hot pan, stirring ingredients while they cook over flame, adding seasonings to bubbling hot food, and serving the cooked dish. Steam rises from hot pans, oil sizzles audibly, flames are visible under cookware. The scene features pasta machine, wooden cutting board, olive oil bottles, parmesan grater, wine bottles with VERY LOUD, DOMINANT traditional Italian folk music with mandolin and accordion as the primary audio track playing clearly throughout the entire scene, louder than cooking sounds. The cook's full face and hands are clearly visible throughout. Dynamic cooking movements with visible fire, steam, bubbling, and authentic hot cooking techniques. Photorealistic, high-quality cinematography.",
+    "success": true,
+    "video_url": "https://v3.fal.media/files/lion/VoGBCrT-2LxaGrnmclgLw_output.mp4",
+    "local_path": "D:\\RecipeGen\\Tehomia-chatgpt-diagnostics-remix\\videos\\output\\italian_20250728_122922_2165fdd0.mp4",
+    "error": null,
+    "provider": "fal"
+  }
+]

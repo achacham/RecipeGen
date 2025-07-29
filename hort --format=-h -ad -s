@@ -1,0 +1,14 @@
+[33m641a0a4[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m Initial commit – restored index.html
+[33m6cc39d5[m Post-Recovery checkpoint
+[33mc3681fa[m Pre-Recovery checkpoint
+[33m6c10958[m Assistant checkpoint: Fix syntax error in main.py
+[33meff3ef2[m Checkpoint before assistant change: Correct a mistake that prevents the diagnostic script from running properly
+[33mbba7b90[m Checkpoint before assistant change: Make diagnostic script executable and improve its logging and error handling
+[33mba1d72b[m Assistant checkpoint: Update model to gpt-3.5-turbo
+[33md3dcbac[m Checkpoint before assistant change: Update GPT interface to provide clearer status messages during execution
+[33mdc6bffd[m Checkpoint before assistant change: Update the diagnostic interface to use the latest OpenAI library
+[33m67d292c[m Assistant checkpoint: Add python-dotenv to dependencies
+[33md60deea[m Checkpoint before assistant change: Improve security by loading the OpenAI API key from a local .env file
+[33m277b8fe[m Assistant checkpoint: Add diagnostic GPT interface code
+[33m8c69537[m Checkpoint before assistant change: Add ability to use AI models by connecting to external AI service
+[33m0cdde08[m Initial commit

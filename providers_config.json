@@ -1,0 +1,46 @@
+{
+  "fal": {
+    "api_key_env": "FAL_KEY",
+    "cost_per_second": 0.75,
+    "model": "fal-ai/veo3",
+    "description": "Current VEO3 Standard - High quality, expensive",
+    "audio_param": "generate_audio"
+  },
+  "fal_fast": {
+    "api_key_env": "FAL_KEY", 
+    "cost_per_second": 0.40,
+    "model": "fal-ai/veo3/fast",
+    "description": "VEO3 Fast - Lower quality, cheaper",
+    "audio_param": "audio_enabled"
+  },
+  "runway": {
+    "api_key_env": "RUNWAY_API_KEY",
+    "cost_per_second": 0.30,
+    "model": "runway-gen3",
+    "description": "Runway - You already have this key!",
+    "audio_param": "enable_audio"
+  },
+  "piapi": {
+    "api_key_env": "PIAPI_API_KEY",
+    "cost_per_second": 0.25,
+    "model": "piapi-video",
+    "description": "PIAPI - Test this existing key!",
+    "audio_param": "audio_enabled"
+  },
+  "kling": {
+    "api_key_env": "KLING_KEY",
+    "cost_per_second": 0.15,
+    "model": "kling-ai/video",
+    "description": "Kling AI - Cultural authenticity champion",
+    "website": "https://klingai.com",
+    "audio_param": "generate_audio"
+  },
+  "laozhang": {
+    "api_key_env": "LAOZHANG_KEY",
+    "cost_per_second": 0.025,
+    "model": "veo3-fast-cheap",
+    "description": "LaoZhang VEO3 Fast - 80% cheaper!",
+    "website": "https://api.laozhang.ai",
+    "audio_param": "generate_audio"
+  }
+}

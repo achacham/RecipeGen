@@ -14,13 +14,16 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class VideoRecipeGenerator:
+
     def __init__(self):
         provider = os.getenv('USE_PROVIDER', 'fal')
         self.provider = provider.lower()
         
-        # API key management
+        # API key management - EXPANDED
         self.api_keys = {
-             'fal': os.getenv('FAL_KEY'),
+            'fal': os.getenv('FAL_KEY'),
+            'runway': os.getenv('RUNWAY_API_KEY'),
+            'piapi': os.getenv('PIAPI_API_KEY'),
         }
         
         self.api_key = self.api_keys.get('fal')
@@ -34,6 +37,43 @@ class VideoRecipeGenerator:
         # Clear any previous state
         self.last_ingredients = []
         self.last_cuisine = ""
+
+    def set_provider(self, provider_name):
+        """Dynamically switch providers"""
+        self.provider = provider_name.lower()
+        
+        # Load provider-specific configurations
+        if provider_name == "laozhang":
+            self.api_key = os.getenv('LAOZHANG_KEY')
+        elif provider_name == "runway":
+            self.api_key = os.getenv('RUNWAY_API_KEY')
+        elif provider_name == "piapi":
+            self.api_key = os.getenv('PIAPI_API_KEY')
+        elif provider_name == "kie":
+            self.api_key = os.getenv('KIE_API_KEY')
+        elif provider_name == "veo3api":
+            self.api_key = os.getenv('VEO3API_KEY')
+        else:
+            self.api_key = self.api_keys.get(provider_name)
+        
+        print(f"🔄 Switched to provider: {self.provider}")
+
+    def switch_provider(self, provider_name):
+        """Switch to different provider dynamically"""
+        self.provider = provider_name.lower()
+        print(f"🔄 Switched to provider: {self.provider}")
+        
+        # Set appropriate API key based on provider
+        if provider_name == "runway":
+            self.api_key = os.getenv('RUNWAY_API_KEY')
+        elif provider_name == "piapi":  
+            self.api_key = os.getenv('PIAPI_API_KEY')
+        elif provider_name == "kling":
+            self.api_key = os.getenv('KLING_KEY')
+        elif provider_name == "laozhang":
+            self.api_key = os.getenv('LAOZHANG_KEY')
+        else:
+            self.api_key = self.api_keys.get(provider_name)
 
     def validate_and_clean_ingredients(self, ingredients: List[str]) -> List[str]:
         """
@@ -92,6 +132,47 @@ class VideoRecipeGenerator:
         
         return actions
 
+    def enhance_audio_with_mmaudio(self, video_url: str, cuisine: str) -> Tuple[bool, str]:
+        """
+        FIXED: Add enhanced audio with BALANCED music and cooking sounds
+        """
+        try:
+            import fal_client
+            
+            # Configure fal client
+            fal_client.api_key = self.api_keys['fal']
+            
+            # Create BALANCED audio enhancement prompt
+            cuisine_lower = cuisine.lower()
+            audio_prompt = f"Traditional {cuisine_lower} background music playing softly with PROMINENT cooking sound effects: intense sizzling, rhythmic chopping, aromatic steaming, flames crackling, oil bubbling, vigorous stirring. The cooking sounds should be clear and dominant while traditional {cuisine_lower} music provides cultural ambiance in the background."
+            
+            print(f"🎵 Enhancing audio with BALANCED {cuisine_lower} music and cooking sounds...")
+            print(f"🎵 Audio prompt: {audio_prompt}")
+            
+            # Call MMAudio with balanced audio approach
+            result = fal_client.submit(
+                "fal-ai/mmaudio-v2",
+                arguments={
+                    "video_url": video_url,
+                    "prompt": audio_prompt
+                }
+            )
+            
+            # Get the result
+            output = result.get()
+            enhanced_video_url = output.get("video", {}).get("url")
+            
+            if enhanced_video_url:
+                print(f"✅ Audio enhanced with balanced music and cooking sounds!")
+                return True, enhanced_video_url
+            else:
+                print(f"❌ No enhanced video URL in response: {output}")
+                return False, "No enhanced video URL in response"
+                
+        except Exception as e:
+            print(f"💥 Audio enhancement error: {str(e)}")
+            return False, f"Audio enhancement error: {str(e)}"
+
     def generate_cuisine_audio(self, cuisine: str) -> str:
         """
         EXACT WORKING PATTERN: Match successful examples dynamically
@@ -108,56 +189,55 @@ class VideoRecipeGenerator:
     
     def build_dynamic_cuisine_prompt(self, cuisine: str, ingredients: List[str], dish_type: str, enable_audio: bool = True) -> str:
         """
-        BUILD COOKING-FOCUSED cuisine-specific prompts with CONDITIONAL audio
+        TRADITIONAL AUTHENTICITY: Build cuisine-specific prompts for traditional cultural representation
         """
         ingredient_list = ", ".join(ingredients)
         
-        print(f"🏗️  BUILDING COOKING-FOCUSED PROMPT FOR: {cuisine} with {ingredient_list} (Audio: {enable_audio})")
+        print(f"🏗️ BUILDING TRADITIONAL AUTHENTIC PROMPT FOR: {cuisine} with {ingredient_list}")
         
-        # Store dish_type for pasta fusion fix
-        self._current_dish_type = dish_type
-        
-        # Generate BRIEF ingredient actions focused on cooking
+        # Generate ingredient actions
         ingredient_actions = self.generate_ingredient_specific_actions(ingredients, dish_type)
         
         # DYNAMIC cuisine description
         cuisine_name = cuisine.title() if cuisine else "International"
         
-        # Build dynamic character and environment descriptions
+        # TRADITIONAL AUTHENTIC character and environment descriptions
         if cuisine and cuisine.lower() != "international":
-            character_desc = f"an experienced {cuisine_name} chef with visible warm face and traditional cooking attire"
-            kitchen_desc = f"authentic {cuisine_name} kitchen with traditional cookware and cultural elements"
-            style_desc = f"traditional {cuisine_name} cooking techniques"
-            # CONDITIONAL AUDIO: Only generate if audio enabled
+            character_desc = f"an authentic traditional {cuisine_name} cook with traditional {cuisine_name} clothing, headwear, and cultural appearance, FULL BODY visible with warm facial expressions"
+            kitchen_desc = f"traditional {cuisine_name} home kitchen with authentic cookware, cultural tools, traditional utensils, and cultural elements"
+            style_desc = f"traditional {cuisine_name} cooking techniques with cultural hand movements and authentic preparation methods"
+            
             if enable_audio:
                 audio_desc = self.generate_cuisine_audio(cuisine.lower())
                 audio_section = f"MANDATORY AUDIO: {audio_desc}. "
             else:
                 audio_section = ""
         else:
-            character_desc = "a skilled professional chef with clearly visible face and expert movements"
-            kitchen_desc = "modern professional kitchen with quality equipment"
-            style_desc = "expert international cooking techniques"
+            character_desc = "a traditional home cook with FULL BODY visible, warm facial expressions and authentic cooking movements"
+            kitchen_desc = "traditional home kitchen with authentic cookware and cultural cooking tools"
+            style_desc = "traditional home cooking techniques with authentic preparation methods"
             if enable_audio:
-                audio_section = "MANDATORY AUDIO: professional kitchen sounds: intense sizzling, aromatic steaming, gentle cooking ambiance. "
+                audio_section = "MANDATORY AUDIO: home kitchen sounds: intense sizzling, aromatic steaming, gentle cooking ambiance. "
             else:
                 audio_section = ""
         
-        # BUILD COOKING-FOCUSED PROMPT with CONDITIONAL AUDIO
+        # TRADITIONAL AUTHENTIC PROMPT (removed modern/professional keywords)
         prompt = (
-            f"A cinematic cooking scene in {kitchen_desc} showing {character_desc} "
+            f"A traditional cooking scene in {kitchen_desc} showing FULL-BODY {character_desc} "
             f"preparing {dish_type} using {ingredient_list}. "
-            f"BRIEF ingredient prep, then IMMEDIATE cooking: {', '.join(ingredient_actions[:3])} "
-            f"in hot wok/pan with intense sizzling and steam. "
-            f"Chef expertly tosses and stirs ingredients with {style_desc}. "
-            f"Video focuses on the active cooking with beautiful sizzling sounds and aromatic steam rising. "
-            f"Ends with gorgeous bubbling, sizzling cooking scene showing perfectly cooked dish. "
-            f"Chef's face clearly visible with focused cooking expression. "
+            f"Wide angle view showing complete traditional kitchen setting and full cook from head to toe. "
+            f"COOK CLEARLY VISIBLE throughout in traditional cultural attire with authentic cooking movements. "
+            f"Traditional cooking sequence: {', '.join(ingredient_actions[:3])} "
+            f"in traditional cookware with intense sizzling and aromatic steam. "
+            f"Cook expertly prepares ingredients using {style_desc}, "
+            f"showing COMPLETE TRADITIONAL COOKING PROCESS in authentic cultural setting. "
+            f"Warm traditional lighting, authentic cultural atmosphere, and traditional cooking methods. "
+            f"Cook's cultural identity and expertise clearly visible through traditional dress and movements. "
             f"{audio_section}"
-            f"Warm lighting, authentic cultural atmosphere, professional cooking action."
+            f"Authentic cultural cooking, traditional home atmosphere, complete traditional cooking demonstration."
         )
         
-        print(f"📝 GENERATED CONDITIONAL PROMPT: {prompt}")
+        print(f"📝 GENERATED TRADITIONAL AUTHENTIC PROMPT: {prompt}")
         return prompt
 
     def call_fal_api(self, prompt: str, duration: int, cuisine: str = "", ingredients: List[str] = None, 
@@ -202,7 +282,7 @@ class VideoRecipeGenerator:
                 "prompt": prompt,
                 "duration": "8s",
                 "aspect_ratio": "16:9",
-                "enhance_prompt": enhance_prompt,
+                "enhance_prompt": True,
             }
             
             # Add correct audio parameter based on model
@@ -232,6 +312,68 @@ class VideoRecipeGenerator:
         except Exception as e:
             print(f"💥 API ERROR: {str(e)}")
             return False, f"Fal API error: {str(e)}"
+
+    def call_runway_api(self, prompt: str, duration: int) -> Tuple[bool, str]:
+        """Call Runway API for video generation"""
+        try:
+            headers = {
+                "Authorization": f"Bearer {os.getenv('RUNWAY_API_KEY')}",
+                "Content-Type": "application/json"
+            }
+            
+            payload = {
+                "prompt": prompt,
+                "duration": duration,
+                "width": 1024,
+                "height": 576
+            }
+            
+            print(f"🎬 CALLING RUNWAY API")
+            print(f"🔧 PAYLOAD: {payload}")
+            
+            # You'll need the actual Runway API endpoint
+            response = requests.post("https://api.runwayml.com/v1/generate", 
+                                   json=payload, headers=headers, timeout=120)
+            
+            if response.status_code == 200:
+                result = response.json()
+                video_url = result.get("video_url")
+                return (True, video_url) if video_url else (False, "No video URL")
+            else:
+                return False, f"API error: {response.status_code} - {response.text}"
+                
+        except Exception as e:
+            return False, f"Runway API error: {str(e)}"
+
+    def call_piapi_api(self, prompt: str, duration: int) -> Tuple[bool, str]:
+        """Call PIAPI for video generation"""
+        try:
+            headers = {
+                "Authorization": f"Bearer {os.getenv('PIAPI_API_KEY')}",
+                "Content-Type": "application/json"
+            }
+            
+            payload = {
+                "prompt": prompt,
+                "duration": duration
+            }
+            
+            print(f"🎬 CALLING PIAPI")
+            print(f"🔧 PAYLOAD: {payload}")
+            
+            # You'll need the actual PIAPI endpoint
+            response = requests.post("https://api.piapi.xyz/v1/video/generate", 
+                                   json=payload, headers=headers, timeout=120)
+            
+            if response.status_code == 200:
+                result = response.json()
+                video_url = result.get("video_url")
+                return (True, video_url) if video_url else (False, "No video URL")
+            else:
+                return False, f"API error: {response.status_code} - {response.text}"
+                
+        except Exception as e:
+            return False, f"PIAPI error: {str(e)}"
 
     def call_fal_api_async(self, prompt: str, webhook_url: Optional[str] = None, 
                           use_fast_model: bool = False, enable_audio: bool = True) -> Tuple[bool, str]:
@@ -332,11 +474,12 @@ class VideoRecipeGenerator:
 
     def generate_video(self, cuisine: str, ingredients: List[str], **kwargs) -> Dict:
         """
-        MPP: Generate video with STANDARD VEO3 by default for maximum audio performance
+        MULTI-PROVIDER: Generate video with different providers + MMAudio enhancement
         """
-        print(f"\n🚀 === STARTING MPP VIDEO GENERATION ===")
+        print(f"\n🚀 === STARTING VIDEO GENERATION ===")
         print(f"🌍 CUISINE: {cuisine}")
         print(f"🥘 RAW INGREDIENTS: {ingredients}")
+        print(f"🔌 PROVIDER: {self.provider}")
         
         # CRITICAL: Validate and clean ingredients to prevent contamination
         validated_ingredients = self.validate_and_clean_ingredients(ingredients)
@@ -354,18 +497,18 @@ class VideoRecipeGenerator:
         # Build COOKING-FOCUSED cuisine-specific prompt with CONDITIONAL audio
         prompt = self.build_dynamic_cuisine_prompt(cuisine, validated_ingredients, dish_type, enable_audio)
         
-        print(f"⚡ MPP SETTINGS:")
+        print(f"⚡ GENERATION SETTINGS:")
         print(f"   - Cuisine: {cuisine}")
         print(f"   - Ingredients: {validated_ingredients}")
-        print(f"   - Audio: {enable_audio} (MANDATORY)")
-        print(f"   - Fast Model: {use_fast_model} (MPP uses Standard VEO3)")
+        print(f"   - Audio: {enable_audio}")
+        print(f"   - Provider: {self.provider}")
 
         success = False
         video_url = ""
         error_message = ""
         request_id = None
         
-        # Generate video
+        # Generate video based on provider
         if self.provider == 'fal':
             if async_mode:
                 success, result = self.call_fal_api_async(
@@ -387,10 +530,39 @@ class VideoRecipeGenerator:
                 )
                 if success:
                     video_url = result
-                    print(f"🎉 MPP VIDEO WITH FULL AUDIO GENERATED!")
+                    print(f"🎉 VIDEO GENERATED! Now adding magical background music...")
                 else:
                     error_message = result
                     print(f"💥 GENERATION FAILED: {error_message}")
+        elif self.provider == 'runway':
+            success, result = self.call_runway_api(prompt, 8)
+            if success:
+                video_url = result
+                print(f"🎉 RUNWAY VIDEO GENERATED!")
+            else:
+                error_message = result
+                print(f"💥 RUNWAY FAILED: {error_message}")
+        elif self.provider == 'piapi':
+            success, result = self.call_piapi_api(prompt, 8)
+            if success:
+                video_url = result
+                print(f"🎉 PIAPI VIDEO GENERATED!")
+            else:
+                error_message = result
+                print(f"💥 PIAPI FAILED: {error_message}")
+        else:
+            error_message = f"Unsupported provider: {self.provider}"
+            print(f"❌ {error_message}")
+
+        # THE MISSING PIECE: Add MMAudio enhancement for beautiful background music (FAL only)!
+        if success and video_url and not async_mode and self.provider == 'fal':
+            print("🎵 Enhancing video with cultural background music...")
+            audio_success, enhanced_result = self.enhance_audio_with_mmaudio(video_url, cuisine)
+            if audio_success:
+                video_url = enhanced_result  # Use enhanced video with music
+                print(f"✅ Audio enhanced! Using enhanced video with beautiful {cuisine} music!")
+            else:
+                print(f"⚠️ Audio enhancement failed: {enhanced_result}. Using original video.")
 
         # Download if successful (sync mode only)
         local_path = ""
@@ -419,7 +591,7 @@ class VideoRecipeGenerator:
                 "audio_enabled": enable_audio,
                 "prompt_enhanced": enhance_prompt,
                 "async_mode": async_mode,
-                "mpp_mode": "Standard VEO3 for Maximum Audio Performance"
+                "provider_mode": f"{self.provider.upper()} with multi-provider support"
             }
         }
 

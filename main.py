@@ -6,12 +6,16 @@ Main Flask application for recipe generation, video creation, and chat functiona
 from flask import Flask, jsonify, request, send_from_directory, session
 from flask_cors import CORS
 from flask_session import Session
+from database import db
+from async_worker import worker
 import json
 import os
 import openai
 import sys
 import requests
 import logging
+import uuid
+import sqlite3
 from datetime import datetime
 from dotenv import load_dotenv
 
@@ -187,6 +191,101 @@ def get_recipe(recipe_id):
             return jsonify(r)
     return jsonify({'error': 'Recipe not found'}), 404
 
+@app.route('/check_video_status/<task_id>', methods=['GET'])
+def check_video_status(task_id):
+    """
+    Check if background video is ready
+    """
+    try:
+        # Query database for task status
+        with sqlite3.connect('recipegen.db') as conn:
+            cursor = conn.execute(
+                'SELECT status, video_url, local_path FROM video_generation_tasks WHERE task_id = ?',
+                (task_id,)
+            )
+            row = cursor.fetchone()
+            
+        if not row:
+            return jsonify({"status": "not_found"}), 404
+            
+        status, video_url, local_path = row
+        
+        if status == 'completed':
+            return jsonify({
+                "status": "completed",
+                "video_url": video_url,
+                "local_path": local_path,
+                "ready": True
+            })
+        elif status == 'failed':
+            return jsonify({
+                "status": "failed",
+                "ready": False
+            })
+        else:
+            return jsonify({
+                "status": status,
+                "ready": False
+            })
+            
+    except Exception as e:
+        logger.error(f"Status check error: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route('/generate_recipe_instant', methods=['POST'])
+def generate_recipe_instant():
+    """Generate instant teaser, queue EVERYTHING else"""
+    try:
+        data = request.get_json(force=True) or {}
+        ingredients = data.get("ingredients", [])
+        cuisine = data.get("cuisine", "")
+        dish_type = data.get("dish_type", "")
+        
+        # Get ingredient names for teaser only
+        ingredient_names = []
+        for slug in ingredients:
+            ing = INGREDIENTS_BY_SLUG.get(slug)
+            if ing:
+                ingredient_names.append(ing['name'])
+        
+        # Create IDs
+        recipe_id = str(uuid.uuid4())
+        task_id = str(uuid.uuid4())
+        
+        # Store placeholder recipe in database
+        with sqlite3.connect('recipegen.db') as conn:
+            conn.execute('''
+                INSERT INTO recipes (recipe_id, cuisine_id, dish_type, ingredients, recipe_text, video_task_id)
+                VALUES (?, ?, ?, ?, ?, ?)
+            ''', (recipe_id, 0, dish_type, json.dumps(ingredients), "GENERATING", task_id))
+        
+        # Queue BOTH recipe generation AND video generation
+        db.create_video_task(
+            task_id=task_id,
+            recipe_id=recipe_id,
+            cuisine=cuisine or "international",
+            ingredients=ingredient_names,
+            dish_type=dish_type,
+            prompt="pending",  # Recipe text will be generated async
+            provider='kie'
+        )
+        
+        # Return INSTANT teaser
+        ingredient_list = ", ".join(ingredient_names[:3]) + "..." if len(ingredient_names) > 3 else ", ".join(ingredient_names)
+        
+        return jsonify({
+            "success": True,
+            "recipe_id": recipe_id,
+            "task_id": task_id,
+            "teaser": f"Your delicious {cuisine.title()} {dish_type} with {ingredient_list} is being prepared!",
+            "price": "$2.99"
+        })
+        
+    except Exception as e:
+        logger.error(f"Error: {e}")
+        return jsonify({"error": str(e)}), 500
+
 @app.route('/recipes/<int:recipe_id>/generate', methods=['POST'])
 def generate_recipe(recipe_id):
     for r in recipes:
@@ -331,6 +430,9 @@ def not_found(error):
 def server_error(error):
     logger.error(f"Server error: {error}")
     return jsonify({'error': 'Internal server error'}), 500
+
+worker.start()
+logger.info("🎯 Async video worker started for background processing")
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 3000))

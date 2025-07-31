@@ -11,6 +11,8 @@ import asyncio
 from concurrent.futures import ThreadPoolExecutor
 import threading
 import time
+from database import db
+import uuid
 
 # Add the current directory to Python path to import your AI modules
 sys.path.append(str(Path(__file__).parent))
@@ -99,14 +101,12 @@ def generate_video_fast():
         cuisine = data.get("cuisine", "")
         dish_type = data.get("dish_type", "")
         
-        # MPP OPTIONS
-        enable_audio = data.get("enable_audio", False)  # Default: disabled for speed
-        use_fast_model = data.get("use_fast_model", True)  # Default: use fast model
-        stream_response = data.get("stream_response", True)  # Default: stream directly
+        # Generate unique IDs for tracking
+        recipe_id = str(uuid.uuid4())
+        task_id = str(uuid.uuid4())
         
-        logger.info(f"🚀 MPP FAL AI Video generation: ingredients={ingredients}, "
-                   f"cuisine={cuisine}, dish_type={dish_type}, "
-                   f"fast_model={use_fast_model}, audio={enable_audio}, stream={stream_response}")
+        logger.info(f"🎬 Legacy FAL AI Video generation (MPP enabled): "
+                   f"ingredients={ingredients}, cuisine={cuisine}, dish_type={dish_type}")
         
         if not ingredients:
             return jsonify({"error": "Missing ingredients list", "success": False}), 400
@@ -123,68 +123,116 @@ def generate_video_fast():
         if dish_type and DISH_TYPES_BY_ID.get(dish_type):
             dish_name = DISH_TYPES_BY_ID[dish_type]['name']
         
-        # Initialize MPP optimized generator
+        # Initialize generator with MPP settings
         try:
             generator = VideoRecipeGenerator()
             
-            # MPP OPTIMIZED PARAMETERS
+            # Build prompt first (we'll need it for the database)
+            prompt = generator.build_dynamic_cuisine_prompt(
+                cuisine or "international",
+                ingredient_names,
+                dish_name,
+                enable_audio=True  # KIE needs this
+            )
+            
+            # CREATE DATABASE RECORD BEFORE GENERATION
+            db_id = db.create_video_task(
+                task_id=task_id,
+                recipe_id=recipe_id,
+                cuisine=cuisine or "international",
+                ingredients=ingredient_names,
+                dish_type=dish_name,
+                prompt=prompt,
+                provider=generator.provider  # 'kie' or 'fal'
+            )
+            
+            logger.info(f"📊 Created database task: {task_id}")
+            
+            # Update status to processing
+            db.update_task_status(task_id, 'processing')
+            
+            # MPP ENABLED FOR LEGACY COMPATIBILITY
             result = generator.generate_video(
                 cuisine=cuisine or "international",
                 ingredients=ingredient_names,
                 dish_type=dish_name,
-                use_fast_model=use_fast_model,    # 2x speed boost
-                enable_audio=enable_audio,        # 33% speed boost when False
-                enhance_prompt=False,             # Additional speed boost
-                async_mode=False                  # Sync for immediate response
+                use_fast_model=True,      # MPP: Use fast model
+                enable_audio=True,        # Force True for KIE
+                enhance_prompt=False,     # MPP: Disable enhancement for speed
+                async_mode=False          # Sync for legacy compatibility
             )
             
             logger.info(f"🎯 MPP FAL AI generation result: {result['success']}")
             
-            if result['success'] and result.get('video_url'):
-                video_url = result['video_url']
-                logger.info(f"✅ Video ready at URL: {video_url}")
+            if result['success']:
+                # Update database with success
+                generation_time = result.get('generation_time_seconds', 0)
+                db.update_task_status(
+                    task_id, 
+                    'completed',
+                    video_url=result.get('video_url'),
+                    local_path=result.get('local_path'),
+                    generation_time_seconds=generation_time,
+                    credits_used=400 if generator.provider == 'kie' else 0  # KIE uses 400 credits
+                )
                 
-                if stream_response:
-                    # MPP OPTIMIZATION: Stream directly without download
+                if result.get('local_path'):
+                    logger.info(f"✅ Video ready at: {result['local_path']}")
+                    return send_file(
+                        result['local_path'], 
+                        mimetype='video/mp4',
+                        as_attachment=False,
+                        download_name=f'recipegen_mpp_cooking_{datetime.now().strftime("%Y%m%d_%H%M%S")}.mp4'
+                    )
+                elif result.get('video_url'):
+                    # If no local path but we have URL, stream it
+                    video_url = result['video_url']
                     return Response(
                         stream_video_from_url(video_url),
                         mimetype='video/mp4',
                         headers={
-                            'Content-Disposition': f'inline; filename=recipegen_fast_{datetime.now().strftime("%Y%m%d_%H%M%S")}.mp4',
-                            'Cache-Control': 'no-cache',
-                            'X-Generation-Mode': 'MPP-Fast',
-                            'X-Audio-Enabled': str(enable_audio),
-                            'X-Fast-Model': str(use_fast_model)
+                            'Content-Disposition': f'inline; filename=recipegen_mpp_cooking_{datetime.now().strftime("%Y%m%d_%H%M%S")}.mp4',
+                            'X-Generation-Mode': 'MPP-Legacy',
+                            'X-Task-ID': task_id
                         }
                     )
-                else:
-                    # Return URL for frontend to handle
-                    return jsonify({
-                        "success": True,
-                        "video_url": video_url,
-                        "local_path": result.get('local_path'),
-                        "generation_id": result.get('generation_id'),
-                        "performance_settings": result.get('performance_settings', {})
-                    })
             else:
                 error_msg = result.get('error', 'Unknown FAL AI error')
-                logger.error(f"❌ MPP FAL AI generation failed: {error_msg}")
+                logger.error(f"❌ FAL AI generation failed: {error_msg}")
+                
+                # Update database with failure
+                db.update_task_status(
+                    task_id,
+                    'failed',
+                    error_message=error_msg
+                )
+                
                 return jsonify({
-                    "error": f"MPP FAL AI generation failed: {error_msg}",
-                    "success": False
+                    "error": f"FAL AI generation failed: {error_msg}",
+                    "success": False,
+                    "task_id": task_id
                 }), 500
             
         except Exception as e:
-            logger.error(f"❌ MPP FAL AI system error: {e}")
+            logger.error(f"❌ FAL AI system error: {e}")
+            
+            # Update database with error
+            if 'task_id' in locals():
+                db.update_task_status(
+                    task_id,
+                    'failed',
+                    error_message=str(e)
+                )
+            
             return jsonify({
-                "error": f"MPP FAL AI system unavailable: {str(e)}", 
+                "error": f"FAL AI system unavailable: {str(e)}", 
                 "success": False
             }), 500
         
     except Exception as e:
-        logger.error(f"❌ MPP Video generation failed: {e}")
+        logger.error(f"❌ Video generation failed: {e}")
         return jsonify({
-            "error": "MPP Video generation failed", 
+            "error": "Video generation failed", 
             "details": str(e),
             "success": False
         }), 500

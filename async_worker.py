@@ -157,12 +157,7 @@ Enjoy your delicious {task['cuisine']} {task.get('dish_type', 'dish')}!
                 async_mode=True  # Use async mode for KIE
             )
 
-            # Track prompt usage
-            if self.generator.current_template_id:
-                from prompt_evolution import prompt_evolution
-                prompt_evolution.record_video_result(task_id, self.generator.current_template_id)
-                logger.info(f"📊 Tracking prompt template #{self.generator.current_template_id}")
-            
+                    
             if result['success'] and result.get('request_id'):
                 # Store provider's task ID for polling
                 db.update_task_status(
@@ -213,9 +208,6 @@ Enjoy your delicious {task['cuisine']} {task.get('dish_type', 'dish')}!
                         credits_used=400  # KIE uses 400 credits
                     )
                     logger.info(f"✅ Task {task_id} completed!")
-                    # Update prompt success metrics
-                    from prompt_evolution import prompt_evolution
-                    prompt_evolution.update_video_success(task_id, True)
                 else:
                     print(f"❌ DEBUG: Download failed with error: {local_path}")
                     raise Exception(f"Download failed: {local_path}")

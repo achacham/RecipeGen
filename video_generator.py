@@ -7,7 +7,6 @@ from pathlib import Path
 from typing import Dict, List, Tuple, Optional
 from datetime import datetime
 import threading
-from prompt_evolution import prompt_evolution
 from dotenv import load_dotenv
 
 # Load environment
@@ -106,8 +105,7 @@ class VideoRecipeGenerator:
        self.last_ingredients = []
        self.last_cuisine = ""
 
-       self.current_template_id = None
-
+       
    def set_provider(self, provider_name):
        """Dynamically switch providers"""
        self.provider = provider_name.lower()
@@ -242,29 +240,6 @@ class VideoRecipeGenerator:
     """
     Build cuisine-specific prompts - OPTIMIZED FOR PROVIDER
     """
- # Try to get evolved prompt first
-    template_id, template_text = prompt_evolution.get_best_prompt(self.provider, cuisine)
-    
-    if template_text:
-        # Use evolved template
-        ingredient_list = ", ".join(ingredients)
-        cooking_steps = ". ".join(self.generate_ingredient_specific_actions(ingredients, dish_type))
-        
-        # Replace variables in template
-        prompt = template_text.format(
-            cuisine=cuisine.title() if cuisine else "International",
-            dish_type=dish_type,
-            ingredients=ingredient_list,
-            cooking_steps=cooking_steps
-        )
-        
-        print(f"🧬 Using evolved prompt (template #{template_id})")
-        
-        # Store the template_id for tracking
-        self.current_template_id = template_id
-        
-        return prompt
-
     ingredient_list = ", ".join(ingredients)
     
     print(f"🏗️ BUILDING PROMPT FOR: {cuisine} with {ingredient_list}")

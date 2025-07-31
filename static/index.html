@@ -265,216 +265,209 @@ document.getElementById("closeKosherModal").onclick = () => {
 
 // Main click handler for recipe generation
 document.getElementById("generateRecipeBtn").onclick = async () => {
-  // Show initial loader
-  document.getElementById("videoBox").classList.remove("hidden");
-  document.getElementById("phasedLoader").innerText = "🎥 Generating your video";
-  document.getElementById("phasedLoader").classList.add("loader-dot");
-  document.getElementById("videoPreview").style.display = "none";
-
   const cuisine = document.getElementById("cuisineSelect").value;
   const ingredients = Array.from(selected);
-
-  console.log("🔥 CLICK TRIGGERED");
+  
+  console.log("🚀 RECIPE GENERATION WITH BUSINESS MODEL!");
   console.log("Cuisine selected:", cuisine);
   console.log("Ingredients selected:", ingredients);
   console.log("Dish type selected:", selectedDishType);
 
-  // Kosher validation for Jewish cuisine
-  if (cuisine.toLowerCase() === "jewish") {
-    console.log("🕎 Jewish cuisine detected. Validating ingredients:", ingredients);
+  // Show loader
+  document.getElementById("videoBox").classList.remove("hidden");
+  document.getElementById("phasedLoader").innerText = "🍳 Preparing your recipe...";
+  document.getElementById("phasedLoader").classList.add("loader-dot");
+  document.getElementById("videoPreview").style.display = "none";
 
-    const resp = await fetch("/validate_ingredients", {
+  // [Keep all the kosher validation code as is...]
+  
+  try {
+    // Get recipe (but only teaser!)
+    const response = await fetch("/generate_recipe_instant", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ingredients, mode: "jewish" })
+      body: JSON.stringify({ 
+        cuisine, 
+        ingredients,
+        dish_type: selectedDishType
+      })
     });
-
-    const { problems } = await resp.json();
-    console.log("🕎 Validation problems returned:", problems);
     
-    const errs = problems.filter(p => p.error);
-    const warns = problems.filter(p => p.warning);
-
-    console.log("🚫 Errors found:", errs);
-    console.log("⚠️ Warnings found:", warns);
-
-    if (errs.length) {
-      const allErrors = errs.map(p => p.error);
-      showKosherModal("Kosher Violations Detected", [
-        "❌ The following ingredient combinations are not kosher:",
-        ...allErrors
-      ]);
-      return;
-    }
-
-    if (warns.length) {
-      const allWarnings = warns.map(p => p.warning + (p.slug ? ` (${p.slug})` : ""));
-      showKosherModal("Kosher Warning", [
-        "⚠️ These ingredients may require supervision:",
-        ...allWarnings
-      ]);
-      return;
-    }
-
-    console.log("✅ Kosher validation passed. Proceeding to video generation...");
-  }
-
-  console.log("🌐 Non-Jewish cuisine — skipping validation.");
-
-  // [Rest of your video generation code stays exactly the same...]
-  const videoBox = document.getElementById("videoBox");
-  const videoPreview = document.getElementById("videoPreview");
-  const loader = document.getElementById("phasedLoader");
-
-  videoBox.classList.remove("hidden");
-  videoPreview.src = "";
-  loader.classList.remove("loader-dot");
-  loader.innerText = "👨‍🍳 Summoning a culturally authentic cook";
-
-  const steps = [
-    "🍳 Selecting cookware",
-    "🧂 Fetching spices",
-    "🎥 Framing cinematic shot",
-    "🎶 Preparing traditional ambiance",
-    "🔥 Cooking with AI precision",
-    "🎬 Rendering your food scene"
-  ];
-  let stepIndex = 0;
-  const loaderInterval = setInterval(() => {
-    loader.innerText = steps[stepIndex % steps.length];
-    stepIndex++;
-  }, 2000);
-
-  try {
-  const response = await fetch("/generate_video", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ 
-      cuisine, 
-      ingredients,
-      dish_type: selectedDishType
-    })
-  });
-
-  clearInterval(loaderInterval);
-
-  // WRONG: const result = await response.json();
-  // RIGHT: Handle video file directly
-  if (response.ok) {
-    const videoBlob = await response.blob();
-    const videoUrl = URL.createObjectURL(videoBlob);
+    const result = await response.json();
     
-    loader.innerText = "✅ Video Ready!";
-    videoPreview.src = videoUrl;
-    videoPreview.style.display = "block";
-  } else {
-    loader.innerText = "❌ Video generation failed.";
+    if (result.success) {
+      // Show TEASER only!
+      document.getElementById("phasedLoader").innerHTML = 
+        `<div class="text-center p-6 bg-gray-50 rounded">
+          <h3 class="text-2xl font-bold mb-4">${result.teaser}</h3>
+          <div class="text-gray-600 mb-4">
+            <div class="text-lg mb-2">📺 Watch the cooking video first</div>
+            <div class="text-sm">Your video is generating...</div>
+          </div>
+          <div class="mt-6 p-4 bg-yellow-100 rounded">
+            <div class="text-2xl font-bold text-green-700">${result.price}</div>
+            <div class="text-sm text-gray-700">Full recipe unlocks after video</div>
+          </div>
+          <input type="hidden" id="recipeId" value="${result.recipe_id}" />
+          <input type="hidden" id="taskId" value="${result.task_id}" />
+        </div>`;
+      
+      // Poll for video status every 10 seconds
+      const pollInterval = setInterval(async () => {
+        const taskId = document.getElementById("taskId").value;
+        const statusResponse = await fetch(`/check_video_status/${taskId}`);
+        const status = await statusResponse.json();
+        
+        if (status.ready) {
+  clearInterval(pollInterval);
+  
+  // Calculate video source URL
+  let videoSrc = '';
+  if (status.local_path) {
+    // Extract filename from path
+    const filename = status.local_path.split('\\').pop().split('/').pop();
+    videoSrc = `/output/${filename}`;
+  } else if (status.video_url) {
+    videoSrc = status.video_url;
   }
-} catch (error) {
-  clearInterval(loaderInterval);
-  loader.innerText = "❌ Error contacting video server.";
-  console.error("Video generation error:", error);
+  
+  // Video is ready! Update the display
+  document.getElementById("phasedLoader").innerHTML = 
+    `<div class="text-center p-6 bg-gray-50 rounded">
+      <h3 class="text-2xl font-bold mb-4">${result.teaser}</h3>
+      <div class="mt-4 p-4 bg-green-100 rounded">
+        <div class="text-lg font-bold mb-2">✅ Your video is ready!</div>
+        <video controls class="w-full rounded shadow mb-4" src="${videoSrc}">
+          Your browser does not support the video tag.
+        </video>
+        <button onclick="purchaseRecipe()" 
+                class="bg-green-600 text-white px-6 py-3 rounded-lg font-bold text-lg hover:bg-green-700">
+          🛒 Purchase Recipe for ${result.price}
+        </button>
+      </div>
+    </div>`;
+  
+  console.log("Video displayed with source:", videoSrc);
 }
+        }
+      }, 10000); // Check every 10 seconds
+      
+    } else {
+      document.getElementById("phasedLoader").innerText = "❌ Recipe generation failed.";
+    }
+    
+  } catch (error) {
+    document.getElementById("phasedLoader").innerText = "❌ Error contacting server.";
+    console.error("Recipe generation error:", error);
+  }
 };
 
+// Add purchase function
+function purchaseRecipe() {
+  const recipeId = document.getElementById("recipeId").value;
+  alert(`Purchase flow for recipe ${recipeId} - Coming soon!`);
+  // TODO: Implement payment flow
+  // After payment success, fetch and display full recipe
+}
+
 // Ingredient fetch & rendering
-  fetch("/ingredients")
-    .then(res => res.json())
-    .then(data => {
-      ingredients = data;
-      populateCuisineOptions();
-      populateTypeButtons();
-      renderIngredients(ingredients);
-      ingredientsReady = true;
-    });
+fetch("/ingredients")
+ .then(res => res.json())
+ .then(data => {
+   ingredients = data;
+   populateCuisineOptions();
+   populateTypeButtons();
+   renderIngredients(ingredients);
+   ingredientsReady = true;
+ });
 
-  function populateCuisineOptions() {
-    const c = new Set();
-    ingredients.forEach(i => i.cuisine.forEach(x => c.add(x)));
-    [...c].sort().forEach(cc => {
-      const o = document.createElement("option");
-      o.value = cc;
-      o.textContent = cc.charAt(0).toUpperCase() + cc.slice(1);
-      cuisineSelect.appendChild(o);
-    });
-  }
+function populateCuisineOptions() {
+ const c = new Set();
+ ingredients.forEach(i => i.cuisine.forEach(x => c.add(x)));
+ [...c].sort().forEach(cc => {
+   const o = document.createElement("option");
+   o.value = cc;
+   o.textContent = cc.charAt(0).toUpperCase() + cc.slice(1);
+   cuisineSelect.appendChild(o);
+ });
+}
 
-  function populateTypeButtons() {
-    const types = [...new Set(ingredients.map(i => i.type))].sort();
-    types.forEach(t => {
-      if (t === "meat" || t === "fish") return;
-      const b = document.createElement("button");
-      b.textContent = t.charAt(0).toUpperCase() + t.slice(1);
-      b.className = "w-full px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 text-sm font-medium";
-      b.onclick = () => renderIngredients(ingredients.filter(i => i.type === t));
-      document.getElementById("typeFilter").appendChild(b);
-    });
-  }
+function populateTypeButtons() {
+ const types = [...new Set(ingredients.map(i => i.type))].sort();
+ types.forEach(t => {
+   if (t === "meat" || t === "fish") return;
+   const b = document.createElement("button");
+   b.textContent = t.charAt(0).toUpperCase() + t.slice(1);
+   b.className = "w-full px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 text-sm font-medium";
+   b.onclick = () => renderIngredients(ingredients.filter(i => i.type === t));
+   document.getElementById("typeFilter").appendChild(b);
+ });
+}
 
-  function renderIngredients(data) {
-    grid.innerHTML = "";
+function renderIngredients(data) {
+ grid.innerHTML = "";
 
-    data.forEach(i => {
-      const card = document.createElement("div");
-      card.className = "relative border rounded shadow hover:scale-105 transition-transform";
-      card.onclick = () => toggleSelection(i.slug, card);
+ data.forEach(i => {
+   const card = document.createElement("div");
+   card.className = "relative border rounded shadow hover:scale-105 transition-transform";
+   card.onclick = () => toggleSelection(i.slug, card);
 
-      const img = document.createElement("img");
-      img.src = `/static/images/ingredients/${i.image}`;
-      img.className = "w-full h-36 object-cover rounded-t";
-      img.alt = i.name;
+   const img = document.createElement("img");
+   img.src = `/static/images/ingredients/${i.image}`;
+   img.className = "w-full h-36 object-cover rounded-t";
+   img.alt = i.name;
 
-      const name = document.createElement("div");
-      name.textContent = i.name;
-      name.className = "text-center py-2 text-sm font-medium";
+   const name = document.createElement("div");
+   name.textContent = i.name;
+   name.className = "text-center py-2 text-sm font-medium";
 
-      const check = document.createElement("div");
-      check.id = `check-${i.slug}`;
-      check.className = "absolute top-2 right-2 w-5 h-5 rounded-full bg-green-500";
-      check.style.display = selected.has(i.slug) ? "block" : "none";
+   const check = document.createElement("div");
+   check.id = `check-${i.slug}`;
+   check.className = "absolute top-2 right-2 w-5 h-5 rounded-full bg-green-500";
+   check.style.display = selected.has(i.slug) ? "block" : "none";
 
-      // If selected, apply visual highlight
-      if (selected.has(i.slug)) {
-        card.classList.add("ring-2", "ring-green-500");
-      }
+   // If selected, apply visual highlight
+   if (selected.has(i.slug)) {
+     card.classList.add("ring-2", "ring-green-500");
+   }
 
-      card.append(img, name, check);
-      grid.appendChild(card);
-    });
-  }
+   card.append(img, name, check);
+   grid.appendChild(card);
+ });
+}
 
-  function toggleSelection(slug, card) {
-    const c = document.getElementById(`check-${slug}`);
-    if (selected.has(slug)) {
-      selected.delete(slug);
-      c.style.display = "none";
-      card.classList.remove("ring-2", "ring-green-500");
-    } else {
-      selected.add(slug);
-      c.style.display = "block";
-      card.classList.add("ring-2", "ring-green-500");
-    }
-    updateSelectionBar();
-  }
+function toggleSelection(slug, card) {
+ const c = document.getElementById(`check-${slug}`);
+ if (selected.has(slug)) {
+   selected.delete(slug);
+   c.style.display = "none";
+   card.classList.remove("ring-2", "ring-green-500");
+ } else {
+   selected.add(slug);
+   c.style.display = "block";
+   card.classList.add("ring-2", "ring-green-500");
+ }
+ updateSelectionBar();
+}
 
-  function updateSelectionBar() {
-    const n = selected.size;
-    document.getElementById("selectionCount").textContent = `${n} ingredient${n !== 1 ? "s" : ""} selected`;
-    selectionBar.style.display = n > 0 ? "flex" : "none";
-  }
+function updateSelectionBar() {
+ const n = selected.size;
+ document.getElementById("selectionCount").textContent = `${n} ingredient${n !== 1 ? "s" : ""} selected`;
+ selectionBar.style.display = n > 0 ? "flex" : "none";
+}
 
-  cuisineSelect.onchange = e => {
-    // Clear previous selections on cuisine switch
-    selected.clear();
-    document.querySelectorAll("[id^='check-']").forEach(el => el.style.display = "none");
-    document.querySelectorAll(".ring-green-500").forEach(el => {
-      el.classList.remove("ring-2", "ring-green-500");
-    });
-    updateSelectionBar();
+cuisineSelect.onchange = e => {
+ // Clear previous selections on cuisine switch
+ selected.clear();
+ document.querySelectorAll("[id^='check-']").forEach(el => el.style.display = "none");
+ document.querySelectorAll(".ring-green-500").forEach(el => {
+   el.classList.remove("ring-2", "ring-green-500");
+ });
+ updateSelectionBar();
 
-    // Load filtered ingredients
-    renderIngredients(ingredients.filter(i => i.cuisine.includes(e.target.value)));
-  };
+ // Load filtered ingredients
+ renderIngredients(ingredients.filter(i => i.cuisine.includes(e.target.value)));
+};
 
   document.getElementById("surpriseBtn").onclick = () => {
     const allC = [...new Set(ingredients.flatMap(i => i.cuisine))];

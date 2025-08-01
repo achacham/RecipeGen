@@ -11,13 +11,32 @@ from async_worker import worker
 import json
 import os
 import openai
-import sys
+import sys  # <-- Already imported here
 import requests
 import logging
 import uuid
 import sqlite3
+from pathlib import Path
 from datetime import datetime
 from dotenv import load_dotenv
+
+# No need to import sys again
+sys.path.append(str(Path(__file__).parent))
+from music_config import music_db
+
+def initialize_music_database():
+    """Initialize and sync music database on startup"""
+    # Sync with ingredients.json
+    ingredients_path = Path(__file__).parent / "ingredients.json"
+    if ingredients_path.exists():
+        new_cuisines = music_db.sync_with_ingredients(ingredients_path)
+        if new_cuisines:
+            print(f"🎵 Music database updated with new cuisines!")
+    
+    print(f"🎵 Music database loaded with {len(music_db.music_data)} cuisines")
+
+# Call it right here, before any routes
+initialize_music_database()
 
 # === Configuration and Setup ===
 print("✅ ✅ ✅ THIS IS THE REAL main.py FROM videos FOLDER")
@@ -162,6 +181,10 @@ def validate_ingredients(ingredient_slugs, mode="jewish"):
 
 
 # === Routes ===
+
+@app.route('/output/<filename>')
+def serve_video(filename):
+    return send_from_directory('output', filename)
 
 @app.route('/categories', methods=['GET'])
 def get_categories():

@@ -1,0 +1,336 @@
+{
+  "music_database_version": "1.0",
+  "description": "Cultural music configuration for authentic video generation",
+  "cuisines": {
+    "american": {
+      "instruments": "acoustic guitar, harmonica, fiddle, banjo",
+      "style": "folk americana or jazz",
+      "tempo": "steady and warm",
+      "characteristics": "blues influences, country elements"
+    },
+    "argentinian": {
+      "instruments": "bandoneón, guitar, violin, piano",
+      "style": "tango-influenced folk",
+      "tempo": "passionate and dramatic",
+      "characteristics": "melancholic with sudden energy bursts"
+    },
+    "australian": {
+      "instruments": "didgeridoo, acoustic guitar, harmonica",
+      "style": "bush folk or contemporary",
+      "tempo": "laid-back and earthy",
+      "characteristics": "indigenous influences mixed with British folk"
+    },
+    "austrian": {
+      "instruments": "zither, accordion, alpine horn, violin",
+      "style": "alpine folk waltz",
+      "tempo": "3/4 time, flowing",
+      "characteristics": "yodeling elements, mountain echoes"
+    },
+    "bangladeshi": {
+      "instruments": "tabla, harmonium, dotara, flute",
+      "style": "Bengali folk",
+      "tempo": "rhythmic and devotional",
+      "characteristics": "Baul music influences"
+    },
+    "brazilian": {
+      "instruments": "cavaquinho, pandeiro, berimbau, cuíca",
+      "style": "samba or bossa nova",
+      "tempo": "syncopated and lively",
+      "characteristics": "percussion-heavy, carnival energy"
+    },
+    "british": {
+      "instruments": "violin, concertina, tin whistle, bodhrán",
+      "style": "pub folk or classical",
+      "tempo": "moderate and storytelling",
+      "characteristics": "Celtic influences, maritime themes"
+    },
+    "chilean": {
+      "instruments": "charango, quena, zampoña, guitar",
+      "style": "Andean folk fusion",
+      "tempo": "contemplative with festive moments",
+      "characteristics": "mountain music with Spanish guitar"
+    },
+    "chinese": {
+      "instruments": "erhu, pipa, guzheng, dizi",
+      "style": "traditional Han folk",
+      "tempo": "flowing and meditative",
+      "characteristics": "pentatonic scales, silk and bamboo sounds"
+    },
+    "colombian": {
+      "instruments": "accordion, guacharaca, caja vallenata, tiple",
+      "style": "cumbia or vallenato",
+      "tempo": "danceable and tropical",
+      "characteristics": "Caribbean coastal rhythms"
+    },
+    "cuban": {
+      "instruments": "tres guitar, claves, congas, trumpet",
+      "style": "son cubano or rumba",
+      "tempo": "clave-based, syncopated",
+      "characteristics": "Afro-Cuban rhythms, call and response"
+    },
+    "danish": {
+      "instruments": "violin, accordion, harmonica, lur",
+      "style": "Nordic folk dance",
+      "tempo": "cheerful and structured",
+      "characteristics": "hygge atmosphere, simple melodies"
+    },
+    "dominican": {
+      "instruments": "güira, tambora, accordion, saxophone",
+      "style": "merengue or bachata",
+      "tempo": "fast 2/4 time or romantic",
+      "characteristics": "hip-swaying rhythms"
+    },
+    "egyptian": {
+      "instruments": "oud, qanun, ney, tabla baladi",
+      "style": "classical Arabic maqam",
+      "tempo": "hypnotic and ornate",
+      "characteristics": "quarter-tones, belly dance rhythms"
+    },
+    "ethiopian": {
+      "instruments": "krar, masenqo, washint, kebero",
+      "style": "Amharic traditional",
+      "tempo": "complex polyrhythms",
+      "characteristics": "pentatonic scales, ancient church modes"
+    },
+    "filipino": {
+      "instruments": "kulintang, kudyapi, gangsa, nose flute",
+      "style": "indigenous or hispanized folk",
+      "tempo": "festive and communal",
+      "characteristics": "gong music, Spanish guitar fusion"
+    },
+    "finnish": {
+      "instruments": "kantele, violin, accordion, jaw harp",
+      "style": "Kalevala folk",
+      "tempo": "melancholic and nature-inspired",
+      "characteristics": "forest and lake imagery"
+    },
+    "french": {
+      "instruments": "accordion, violin, musette, piano",
+      "style": "chanson or café music",
+      "tempo": "romantic waltz time",
+      "characteristics": "Parisian sophistication, provincial charm"
+    },
+    "german": {
+      "instruments": "accordion, tuba, alphorn, zither",
+      "style": "Bavarian folk or classical",
+      "tempo": "march-like or waltz",
+      "characteristics": "beer hall oompah, Alpine yodeling"
+    },
+    "greek": {
+      "instruments": "bouzouki, baglama, santouri, clarinet",
+      "style": "rebetiko or island folk",
+      "tempo": "7/8 or 9/8 time signatures",
+      "characteristics": "Byzantine modes, dance rhythms"
+    },
+    "hungarian": {
+      "instruments": "cimbalom, violin, clarinet, double bass",
+      "style": "csárdás folk dance",
+      "tempo": "slow-fast contrasts",
+      "characteristics": "Romani influences, virtuosic passages"
+    },
+    "indian": {
+      "instruments": "sitar, tabla, harmonium, bansuri",
+      "style": "Hindustani or Carnatic classical",
+      "tempo": "cyclical with acceleration",
+      "characteristics": "ragas, complex rhythmic cycles"
+    },
+    "indonesian": {
+      "instruments": "gamelan gongs, suling, rebab, kendang",
+      "style": "gamelan ensemble",
+      "tempo": "interlocking patterns",
+      "characteristics": "metallic timbres, cyclical melodies"
+    },
+    "iranian": {
+      "instruments": "santur, tar, kamancheh, daf",
+      "style": "Persian classical dastgah",
+      "tempo": "improvisational and modal",
+      "characteristics": "microtones, poetic expression"
+    },
+    "irish": {
+      "instruments": "fiddle, tin whistle, uilleann pipes, bodhrán",
+      "style": "Celtic jigs and reels",
+      "tempo": "lively 6/8 or 4/4",
+      "characteristics": "pub session energy, storytelling"
+    },
+    "italian": {
+      "instruments": "mandolin, accordion, guitar, tambourine",
+      "style": "tarantella or canzone",
+      "tempo": "passionate and expressive",
+      "characteristics": "operatic influences, regional variations"
+    },
+    "jamaican": {
+      "instruments": "steel drums, bass guitar, drums, melodica",
+      "style": "reggae or ska",
+      "tempo": "off-beat emphasis",
+      "characteristics": "one drop rhythm, dub echoes"
+    },
+    "japanese": {
+      "instruments": "koto, shamisen, shakuhachi, taiko",
+      "style": "traditional minyo or gagaku",
+      "tempo": "ma (space between notes)",
+      "characteristics": "zen aesthetics, seasonal themes"
+    },
+    "jewish": {
+      "instruments": "clarinet, violin, accordion, tsimbl",
+      "style": "klezmer celebration",
+      "tempo": "freilach dance rhythms",
+      "characteristics": "Eastern European scales, emotional bends"
+    },
+    "korean": {
+      "instruments": "gayageum, daegeum, janggu, haegeum",
+      "style": "pansori or sanjo",
+      "tempo": "dynamic with han emotion",
+      "characteristics": "sliding ornaments, rhythmic cycles"
+    },
+    "lebanese": {
+      "instruments": "oud, qanun, mijwiz, riq",
+      "style": "dabke folk dance",
+      "tempo": "energetic line dance",
+      "characteristics": "Levantine maqam, call and response"
+    },
+    "malaysian": {
+      "instruments": "gamelan, kompang, rebana, serunai",
+      "style": "zapin or joget",
+      "tempo": "moderate and graceful",
+      "characteristics": "Malay, Chinese, Indian fusion"
+    },
+    "mexican": {
+      "instruments": "mariachi trumpets, guitarrón, vihuela, violin",
+      "style": "mariachi or norteño",
+      "tempo": "festive waltz or polka",
+      "characteristics": "grito calls, romantic serenades"
+    },
+    "moroccan": {
+      "instruments": "oud, bendir, qraqeb, ney",
+      "style": "Gnawa or Andalusian",
+      "tempo": "trance-inducing repetition",
+      "characteristics": "African rhythms, Arabic melodies"
+    },
+    "nepalese": {
+      "instruments": "sarangi, madal, bansuri, damaru",
+      "style": "Himalayan folk",
+      "tempo": "mountain echoes pace",
+      "characteristics": "Buddhist and Hindu influences"
+    },
+    "norwegian": {
+      "instruments": "hardanger fiddle, langeleik, accordion, lur",
+      "style": "folk dance or stev",
+      "tempo": "springdans rhythms",
+      "characteristics": "fjord echoes, sympathetic strings"
+    },
+    "pakistani": {
+      "instruments": "sitar, tabla, dhol, harmonium",
+      "style": "qawwali or folk",
+      "tempo": "building devotional energy",
+      "characteristics": "Sufi influences, Punjabi bhangra"
+    },
+    "peruvian": {
+      "instruments": "charango, quena, cajón, panpipes",
+      "style": "Andean or criolla",
+      "tempo": "highland contemplative",
+      "characteristics": "Incan heritage, Spanish guitar"
+    },
+    "polish": {
+      "instruments": "violin, accordion, dulcimer, clarinet",
+      "style": "mazurka or polonaise",
+      "tempo": "triple meter dances",
+      "characteristics": "Chopin influences, mountain styles"
+    },
+    "portuguese": {
+      "instruments": "Portuguese guitar, accordion, cavaquinho, triangle",
+      "style": "fado or folk",
+      "tempo": "saudade melancholy",
+      "characteristics": "maritime themes, emotional expression"
+    },
+    "romanian": {
+      "instruments": "pan flute, cimbalom, violin, accordion",
+      "style": "doina or hora",
+      "tempo": "free-flowing to circle dance",
+      "characteristics": "Balkan complexity, Romani virtuosity"
+    },
+    "russian": {
+      "instruments": "balalaika, bayan, domra, gusli",
+      "style": "folk song or dance",
+      "tempo": "melancholic to exuberant",
+      "characteristics": "minor keys, Orthodox church modes"
+    },
+    "scandinavian": {
+      "instruments": "nyckelharpa, hardanger fiddle, accordion, jaw harp",
+      "style": "Nordic folk polska",
+      "tempo": "flowing triple meter",
+      "characteristics": "midnight sun moods, ancient ballads"
+    },
+    "scottish": {
+      "instruments": "bagpipes, fiddle, accordion, bodhrán",
+      "style": "Highland strathspey or reel",
+      "tempo": "march or dance rhythms",
+      "characteristics": "drone notes, Celtic ornaments"
+    },
+    "singaporean": {
+      "instruments": "erhu, tabla, kompang, angklung",
+      "style": "multicultural fusion",
+      "tempo": "modern meets traditional",
+      "characteristics": "Chinese, Malay, Indian blend"
+    },
+    "southeast asian": {
+      "instruments": "khene, ranat, pi nai, ching",
+      "style": "court or village music",
+      "tempo": "cyclical and meditative",
+      "characteristics": "Buddhist temple influences"
+    },
+    "spanish": {
+      "instruments": "flamenco guitar, castanets, cajón, palmas",
+      "style": "flamenco or jota",
+      "tempo": "compás rhythmic cycles",
+      "characteristics": "passionate strumming, heel stamps"
+    },
+    "sri lankan": {
+      "instruments": "geta beraya, veena, flute, rabana",
+      "style": "Kandyan or low country",
+      "tempo": "ceremonial drum patterns",
+      "characteristics": "Buddhist and Hindu traditions"
+    },
+    "swedish": {
+      "instruments": "violin, nyckelharpa, accordion, wooden flute",
+      "style": "polska or schottische",
+      "tempo": "lilting dance rhythms",
+      "characteristics": "folk fiddling, medieval modes"
+    },
+    "syrian": {
+      "instruments": "oud, qanun, ney, buzuq",
+      "style": "classical Arabic maqam",
+      "tempo": "ornate and emotional",
+      "characteristics": "ancient Damascus traditions"
+    },
+    "thai": {
+      "instruments": "khim, ranat ek, khlui, ching",
+      "style": "luk thung or classical",
+      "tempo": "graceful and measured",
+      "characteristics": "pentatonic scales, court elegance"
+    },
+    "tibetan": {
+      "instruments": "singing bowls, dungchen, damaru, bells",
+      "style": "Buddhist ceremonial",
+      "tempo": "meditative drone",
+      "characteristics": "overtone singing, mountain echoes"
+    },
+    "turkish": {
+      "instruments": "saz, ney, darbuka, kanun",
+      "style": "Ottoman classical or folk",
+      "tempo": "asymmetric rhythms",
+      "characteristics": "makam modes, whirling dervish"
+    },
+    "venezuelan": {
+      "instruments": "cuatro, maracas, harp, bandola",
+      "style": "joropo llanero",
+      "tempo": "fast triple meter",
+      "characteristics": "plains cowboy music"
+    },
+    "vietnamese": {
+      "instruments": "dan bau, dan tranh, sao truc, trong",
+      "style": "ca tru or quan ho",
+      "tempo": "delicate and poetic",
+      "characteristics": "tonal language influence, water puppets"
+    }
+  }
+}

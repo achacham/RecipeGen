@@ -1,0 +1,1974 @@
+{
+  "version": "1.0",
+  "source": "TheMealDB",
+  "fetch_date": "2025-08-01",
+  "total_recipes": 9,
+  "recipes": [
+    {
+      "recipe_id": "mealdb-52874",
+      "title": "Beef and Mustard Pie",
+      "cuisine": "british",
+      "dish_type": "baked-dish",
+      "difficulty": 2,
+      "prep_time": 15,
+      "cook_time": 30,
+      "servings": 4,
+      "source": "TheMealDB",
+      "source_url": "https://www.bbc.co.uk/food/recipes/beef_and_mustard_pie_58002",
+      "video_url": "https://www.youtube.com/watch?v=nMyBC9staMU",
+      "thumbnail": "https://www.themealdb.com/images/media/meals/sytuqu1511553755.jpg",
+      "category": "Beef",
+      "all_ingredients": [
+        {
+          "name": "Beef",
+          "amount": "1kg",
+          "slug": "beef"
+        },
+        {
+          "name": "Plain Flour",
+          "amount": "2 tbs",
+          "slug": "plain-flour"
+        },
+        {
+          "name": "Rapeseed Oil",
+          "amount": "2 tbs",
+          "slug": "rapeseed-oil"
+        },
+        {
+          "name": "Red Wine",
+          "amount": "200ml",
+          "slug": "red-wine"
+        },
+        {
+          "name": "Beef Stock",
+          "amount": "400ml",
+          "slug": "beef-stock"
+        },
+        {
+          "name": "Onion",
+          "amount": "1 finely sliced",
+          "slug": "onion"
+        },
+        {
+          "name": "Carrots",
+          "amount": "2 chopped",
+          "slug": "carrots"
+        },
+        {
+          "name": "Thyme",
+          "amount": "3 sprigs",
+          "slug": "thyme"
+        },
+        {
+          "name": "Mustard",
+          "amount": "2 tbs",
+          "slug": "mustard"
+        },
+        {
+          "name": "Egg Yolks",
+          "amount": "2 free-range",
+          "slug": "egg-yolks"
+        },
+        {
+          "name": "Puff Pastry",
+          "amount": "400g",
+          "slug": "puff-pastry"
+        },
+        {
+          "name": "Green Beans",
+          "amount": "300g",
+          "slug": "green-beans"
+        },
+        {
+          "name": "Butter",
+          "amount": "25g",
+          "slug": "butter"
+        },
+        {
+          "name": "Salt",
+          "amount": "pinch",
+          "slug": "salt"
+        },
+        {
+          "name": "Pepper",
+          "amount": "pinch",
+          "slug": "pepper"
+        }
+      ],
+      "required_ingredients": [
+        "beef",
+        "plain-flour",
+        "rapeseed-oil"
+      ],
+      "steps": [
+        {
+          "step": 1,
+          "instruction": "Preheat the oven to 150C/300F/Gas 2.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 2,
+          "instruction": "Toss the beef and flour together in a bowl with some salt and black pepper.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 3,
+          "instruction": "Heat a large casserole until hot, add half of the rapeseed oil and enough of the beef to just cover the bottom of the casserole.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 4,
+          "instruction": "Fry until browned on each side, then remove and set aside",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 5,
+          "instruction": "Repeat with the remaining oil and beef.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 6,
+          "instruction": "Return the beef to the pan, add the wine and cook until the volume of liquid has reduced by half, then add the stock, onion, carrots, thyme and mustard, and season well with salt and pepper.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 7,
+          "instruction": "Cover with a lid and place in the oven for two hours.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 8,
+          "instruction": "Remove from the oven, check the seasoning and set aside to cool",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 9,
+          "instruction": "Remove the thyme.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 10,
+          "instruction": "When the beef is cool and you're ready to assemble the pie, preheat the oven to 200C/400F/Gas 6.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 11,
+          "instruction": "Transfer the beef to a pie dish, brush the rim with the beaten egg yolks and lay the pastry over the top",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 12,
+          "instruction": "Brush the top of the pastry with more beaten egg.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 13,
+          "instruction": "Trim the pastry so there is just enough excess to crimp the edges, then place in the oven and bake for 30 minutes, or until the pastry is golden-brown and cooked through.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 14,
+          "instruction": "For the green beans, bring a saucepan of salted water to the boil, add the beans and cook for 4-5 minutes, or until just tender.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 15,
+          "instruction": "Drain and toss with the butter, then season with black pepper.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 16,
+          "instruction": "To serve, place a large spoonful of pie onto each plate with some green beans alongside.",
+          "time": 5,
+          "tip": ""
+        }
+      ],
+      "techniques": [],
+      "chef_secrets": "",
+      "rating": 4.5
+    },
+    {
+      "recipe_id": "mealdb-52878",
+      "title": "Beef and Oyster pie",
+      "cuisine": "british",
+      "dish_type": "baked-dish",
+      "difficulty": 2,
+      "prep_time": 15,
+      "cook_time": 30,
+      "servings": 4,
+      "source": "TheMealDB",
+      "source_url": "https://www.bbc.co.uk/food/recipes/beef_and_oyster_pie_65230",
+      "video_url": "https://www.youtube.com/watch?v=ONX74yP6JnI",
+      "thumbnail": "https://www.themealdb.com/images/media/meals/wrssvt1511556563.jpg",
+      "category": "Beef",
+      "all_ingredients": [
+        {
+          "name": "Beef",
+          "amount": "900g",
+          "slug": "beef"
+        },
+        {
+          "name": "Olive Oil",
+          "amount": "3 tbs",
+          "slug": "olive-oil"
+        },
+        {
+          "name": "Shallots",
+          "amount": "3",
+          "slug": "shallots"
+        },
+        {
+          "name": "Garlic",
+          "amount": "2 cloves minced",
+          "slug": "garlic"
+        },
+        {
+          "name": "Bacon",
+          "amount": "125g",
+          "slug": "bacon"
+        },
+        {
+          "name": "Thyme",
+          "amount": "1 tbs chopped",
+          "slug": "thyme"
+        },
+        {
+          "name": "Bay Leaf",
+          "amount": "2",
+          "slug": "bay-leaf"
+        },
+        {
+          "name": "Stout",
+          "amount": "330ml",
+          "slug": "stout"
+        },
+        {
+          "name": "Beef Stock",
+          "amount": "400ml",
+          "slug": "beef-stock"
+        },
+        {
+          "name": "Corn Flour",
+          "amount": "2 tbs",
+          "slug": "corn-flour"
+        },
+        {
+          "name": "Oysters",
+          "amount": "8",
+          "slug": "oysters"
+        },
+        {
+          "name": "Plain Flour",
+          "amount": "400g",
+          "slug": "plain-flour"
+        },
+        {
+          "name": "Salt",
+          "amount": "pinch",
+          "slug": "salt"
+        },
+        {
+          "name": "Butter",
+          "amount": "250g",
+          "slug": "butter"
+        },
+        {
+          "name": "Eggs",
+          "amount": "To Glaze",
+          "slug": "eggs"
+        }
+      ],
+      "required_ingredients": [
+        "beef",
+        "olive-oil",
+        "shallots"
+      ],
+      "steps": [
+        {
+          "step": 1,
+          "instruction": "Season the beef cubes with salt and black pepper",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 2,
+          "instruction": "Heat a tablespoon of oil in the frying pan and fry the meat over a high heat",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 3,
+          "instruction": "Do this in three batches so that you don’t overcrowd the pan, transferring the meat to a large flameproof casserole dish once it is browned all over",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 4,
+          "instruction": "Add extra oil if the pan seems dry.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 5,
+          "instruction": "In the same pan, add another tablespoon of oil and cook the shallots for 4-5 minutes, then add the garlic and fry for 30 seconds",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 6,
+          "instruction": "Add the bacon and fry until slightly browned",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 7,
+          "instruction": "Transfer the onion and bacon mixture to the casserole dish and add the herbs.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 8,
+          "instruction": "Preheat the oven to 180C/350F/Gas 4.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 9,
+          "instruction": "Pour the stout into the frying pan and bring to the boil, stirring to lift any stuck-on browned bits from the bottom of the pan",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 10,
+          "instruction": "Pour the stout over the beef in the casserole dish and add the stock",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 11,
+          "instruction": "Cover the casserole and place it in the oven for 1½-2 hours, or until the beef is tender and the sauce is reduced.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 12,
+          "instruction": "Skim off any surface fat, taste and add salt and pepper if necessary, then stir in the cornflour paste",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 13,
+          "instruction": "Put the casserole dish on the hob – don’t forget that it will be hot – and simmer for 1-2 minutes, stirring, until thickened",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 14,
+          "instruction": "Leave to cool.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 15,
+          "instruction": "Increase the oven to 200C/400F/Gas 6",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 16,
+          "instruction": "To make the pastry, put the flour and salt in a very large bowl",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 17,
+          "instruction": "Grate the butter and stir it into the flour in three batches",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 18,
+          "instruction": "Gradually add 325ml/11fl oz cold water – you may not need it all – and stir with a round-bladed knife until the mixture just comes together",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 19,
+          "instruction": "Knead the pastry lightly into a ball on a lightly floured surface and set aside 250g/9oz for the pie lid.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 20,
+          "instruction": "Roll the rest of the pastry out until about 2cm/¾in larger than the dish you’re using",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 21,
+          "instruction": "Line the dish with the pastry then pile in the filling, tucking the oysters in as well",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 22,
+          "instruction": "Brush the edge of the pastry with beaten egg.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 23,
+          "instruction": "Roll the remaining pastry until slightly larger than your dish and gently lift over the filling, pressing the edges firmly to seal, then trim with a sharp knife",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 24,
+          "instruction": "Brush with beaten egg to glaze",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 25,
+          "instruction": "Put the dish on a baking tray and bake for 25-30 minutes, or until the pastry is golden-brown and the filling is bubbling.",
+          "time": 5,
+          "tip": ""
+        }
+      ],
+      "techniques": [],
+      "chef_secrets": "",
+      "rating": 4.5
+    },
+    {
+      "recipe_id": "mealdb-53071",
+      "title": "Beef Asado",
+      "cuisine": "international",
+      "dish_type": null,
+      "difficulty": 2,
+      "prep_time": 15,
+      "cook_time": 30,
+      "servings": 4,
+      "source": "TheMealDB",
+      "source_url": "https://panlasangpinoy.com/beef-asado/",
+      "video_url": "https://www.youtube.com/watch?v=lNlK8DVhXXA",
+      "thumbnail": "https://www.themealdb.com/images/media/meals/pkopc31683207947.jpg",
+      "category": "Beef",
+      "all_ingredients": [
+        {
+          "name": "Beef",
+          "amount": "1.5kg",
+          "slug": "beef"
+        },
+        {
+          "name": "Beef Stock Concentrate",
+          "amount": "1",
+          "slug": "beef-stock-concentrate"
+        },
+        {
+          "name": "Tomato Puree",
+          "amount": "8 ounces",
+          "slug": "tomato-puree"
+        },
+        {
+          "name": "Water",
+          "amount": "3 cups",
+          "slug": "water"
+        },
+        {
+          "name": "Soy Sauce",
+          "amount": "6 tablespoons",
+          "slug": "soy-sauce"
+        },
+        {
+          "name": "White Wine Vinegar",
+          "amount": "1 tbs",
+          "slug": "white-wine-vinegar"
+        },
+        {
+          "name": "Pepper",
+          "amount": "2 tbs",
+          "slug": "pepper"
+        },
+        {
+          "name": "Bay Leaf",
+          "amount": "4",
+          "slug": "bay-leaf"
+        },
+        {
+          "name": "Lemon",
+          "amount": "1/2",
+          "slug": "lemon"
+        },
+        {
+          "name": "Tomato Sauce",
+          "amount": "2 tbs",
+          "slug": "tomato-sauce"
+        },
+        {
+          "name": "Butter",
+          "amount": "3 tbs",
+          "slug": "butter"
+        },
+        {
+          "name": "Olive Oil",
+          "amount": "1/2 cup",
+          "slug": "olive-oil"
+        },
+        {
+          "name": "Onion",
+          "amount": "1 chopped",
+          "slug": "onion"
+        },
+        {
+          "name": "Garlic",
+          "amount": "4 cloves",
+          "slug": "garlic"
+        }
+      ],
+      "required_ingredients": [
+        "beef",
+        "beef-stock-concentrate",
+        "tomato-puree"
+      ],
+      "steps": [
+        {
+          "step": 1,
+          "instruction": "0.\tCombine beef, crushed peppercorn, soy sauce, vinegar, dried bay leaves, lemon, and tomato sauce",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 2,
+          "instruction": "Mix well",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 3,
+          "instruction": "Marinate beef for at least 30 minutes.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 4,
+          "instruction": "1.\tPut the marinated beef in a cooking pot along with remaining marinade",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 5,
+          "instruction": "Add water",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 6,
+          "instruction": "Let boil.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 7,
+          "instruction": "2.\tAdd Knorr Beef Cube",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 8,
+          "instruction": "Stir",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 9,
+          "instruction": "Cover the pot and cook for 40 minutes in low heat.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 10,
+          "instruction": "3.\tTurn the beef over",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 11,
+          "instruction": "Add tomato paste",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 12,
+          "instruction": "Continue cooking until beef tenderizes",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 13,
+          "instruction": "Set aside.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 14,
+          "instruction": "4.\tHeat oil in a pan",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 15,
+          "instruction": "Fry the potato until it browns",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 16,
+          "instruction": "Turn over and continue frying the opposite side",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 17,
+          "instruction": "Remove from the pan and place on a clean plate",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 18,
+          "instruction": "Do the same with the carrots.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 19,
+          "instruction": "5.\tSave 3 tablespoons of cooking oil from the pan where the potato was fried",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 20,
+          "instruction": "Saute onion and garlic until onion softens.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 21,
+          "instruction": "6.\tPour-in the sauce from the beef stew",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 22,
+          "instruction": "Let boil",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 23,
+          "instruction": "Add the beef",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 24,
+          "instruction": "Cook for 2 minutes.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 25,
+          "instruction": "7.\tAdd butter and let it melt",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 26,
+          "instruction": "Continue cooking until the sauce reduces to half.",
+          "time": 5,
+          "tip": ""
+        }
+      ],
+      "techniques": [],
+      "chef_secrets": "",
+      "rating": 4.5
+    },
+    {
+      "recipe_id": "mealdb-52940",
+      "title": "Brown Stew Chicken",
+      "cuisine": "jamaican",
+      "dish_type": "soup",
+      "difficulty": 2,
+      "prep_time": 15,
+      "cook_time": 30,
+      "servings": 4,
+      "source": "TheMealDB",
+      "source_url": "http://www.geniuskitchen.com/recipe/authentic-jamaican-brown-stew-chicken-347996",
+      "video_url": "https://www.youtube.com/watch?v=_gFB1fkNhXs",
+      "thumbnail": "https://www.themealdb.com/images/media/meals/sypxpx1515365095.jpg",
+      "category": "Chicken",
+      "all_ingredients": [
+        {
+          "name": "Chicken",
+          "amount": "1 whole",
+          "slug": "chicken"
+        },
+        {
+          "name": "Tomato",
+          "amount": "1 chopped",
+          "slug": "tomato"
+        },
+        {
+          "name": "Onions",
+          "amount": "2 chopped",
+          "slug": "onions"
+        },
+        {
+          "name": "Garlic Clove",
+          "amount": "2 chopped",
+          "slug": "garlic-clove"
+        },
+        {
+          "name": "Red Pepper",
+          "amount": "1 chopped",
+          "slug": "red-pepper"
+        },
+        {
+          "name": "Carrots",
+          "amount": "1 chopped",
+          "slug": "carrots"
+        },
+        {
+          "name": "Lime",
+          "amount": "1",
+          "slug": "lime"
+        },
+        {
+          "name": "Thyme",
+          "amount": "2 tsp",
+          "slug": "thyme"
+        },
+        {
+          "name": "Allspice",
+          "amount": "1 tsp",
+          "slug": "allspice"
+        },
+        {
+          "name": "Soy Sauce",
+          "amount": "2 tbs",
+          "slug": "soy-sauce"
+        },
+        {
+          "name": "Cornstarch",
+          "amount": "2 tsp",
+          "slug": "cornstarch"
+        },
+        {
+          "name": "Coconut Milk",
+          "amount": "2 cups",
+          "slug": "coconut-milk"
+        },
+        {
+          "name": "Vegetable Oil",
+          "amount": "1 tbs",
+          "slug": "vegetable-oil"
+        }
+      ],
+      "required_ingredients": [
+        "chicken",
+        "tomato",
+        "onions"
+      ],
+      "steps": [
+        {
+          "step": 1,
+          "instruction": "Squeeze lime over chicken and rub well",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 2,
+          "instruction": "Drain off excess lime juice.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 3,
+          "instruction": "Combine tomato, scallion, onion, garlic, pepper, thyme, pimento and soy sauce in a large bowl with the chicken pieces",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 4,
+          "instruction": "Cover and marinate at least one hour.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 5,
+          "instruction": "Heat oil in a dutch pot or large saucepan",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 6,
+          "instruction": "Shake off the seasonings as you remove each piece of chicken from the marinade",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 7,
+          "instruction": "Reserve the marinade for sauce.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 8,
+          "instruction": "Lightly brown the chicken a few pieces at a time in very hot oil",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 9,
+          "instruction": "Place browned chicken pieces on a plate to rest while you brown the remaining pieces.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 10,
+          "instruction": "Drain off excess oil and return the chicken to the pan",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 11,
+          "instruction": "Pour the marinade over the chicken and add the carrots",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 12,
+          "instruction": "Stir and cook over medium heat for 10 minutes.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 13,
+          "instruction": "Mix flour and coconut milk and add to stew, stirring constantly",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 14,
+          "instruction": "Turn heat down to minimum and cook another 20 minutes or until tender.",
+          "time": 5,
+          "tip": ""
+        }
+      ],
+      "techniques": [],
+      "chef_secrets": "",
+      "rating": 4.5
+    },
+    {
+      "recipe_id": "mealdb-52846",
+      "title": "Chicken & mushroom Hotpot",
+      "cuisine": "british",
+      "dish_type": null,
+      "difficulty": 2,
+      "prep_time": 15,
+      "cook_time": 30,
+      "servings": 4,
+      "source": "TheMealDB",
+      "source_url": "https://www.bbcgoodfood.com/recipes/chicken-mushroom-hot-pot",
+      "video_url": "https://www.youtube.com/watch?v=bXKWu4GojNI",
+      "thumbnail": "https://www.themealdb.com/images/media/meals/uuuspp1511297945.jpg",
+      "category": "Chicken",
+      "all_ingredients": [
+        {
+          "name": "Butter",
+          "amount": "50g",
+          "slug": "butter"
+        },
+        {
+          "name": "Onion",
+          "amount": "1 chopped",
+          "slug": "onion"
+        },
+        {
+          "name": "Mushrooms",
+          "amount": "100g",
+          "slug": "mushrooms"
+        },
+        {
+          "name": "Plain Flour",
+          "amount": "40g",
+          "slug": "plain-flour"
+        },
+        {
+          "name": "Chicken Stock Cube",
+          "amount": "1",
+          "slug": "chicken-stock-cube"
+        },
+        {
+          "name": "Nutmeg",
+          "amount": "pinch",
+          "slug": "nutmeg"
+        },
+        {
+          "name": "Mustard Powder",
+          "amount": "pinch",
+          "slug": "mustard-powder"
+        },
+        {
+          "name": "Chicken",
+          "amount": "250g",
+          "slug": "chicken"
+        },
+        {
+          "name": "Sweetcorn",
+          "amount": "2 Handfuls",
+          "slug": "sweetcorn"
+        },
+        {
+          "name": "Potatoes",
+          "amount": "2 large",
+          "slug": "potatoes"
+        },
+        {
+          "name": "Butter",
+          "amount": "1 knob",
+          "slug": "butter"
+        }
+      ],
+      "required_ingredients": [
+        "butter",
+        "onion",
+        "mushrooms"
+      ],
+      "steps": [
+        {
+          "step": 1,
+          "instruction": "Heat oven to 200C/180C fan/gas 6",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 2,
+          "instruction": "Put the butter in a medium-size saucepan and place over a medium heat",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 3,
+          "instruction": "Add the onion and leave to cook for 5 mins, stirring occasionally",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 4,
+          "instruction": "Add the mushrooms to the saucepan with the onions.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 5,
+          "instruction": "Once the onion and mushrooms are almost cooked, stir in the flour – this will make a thick paste called a roux",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 6,
+          "instruction": "If you are using a stock cube, crumble the cube into the roux now and stir well",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 7,
+          "instruction": "Put the roux over a low heat and stir continuously for 2 mins – this will cook the flour and stop the sauce from having a floury taste.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 8,
+          "instruction": "Take the roux off the heat",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 9,
+          "instruction": "Slowly add the fresh stock, if using, or pour in 500ml water if you’ve used a stock cube, stirring all the time",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 10,
+          "instruction": "Once all the liquid has been added, season with pepper, a pinch of nutmeg and mustard powder",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 11,
+          "instruction": "Put the saucepan back onto a medium heat and slowly bring it to the boil, stirring all the time",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 12,
+          "instruction": "Once the sauce has thickened, place on a very low heat",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 13,
+          "instruction": "Add the cooked chicken and vegetables to the sauce and stir well",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 14,
+          "instruction": "Grease a medium-size ovenproof pie dish with a little butter and pour in the chicken and mushroom filling.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 15,
+          "instruction": "Carefully lay the potatoes on top of the hot-pot filling, overlapping them slightly, almost like a pie top.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 16,
+          "instruction": "Brush the potatoes with a little melted butter and cook in the oven for about 35 mins",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 17,
+          "instruction": "The hot-pot is ready once the potatoes are cooked and golden brown.",
+          "time": 5,
+          "tip": ""
+        }
+      ],
+      "techniques": [],
+      "chef_secrets": "",
+      "rating": 4.5
+    },
+    {
+      "recipe_id": "mealdb-52796",
+      "title": "Chicken Alfredo Primavera",
+      "cuisine": "italian",
+      "dish_type": null,
+      "difficulty": 2,
+      "prep_time": 15,
+      "cook_time": 30,
+      "servings": 4,
+      "source": "TheMealDB",
+      "source_url": "",
+      "video_url": "https://www.youtube.com/watch?v=qCIbq8HywpQ",
+      "thumbnail": "https://www.themealdb.com/images/media/meals/syqypv1486981727.jpg",
+      "category": "Chicken",
+      "all_ingredients": [
+        {
+          "name": "Butter",
+          "amount": "2 tablespoons",
+          "slug": "butter"
+        },
+        {
+          "name": "Olive Oil",
+          "amount": "3 tablespoons",
+          "slug": "olive-oil"
+        },
+        {
+          "name": "Chicken",
+          "amount": "5 boneless",
+          "slug": "chicken"
+        },
+        {
+          "name": "Salt",
+          "amount": "1 teaspoon",
+          "slug": "salt"
+        },
+        {
+          "name": "Squash",
+          "amount": "1 cut into 1/2-inch cubes",
+          "slug": "squash"
+        },
+        {
+          "name": "Broccoli",
+          "amount": "1 Head chopped",
+          "slug": "broccoli"
+        },
+        {
+          "name": "mushrooms",
+          "amount": "8-ounce sliced",
+          "slug": "mushrooms"
+        },
+        {
+          "name": "Pepper",
+          "amount": "1 red",
+          "slug": "pepper"
+        },
+        {
+          "name": "onion",
+          "amount": "1 chopped",
+          "slug": "onion"
+        },
+        {
+          "name": "garlic",
+          "amount": "3 cloves",
+          "slug": "garlic"
+        },
+        {
+          "name": "red pepper flakes",
+          "amount": "1/2 teaspoon",
+          "slug": "red-pepper-flakes"
+        },
+        {
+          "name": "white wine",
+          "amount": "1/2 cup",
+          "slug": "white-wine"
+        },
+        {
+          "name": "milk",
+          "amount": "1/2 cup",
+          "slug": "milk"
+        },
+        {
+          "name": "heavy cream",
+          "amount": "1/2 cup",
+          "slug": "heavy-cream"
+        },
+        {
+          "name": "Parmesan cheese",
+          "amount": "1 cup grated",
+          "slug": "parmesan-cheese"
+        },
+        {
+          "name": "bowtie pasta",
+          "amount": "16 ounces",
+          "slug": "bowtie-pasta"
+        },
+        {
+          "name": "Salt",
+          "amount": "pinch",
+          "slug": "salt"
+        },
+        {
+          "name": "Pepper",
+          "amount": "pinch",
+          "slug": "pepper"
+        },
+        {
+          "name": "Parsley",
+          "amount": "chopped",
+          "slug": "parsley"
+        }
+      ],
+      "required_ingredients": [
+        "butter",
+        "olive-oil",
+        "chicken"
+      ],
+      "steps": [
+        {
+          "step": 1,
+          "instruction": "Heat 1 tablespoon of butter and 2 tablespoons of olive oil in a large skillet over medium-high heat",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 2,
+          "instruction": "Season both sides of each chicken breast with seasoned salt and a pinch of pepper",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 3,
+          "instruction": "Add the chicken to the skillet and cook for 5-7 minutes on each side, or until cooked through",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 4,
+          "instruction": "While the chicken is cooking, bring a large pot of water to a boil",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 5,
+          "instruction": "Season the boiling water with a few generous pinches of kosher salt",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 6,
+          "instruction": "Add the pasta and give it a stir",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 7,
+          "instruction": "Cook, stirring occasionally, until al dente, about 12 minutes",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 8,
+          "instruction": "Reserve 1/2 cup of  pasta water before draining the pasta",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 9,
+          "instruction": "Remove the chicken from the pan and transfer it to a cutting board; allow it to rest",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 10,
+          "instruction": "Turn the heat down to medium and dd the remaining 1 tablespoon of butter and olive oil to the same pan you used to cook the chicken",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 11,
+          "instruction": "Add the veggies (minus the garlic) and red pepper flakes to the pan and stir to coat with the oil and butter (refrain from seasoning with salt until the veggies are finished browning)",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 12,
+          "instruction": "Cook, stirring often, until the veggies are tender, about 5 minutes",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 13,
+          "instruction": "Add the garlic and a generous pinch of salt and pepper to the pan and cook for 1 minute",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 14,
+          "instruction": "Deglaze the pan with the white wine",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 15,
+          "instruction": "Continue to cook until the wine has reduced by half, about 3 minutes",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 16,
+          "instruction": "Stir in the milk, heavy cream, and reserved pasta water",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 17,
+          "instruction": "Bring the mixture to a gentle boil and allow to simmer and reduce for 2-3 minutes",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 18,
+          "instruction": "Turn off the heat and add the Parmesan cheese and cooked pasta",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 19,
+          "instruction": "Season with salt and pepper to taste",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 20,
+          "instruction": "Garnish with Parmesan cheese and chopped parsley, if desired",
+          "time": 5,
+          "tip": ""
+        }
+      ],
+      "techniques": [],
+      "chef_secrets": "",
+      "rating": 4.5
+    },
+    {
+      "recipe_id": "mealdb-52997",
+      "title": "Beef Banh Mi Bowls with Sriracha Mayo, Carrot & Pickled Cucumber",
+      "cuisine": "vietnamese",
+      "dish_type": "bowl",
+      "difficulty": 2,
+      "prep_time": 15,
+      "cook_time": 30,
+      "servings": 4,
+      "source": "TheMealDB",
+      "source_url": "",
+      "video_url": "",
+      "thumbnail": "https://www.themealdb.com/images/media/meals/z0ageb1583189517.jpg",
+      "category": "Beef",
+      "all_ingredients": [
+        {
+          "name": "Rice",
+          "amount": "White",
+          "slug": "rice"
+        },
+        {
+          "name": "Onion",
+          "amount": "1",
+          "slug": "onion"
+        },
+        {
+          "name": "Lime",
+          "amount": "1",
+          "slug": "lime"
+        },
+        {
+          "name": "Garlic Clove",
+          "amount": "3",
+          "slug": "garlic-clove"
+        },
+        {
+          "name": "Cucumber",
+          "amount": "1",
+          "slug": "cucumber"
+        },
+        {
+          "name": "Carrots",
+          "amount": "3 oz",
+          "slug": "carrots"
+        },
+        {
+          "name": "Ground Beef",
+          "amount": "1 lb",
+          "slug": "ground-beef"
+        },
+        {
+          "name": "Soy Sauce",
+          "amount": "2 oz",
+          "slug": "soy-sauce"
+        }
+      ],
+      "required_ingredients": [
+        "rice",
+        "onion",
+        "lime"
+      ],
+      "steps": [
+        {
+          "step": 1,
+          "instruction": "Add'l ingredients: mayonnaise, siracha",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 2,
+          "instruction": "1",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 3,
+          "instruction": "Place rice in a fine-mesh sieve and rinse until water runs clear",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 4,
+          "instruction": "Add to a small pot with 1 cup water (2 cups for 4 servings) and a pinch of salt",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 5,
+          "instruction": "Bring to a boil, then cover and reduce heat to low",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 6,
+          "instruction": "Cook until rice is tender, 15 minutes",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 7,
+          "instruction": "Keep covered off heat for at least 10 minutes or until ready to serve.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 8,
+          "instruction": "2",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 9,
+          "instruction": "Meanwhile, wash and dry all produce",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 10,
+          "instruction": "Peel and finely chop garlic",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 11,
+          "instruction": "Zest and quarter lime (for 4 servings, zest 1 lime and quarter both)",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 12,
+          "instruction": "Trim and halve cucumber lengthwise; thinly slice crosswise into half-moons",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 13,
+          "instruction": "Halve, peel, and medium dice onion",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 14,
+          "instruction": "Trim, peel, and grate carrot.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 15,
+          "instruction": "3",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 16,
+          "instruction": "In a medium bowl, combine cucumber, juice from half the lime, ¼ tsp sugar (½ tsp for 4 servings), and a pinch of salt",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 17,
+          "instruction": "In a small bowl, combine mayonnaise, a pinch of garlic, a squeeze of lime juice, and as much sriracha as you’d like",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 18,
+          "instruction": "Season with salt and pepper.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 19,
+          "instruction": "4",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 20,
+          "instruction": "Heat a drizzle of oil in a large pan over medium-high heat",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 21,
+          "instruction": "Add onion and cook, stirring, until softened, 4-5 minutes",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 22,
+          "instruction": "Add beef, remaining garlic, and 2 tsp sugar (4 tsp for 4 servings)",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 23,
+          "instruction": "Cook, breaking up meat into pieces, until beef is browned and cooked through, 4-5 minutes",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 24,
+          "instruction": "Stir in soy sauce",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 25,
+          "instruction": "Turn off heat; taste and season with salt and pepper.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 26,
+          "instruction": "5",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 27,
+          "instruction": "Fluff rice with a fork; stir in lime zest and 1 TBSP butter",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 28,
+          "instruction": "Divide rice between bowls",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 29,
+          "instruction": "Arrange beef, grated carrot, and pickled cucumber on top",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 30,
+          "instruction": "Top with a squeeze of lime juice",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 31,
+          "instruction": "Drizzle with sriracha mayo.",
+          "time": 5,
+          "tip": ""
+        }
+      ],
+      "techniques": [],
+      "chef_secrets": "",
+      "rating": 4.5
+    },
+    {
+      "recipe_id": "mealdb-52956",
+      "title": "Chicken Congee",
+      "cuisine": "chinese",
+      "dish_type": null,
+      "difficulty": 2,
+      "prep_time": 15,
+      "cook_time": 30,
+      "servings": 4,
+      "source": "TheMealDB",
+      "source_url": "https://sueandgambo.com/pages/chicken-congee",
+      "video_url": "https://www.youtube.com/watch?v=kqEfk801E94",
+      "thumbnail": "https://www.themealdb.com/images/media/meals/1529446352.jpg",
+      "category": "Chicken",
+      "all_ingredients": [
+        {
+          "name": "Chicken",
+          "amount": "8 oz",
+          "slug": "chicken"
+        },
+        {
+          "name": "Salt",
+          "amount": "pinch",
+          "slug": "salt"
+        },
+        {
+          "name": "Pepper",
+          "amount": "pinch",
+          "slug": "pepper"
+        },
+        {
+          "name": "Ginger Cordial",
+          "amount": "1 tsp",
+          "slug": "ginger-cordial"
+        },
+        {
+          "name": "Ginger",
+          "amount": "1 tsp",
+          "slug": "ginger"
+        },
+        {
+          "name": "Spring Onions",
+          "amount": "1 tbs",
+          "slug": "spring-onions"
+        },
+        {
+          "name": "Rice",
+          "amount": "1/2 cup",
+          "slug": "rice"
+        },
+        {
+          "name": "Water",
+          "amount": "8 cups",
+          "slug": "water"
+        },
+        {
+          "name": "Coriander",
+          "amount": "2 oz",
+          "slug": "coriander"
+        }
+      ],
+      "required_ingredients": [
+        "chicken",
+        "salt",
+        "pepper"
+      ],
+      "steps": [
+        {
+          "step": 1,
+          "instruction": "STEP 1 - MARINATING THE CHICKEN",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 2,
+          "instruction": "In a bowl, add chicken, salt, white pepper, ginger juice and then mix it together well.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 3,
+          "instruction": "Set the chicken aside.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 4,
+          "instruction": "STEP 2 - RINSE THE WHITE RICE",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 5,
+          "instruction": "Rinse the rice in a metal bowl or pot a couple times and then drain the water.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 6,
+          "instruction": "STEP 2 - BOILING THE WHITE RICE",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 7,
+          "instruction": "Next add 8 cups of water and then set the stove on high heat until it is boiling",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 8,
+          "instruction": "Once rice porridge starts to boil, set the stove on low heat and then stir it once every 8-10 minutes for around 20-25 minutes.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 9,
+          "instruction": "After 25 minutes, this is optional but you can add a little bit more water to make rice porridge to make it less thick or to your preference.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 10,
+          "instruction": "Next add the marinated chicken to the rice porridge and leave the stove on low heat for another 10 minutes.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 11,
+          "instruction": "After an additional 10 minutes add the green onions, sliced ginger, 1 pinch of salt, 1 pinch of white pepper and stir for 10 seconds.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 12,
+          "instruction": "Serve the rice porridge in a bowl",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 13,
+          "instruction": "Optional: add Coriander on top of the rice porridge.",
+          "time": 5,
+          "tip": ""
+        }
+      ],
+      "techniques": [],
+      "chef_secrets": "",
+      "rating": 4.5
+    },
+    {
+      "recipe_id": "mealdb-53031",
+      "title": "Egyptian Fatteh",
+      "cuisine": "egyptian",
+      "dish_type": null,
+      "difficulty": 2,
+      "prep_time": 15,
+      "cook_time": 30,
+      "servings": 4,
+      "source": "TheMealDB",
+      "source_url": "https://www.food.com/recipe/egyptian-faatah-rice-meat-with-crispy-bread-on-bottom-194764",
+      "video_url": "https://www.youtube.com/watch?v=WLuOHkDE4A4",
+      "thumbnail": "https://www.themealdb.com/images/media/meals/rlwcc51598734603.jpg",
+      "category": "Beef",
+      "all_ingredients": [
+        {
+          "name": "Beef",
+          "amount": "1lb",
+          "slug": "beef"
+        },
+        {
+          "name": "Onion",
+          "amount": "1",
+          "slug": "onion"
+        },
+        {
+          "name": "Chicken Stock Cube",
+          "amount": "1",
+          "slug": "chicken-stock-cube"
+        },
+        {
+          "name": "Tomatoes",
+          "amount": "2",
+          "slug": "tomatoes"
+        },
+        {
+          "name": "Garlic Clove",
+          "amount": "4",
+          "slug": "garlic-clove"
+        },
+        {
+          "name": "Tomato Puree",
+          "amount": "1 tbs",
+          "slug": "tomato-puree"
+        },
+        {
+          "name": "Rice",
+          "amount": "2 cups",
+          "slug": "rice"
+        },
+        {
+          "name": "Noodles",
+          "amount": "1/4 cup",
+          "slug": "noodles"
+        },
+        {
+          "name": "Butter",
+          "amount": "1/4 cup",
+          "slug": "butter"
+        },
+        {
+          "name": "Olive Oil",
+          "amount": "2 cups",
+          "slug": "olive-oil"
+        },
+        {
+          "name": "Pita Bread",
+          "amount": "1",
+          "slug": "pita-bread"
+        },
+        {
+          "name": "Cumin",
+          "amount": "1 tbs",
+          "slug": "cumin"
+        },
+        {
+          "name": "White Wine Vinegar",
+          "amount": "3 tbs",
+          "slug": "white-wine-vinegar"
+        },
+        {
+          "name": "Salt",
+          "amount": "To taste",
+          "slug": "salt"
+        },
+        {
+          "name": "Pepper",
+          "amount": "To taste",
+          "slug": "pepper"
+        }
+      ],
+      "required_ingredients": [
+        "beef",
+        "onion",
+        "chicken-stock-cube"
+      ],
+      "steps": [
+        {
+          "step": 1,
+          "instruction": "To prepare bread for bottom of dish: Take pita bread and rip into bite size pieces",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 2,
+          "instruction": "In a frying pan, add about a 1/4 stick of butter, add bread pieces and fry until golden brown and crisp",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 3,
+          "instruction": "Put these pieces in a glass baking dish, preferably a square sized dish",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 4,
+          "instruction": "Set aside.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 5,
+          "instruction": "Then add to same pan, a little more butter, salt, approximately 2 cloves of crushed fresh garlic, and a teaspoon or so of cumin stir around a bit until you can smell aroma, then add fried bread pieces to this mixture, stir to coat bread and put back into glass baking dish",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 6,
+          "instruction": "Set aside.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 7,
+          "instruction": "To prepare meat: put some butter in a pot, stir fry meat until brown, add 1 onion quartered, salt & pepper, 1 cube of chicken bouillon and water to cover meat",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 8,
+          "instruction": "Bring to a boil, turn down to simmer, cover and cook until tender, approximately 2 hours",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 9,
+          "instruction": "After meat has cooled, take out chunks of meat and put in a bowl, set aside",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 10,
+          "instruction": "Reserve soup from the meat separately.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 11,
+          "instruction": "To prepare the rice: Put some butter into a pot, add shareya (fideo noodles) like a handful or so, keep stirring until golden brown, not too dark, but very golden",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 12,
+          "instruction": "Then add two cups of rice, stir a little bit until some of the rice turns an opaque white",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 13,
+          "instruction": "Add 2-1/4 cups of water and salt to taste",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 14,
+          "instruction": "Bring to a boil, cover and turn down to simmer, cook until tender",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 15,
+          "instruction": "Test the rice tenderness after about 35 minutes.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 16,
+          "instruction": "Now take some of the soup from meat and add to the top of the bread pieces in baking dish to saturate.Add cooked rice on top of bread pieces",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 17,
+          "instruction": "Slowly spoon remainder of soup onto rice, looking at glass dish sides to see level of soup, should reach just to top of rice, don’t worry, this doesn’t have to be exact",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 18,
+          "instruction": "Now you’re ready to make the sauce and fry the meat to put on top.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 19,
+          "instruction": "To prepare red sauce: In a pan, add a little oil or butter, crushed tomato, a half teaspoon of tomato paste, salt & pepper, 2 cloves of fresh crushed garlic and cumin",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 20,
+          "instruction": "Add also approximately 3 tablespoons of vinegar, stir this until you smell aroma and it is a bit smooth",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 21,
+          "instruction": "It should be a bit thick, not watery, but if too thick you can add a bit of water",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 22,
+          "instruction": "Spread with a wooden spoon atop the rice to cover.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 23,
+          "instruction": "To fry meat: In a pan add a bit of butter or oil, the meat, just a touch of tomato paste, about a tablespoon of fresh crushed garlic, salt & pepper, a teaspoon of cumin",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 24,
+          "instruction": "Cook until meat is golden fried.",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 25,
+          "instruction": "Spoon this atop the rice and serve",
+          "time": 5,
+          "tip": ""
+        },
+        {
+          "step": 26,
+          "instruction": "Enjoy!",
+          "time": 5,
+          "tip": ""
+        }
+      ],
+      "techniques": [],
+      "chef_secrets": "",
+      "rating": 4.5
+    }
+  ]
+}

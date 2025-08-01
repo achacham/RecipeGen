@@ -330,6 +330,14 @@
     "image": "peanut.jpg"
   },
   {
+  "name": "Plantain",
+  "slug": "plantain",
+  "type": "fruit",
+  "cuisine": ["nigerian", "puerto rican", "brazilian"],
+  "image": "plantain.jpg",
+  "notes": "Tropical cooking banana"
+},
+  {
     "name": "Pork",
     "slug": "pork",
     "type": "meats",

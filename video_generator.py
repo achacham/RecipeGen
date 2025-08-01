@@ -9,6 +9,10 @@ from datetime import datetime
 import threading
 from dotenv import load_dotenv
 
+import sys
+sys.path.append(str(Path(__file__).parent))
+from music_config import music_db
+
 # Load environment
 load_dotenv()
 
@@ -21,27 +25,33 @@ PROVIDER_CONFIGS = {
            'Authorization': 'Key {api_key}',
            'Content-Type': 'application/json'
        },
-       'cost_per_second': 0.75,  # $6.00 for 8s
-       'supports_audio': True,
-       'max_duration': 8,
-       'models': ['veo3', 'veo3/fast']
+        'cost_per_second': 0.75,  # $6.00 for 8s
+        'supports_audio': True,
+        'max_duration': 8,
+        'models': ['veo3', 'veo3/fast'],
+        'default_model': 'veo3/fast',
+        'watermark': 'FAL',
+        'aspect_ratio': '16:9'
    },
    'kie': {
-       'name': 'KIE AI',
-       'base_url': 'https://api.kie.ai/api/v1',
-       'headers': {
-           'Authorization': 'Bearer {api_key}',
-           'Content-Type': 'application/json'
-       },
-       'cost_per_second': 0.05,  # $0.40 for 8s (Fast mode)
-       'supports_audio': True,
-       'max_duration': 8,
-       'models': ['veo3-fast', 'veo3-quality'],
-       'endpoints': {
-           'veo3-fast': '/veo/generate',
-           'veo3-quality': '/veo/generate'
-       }
-   },
+    'name': 'KIE AI',
+    'base_url': 'https://api.kie.ai/api/v1',
+    'headers': {
+        'Authorization': 'Bearer {api_key}',
+        'Content-Type': 'application/json'
+    },
+    'cost_per_second': 0.05,
+    'supports_audio': True,
+    'max_duration': 10,
+    'default_model': 'veo3',  # ADD THIS
+    'watermark': 'KieAI',     # ADD THIS
+    'aspect_ratio': '16:9',   # ADD THIS
+    'models': ['veo3-fast', 'veo3-quality'],
+    'endpoints': {
+        'veo3-fast': '/veo/generate',
+        'veo3-quality': '/veo/generate'
+    }
+},
    'runway': {
        'name': 'Runway AI',
        'base_url': 'https://api.runwayml.com/v1',
@@ -73,9 +83,9 @@ PROVIDER_CONFIGS = {
        },
        'cost_per_second': 0.05,  # $0.40 for 8s (Fast mode)
        'supports_audio': True,
-       'max_duration': 8,
+       'max_duration': 10,
        'models': ['veo3-fast', 'veo3-quality']
-   }
+   },
 }
 
 class VideoRecipeGenerator:
@@ -136,6 +146,7 @@ class VideoRecipeGenerator:
        cleaned_ingredients = []
        
        for ingredient in ingredients:
+           print(f"🔍 Checking ingredient: '{ingredient}'")
            # Basic validation and cleaning
            ingredient = ingredient.strip()
            if ingredient:
@@ -258,26 +269,46 @@ class VideoRecipeGenerator:
             emphasized_action = action.replace('adding', 'ADD').replace('drizzling', 'DRIZZLE').replace('tossing', 'TOSS')
             emphasized_actions.append(emphasized_action)
         
-        # Add extended cooking sequence
-        emphasized_actions.extend([
-            'STIR-FRY vigorously multiple times',
-            'FLIP ingredients high in wok',
-            'CONTINUE cooking with sizzling sounds',
-            'FINISH with final stirring motions'
-        ])
-        
-        # KIE-optimized prompt
+        #====================================================================================================
+        # KIE-optimized prompt with enhanced structure
+        # 1. Visual Style (always cinematic for food)
+        visual_style = "Cinematic food video, professional culinary photography style"
+
+        # 2. Camera Work (based on dish type - NOT hardcoded, just descriptive)
+        if 'soup' in dish_type.lower():
+            camera_work = "Medium shot of pot, then close-up of simmering liquid with steam rising"
+        elif 'skewer' in dish_type.lower() or 'grill' in dish_type.lower():
+            camera_work = "Rotating shot around meat, then extreme close-up of sizzling surface"
+        elif 'baked' in dish_type.lower():
+            camera_work = "Wide shot of oven opening, then close-up through oven window showing browning"
+        elif 'sandwich' in dish_type.lower():
+            camera_work = "Overhead shot of assembly, then side angle showing layers"
+        else:
+            camera_work = "Dynamic shots focusing on cooking transformation"
+
+        # 3. Build the complete prompt
         prompt = (
-            f"{cuisine.title()} chef in traditional kitchen preparing {dish_type} with {ingredient_list}. "
-            f"COMPLETE COOKING SEQUENCE showing EVERY step: "
+            f"{visual_style}. "
+            f"{camera_work}. "
+            f"{cuisine.title()} chef in authentic {cuisine.lower()} culinary kitchen preparing {dish_type} with {ingredient_list}. "
+            f"COMPLETE COOKING SEQUENCE: "
             f"{'. '.join(emphasized_actions)}. "
-            f"Show CONTINUOUS cooking action from start to finish. "
-            f"Traditional {cuisine} setting with proper cookware. "
+            f"Show food transformation, textures changing, colors developing. "
+            f"Professional {cuisine.lower()} kitchen with cultural elements and proper traditional cookware. "
         )
-        
+        #====================================================================================================
+
+        # AUDIO PROMPT
         if enable_audio:
-            prompt += f"LOUD sizzling sounds throughout, kitchen ambiance, traditional {cuisine} music."
-            
+        # Get culturally specific music description from database
+            music_description = music_db.get_music_description(cuisine)
+        # Build comprehensive audio instruction
+        prompt += (
+            f"Audio: PROMINENT {music_description} playing throughout the video, "
+            f"complemented by authentic cooking sounds (sizzling, chopping, stirring). "
+            f"The music must be clearly audible and culturally authentic. "
+            f"NO talking, NO narration, NO speech - only music and cooking sounds."
+        )
     else:
         # FAL prompt - detailed cultural representation
         print("📝 Using standard FAL prompt (cultural detail)")
@@ -364,7 +395,7 @@ class VideoRecipeGenerator:
            # FIXED: Dynamic audio parameter based on model
            arguments = {
                "prompt": prompt,
-               "duration": "8s",
+               "duration": "10s",
                "aspect_ratio": "16:9",
                "enhance_prompt": True,
            }
@@ -406,32 +437,36 @@ class VideoRecipeGenerator:
             'Authorization': f'Bearer {self.api_key}',
             'Content-Type': 'application/json'
         }
-        
-        # Determine model and endpoint
-        model = 'veo3'  # They only have one model name!
         endpoint = config['endpoints'].get('veo3-fast', '/veo/generate')
+        model = config.get('default_model', 'veo3')  # Get from config
+        watermark = config.get('watermark', 'KieAI')  # Get from config
         
+        # Build payload - NO HARDCODING!
         payload = {
-             "prompt": prompt,
-             "model": model,
-             "duration": duration,
-             "audio_enabled": enable_audio,
-             "waterMark": "KieAI",
-             "aspectRatio": "16:9"
+            "prompt": prompt,
+            "model": model,  # From config
+            "duration": duration,
+            "audio_enabled": enable_audio,
+            "waterMark": watermark,  # From config
+            "aspectRatio": config.get('aspect_ratio', '16:9')  # From config
         }
         
-        print(f"🎬 CALLING KIE AI ({model})")
-        print(f"💰 Cost: ${0.40 if use_fast_model else 2.00} vs FAL's $6.00!")
+        # Update the print to show which provider
+        provider_name = config.get('name', 'Unknown')
+        print(f"🎬 CALLING {provider_name}")
+        print(f"💰 Cost: ${config.get('cost_per_second', 0.05) * duration:.2f}")
         print(f"🔧 PAYLOAD: {payload}")
         
         url = f"{config['base_url']}{endpoint}"
+        print(f"🌐 ACTUAL KIE URL: {url}")
         response = requests.post(url, json=payload, headers=headers, timeout=120)
         
         if response.status_code == 200:
             result = response.json()
-            print(f"📦 KIE RESPONSE: {result}")
+            print(f"📦 RESPONSE: {result}")
             
-            # KIE returns 200 even for errors! Check the actual response content
+                      
+            # Rest of the code remains the same - handle the response
             if result.get("code") == 200:
                 task_id = result.get("data", {}).get("taskId")
                 if task_id:
@@ -447,12 +482,12 @@ class VideoRecipeGenerator:
                     return False, "No task ID in response"
             else:
                 # They returned HTTP 200 but internal error code
-                return False, f"KIE API error: {result.get('msg', 'Unknown error')}"
+                return False, f"{provider_name} error: {result.get('msg', 'Unknown error')}"
         else:
             return False, f"API error: {response.status_code} - {response.text}"
             
     except Exception as e:
-        return False, f"KIE API error: {str(e)}"
+        return False, f"API error: {str(e)}"
 
    def poll_kie_result(self, task_id: str, max_attempts: int = 60) -> Tuple[bool, str]:
        """Poll KIE AI for video generation result"""
@@ -727,11 +762,15 @@ class VideoRecipeGenerator:
                 error_message = result
                 print(f"💥 GENERATION FAILED: {error_message}")
     elif self.provider == 'kie':
+        # Get duration from provider config - NO HARDCODING!
+        provider_config = PROVIDER_CONFIGS.get(self.provider, {})
+        duration = provider_config.get('max_duration', 10)
+    
         success, result = self.call_kie_api(
-            prompt, 8, cuisine, validated_ingredients,
-            use_fast_model=use_fast_model,
-            enable_audio=enable_audio,
-            async_mode=async_mode
+        prompt, duration, cuisine, validated_ingredients,  # Changed 8 to duration!
+        use_fast_model=use_fast_model,
+        enable_audio=enable_audio,
+        async_mode=async_mode
         )
         if success:
             if async_mode:
@@ -739,9 +778,7 @@ class VideoRecipeGenerator:
                 print(f"📋 KIE task submitted for async processing: {request_id}")
             else:
                 video_url = result
-                print(f"🎉 KIE AI VIDEO GENERATED! 93% cost savings achieved!")
-                video_url = result
-            print(f"🎉 KIE AI VIDEO GENERATED! 93% cost savings achieved!")
+                print(f"✅ KIE video ready! URL: {video_url}")
         else:
             error_message = result
             print(f"💥 KIE AI FAILED: {error_message}")

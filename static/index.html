@@ -296,7 +296,7 @@ document.getElementById("generateRecipeBtn").onclick = async () => {
     const result = await response.json();
     
     if (result.success) {
-      // Show TEASER only!
+      // Show TEASER only - NO VIDEO YET!
       document.getElementById("phasedLoader").innerHTML = 
         `<div class="text-center p-6 bg-gray-50 rounded">
           <h3 class="text-2xl font-bold mb-4">${result.teaser}</h3>
@@ -313,49 +313,49 @@ document.getElementById("generateRecipeBtn").onclick = async () => {
         </div>`;
       
       // Poll for video status every 10 seconds
-  const pollInterval = setInterval(async () => {
-  const taskId = document.getElementById("taskId").value;
-  const statusResponse = await fetch(`/check_video_status/${taskId}`);
-  const status = await statusResponse.json();
-  
-  if (status.ready) {
-    clearInterval(pollInterval);
-    
-    // Calculate video source URL
-    let videoSrc = '';
-    if (status.local_path) {
-      // Extract filename from path
-      const filename = status.local_path.split('\\').pop().split('/').pop();
-
-      videoSrc = `/output/${filename}`;
-
-      console.log("=== VIDEO DEBUG ===");
-      console.log("Video filename:", filename);
-      console.log("Video src:", videoSrc);
-      console.log("Full status object:", status);
-    } else if (status.video_url) {
-      videoSrc = status.video_url;
-    }
-    
-    // Video is ready! Update the display
-    document.getElementById("phasedLoader").innerHTML = 
-      `<div class="text-center p-6 bg-gray-50 rounded">
-        <h3 class="text-2xl font-bold mb-4">${result.teaser}</h3>
-        <div class="mt-4 p-4 bg-green-100 rounded">
-          <div class="text-lg font-bold mb-2">✅ Your recipe trailer is ready!</div>
-          <video controls class="w-full rounded shadow mb-4" src="${videoSrc}">
-            Your browser does not support the video tag.
-          </video>
-          <button onclick="purchaseRecipe()" 
-                  class="bg-green-600 text-white px-6 py-3 rounded-lg font-bold text-lg hover:bg-green-700">
-            🔓 Unlock Full Recipe for ${result.price}
-          </button>
-        </div>
-      </div>`;
-    
-    console.log("Video displayed with source:", videoSrc);
-  }
-}, 10000); // Check every 10 seconds
+      const pollInterval = setInterval(async () => {
+        const taskId = document.getElementById("taskId").value;
+        const statusResponse = await fetch(`/check_video_status/${taskId}`);
+        const status = await statusResponse.json();
+        
+        if (status.ready) {
+          clearInterval(pollInterval);
+          
+          // Calculate video source URL
+          let videoSrc = '';
+          if (status.local_path) {
+            // Extract filename from path
+            const filename = status.local_path.split('\\').pop().split('/').pop();
+            videoSrc = `/output/${filename}`;
+            
+            console.log("=== VIDEO DEBUG ===");
+            console.log("Video filename:", filename);
+            console.log("Video src:", videoSrc);
+            console.log("Full status object:", status);
+          } else if (status.video_url) {
+            videoSrc = status.video_url;
+          }
+          
+          // NOW show the video!
+          document.getElementById("phasedLoader").innerHTML = 
+            `<div class="text-center p-6 bg-gray-50 rounded">
+              <h3 class="text-2xl font-bold mb-4">${result.teaser}</h3>
+              <div class="mt-4 p-4 bg-green-100 rounded">
+                <div class="text-lg font-bold mb-2">✅ Your recipe trailer is ready!</div>
+                <video controls class="w-full rounded shadow mb-4" src="${videoSrc}">
+                  Your browser does not support the video tag.
+                </video>
+                <input type="hidden" id="recipeId" value="${result.recipe_id}" />
+                <button onclick="purchaseRecipe()" 
+                        class="bg-green-600 text-white px-6 py-3 rounded-lg font-bold text-lg hover:bg-green-700">
+                  🔓 Unlock Full Recipe for ${result.price}
+                </button>
+              </div>
+            </div>`;
+          
+          console.log("Video displayed with source:", videoSrc);
+        }
+      }, 10000); // Check every 10 seconds
       
     } else {
       document.getElementById("phasedLoader").innerText = "❌ Recipe generation failed.";
@@ -367,13 +367,46 @@ document.getElementById("generateRecipeBtn").onclick = async () => {
   }
 };
 
+
 // Add purchase function
 function purchaseRecipe() {
   const recipeId = document.getElementById("recipeId").value;
-  alert(`Purchase flow for recipe ${recipeId} - Coming soon!`);
-  // TODO: Implement payment flow
-  // After payment success, fetch and display full recipe
+  
+  // Fetch the full recipe
+  fetch(`/get_full_recipe/${recipeId}`)
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        // Display the full recipe
+        displayFullRecipe(data.recipe);
+      } else {
+        alert("Recipe not found!");
+      }
+    });
 }
+
+function displayFullRecipe(recipe) {
+  // Show the recipe in a nice format
+  const recipeHTML = `
+    <div class="p-6 bg-white rounded shadow">
+      <h2 class="text-3xl font-bold mb-4">${recipe.title}</h2>
+      <p class="text-gray-600 mb-4">${recipe.cuisine} • ${recipe.servings} servings • ${recipe.prep_time + recipe.cook_time} minutes</p>
+      
+      <h3 class="text-xl font-bold mb-2">Ingredients:</h3>
+      <ul class="list-disc ml-6 mb-4">
+        ${recipe.all_ingredients.map(ing => `<li>${ing.amount} ${ing.name}</li>`).join('')}
+      </ul>
+      
+      <h3 class="text-xl font-bold mb-2">Instructions:</h3>
+      <ol class="list-decimal ml-6">
+        ${recipe.steps.map(step => `<li class="mb-2">${step.instruction}</li>`).join('')}
+      </ol>
+    </div>
+  `;
+  
+  document.getElementById("phasedLoader").innerHTML = recipeHTML;
+}
+
 
 // Ingredient fetch & rendering
 fetch("/ingredients")

@@ -331,6 +331,294 @@
       "style": "ca tru or quan ho",
       "tempo": "delicate and poetic",
       "characteristics": "tonal language influence, water puppets"
+    },
+    "nigerian": {
+      "instruments": "traditional nigerian instruments",
+      "style": "traditional nigerian folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic nigerian musical elements"
+    },
+    "south indian": {
+      "instruments": "traditional south indian instruments",
+      "style": "traditional south indian folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic south indian musical elements"
+    },
+    "puerto rican": {
+      "instruments": "traditional puerto rican instruments",
+      "style": "traditional puerto rican folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic puerto rican musical elements"
+    },
+    "burmese": {
+      "instruments": "traditional burmese instruments",
+      "style": "traditional burmese folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic burmese musical elements"
+    },
+    "grenadian": {
+      "instruments": "traditional grenadian instruments",
+      "style": "traditional grenadian folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic grenadian musical elements"
+    },
+    "kittitian and nevisian": {
+      "instruments": "traditional kittitian and nevisian instruments",
+      "style": "traditional kittitian and nevisian folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic kittitian and nevisian musical elements"
+    },
+    "persian": {
+      "instruments": "traditional persian instruments",
+      "style": "traditional persian folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic persian musical elements"
+    },
+    "swiss": {
+      "instruments": "traditional swiss instruments",
+      "style": "traditional swiss folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic swiss musical elements"
+    },
+    "african": {
+      "instruments": "traditional african instruments",
+      "style": "traditional african folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic african musical elements"
+    },
+    "south korean": {
+      "instruments": "traditional south korean instruments",
+      "style": "traditional south korean folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic south korean musical elements"
+    },
+    "mediterranean": {
+      "instruments": "traditional mediterranean instruments",
+      "style": "traditional mediterranean folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic mediterranean musical elements"
+    },
+    "dutch": {
+      "instruments": "traditional dutch instruments",
+      "style": "traditional dutch folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic dutch musical elements"
+    },
+    "guyanese": {
+      "instruments": "traditional guyanese instruments",
+      "style": "traditional guyanese folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic guyanese musical elements"
+    },
+    "cambodian": {
+      "instruments": "traditional cambodian instruments",
+      "style": "traditional cambodian folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic cambodian musical elements"
+    },
+    "middle eastern": {
+      "instruments": "traditional middle eastern instruments",
+      "style": "traditional middle eastern folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic middle eastern musical elements"
+    },
+    "lybian": {
+      "instruments": "traditional lybian instruments",
+      "style": "traditional lybian folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic lybian musical elements"
+    },
+    "trinbagonian": {
+      "instruments": "traditional trinbagonian instruments",
+      "style": "traditional trinbagonian folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic trinbagonian musical elements"
+    },
+    "saint-martin creole": {
+      "instruments": "traditional saint-martin creole instruments",
+      "style": "traditional saint-martin creole folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic saint-martin creole musical elements"
+    },
+    "creole": {
+      "instruments": "traditional creole instruments",
+      "style": "traditional creole folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic creole musical elements"
+    },
+    "eastern european": {
+      "instruments": "traditional eastern european instruments",
+      "style": "traditional eastern european folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic eastern european musical elements"
+    },
+    "barbadian": {
+      "instruments": "traditional barbadian instruments",
+      "style": "traditional barbadian folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic barbadian musical elements"
+    },
+    "haitian": {
+      "instruments": "traditional haitian instruments",
+      "style": "traditional haitian folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic haitian musical elements"
+    },
+    "india": {
+      "instruments": "traditional india instruments",
+      "style": "traditional india folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic india musical elements"
+    },
+    "belizean": {
+      "instruments": "traditional belizean instruments",
+      "style": "traditional belizean folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic belizean musical elements"
+    },
+    "tunisian": {
+      "instruments": "traditional tunisian instruments",
+      "style": "traditional tunisian folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic tunisian musical elements"
+    },
+    "caymanian": {
+      "instruments": "traditional caymanian instruments",
+      "style": "traditional caymanian folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic caymanian musical elements"
+    },
+    "georgian": {
+      "instruments": "traditional georgian instruments",
+      "style": "traditional georgian folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic georgian musical elements"
+    },
+    "algerian": {
+      "instruments": "traditional algerian instruments",
+      "style": "traditional algerian folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic algerian musical elements"
+    },
+    "antiguan": {
+      "instruments": "traditional antiguan instruments",
+      "style": "traditional antiguan folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic antiguan musical elements"
+    },
+    "surinamese": {
+      "instruments": "traditional surinamese instruments",
+      "style": "traditional surinamese folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic surinamese musical elements"
+    },
+    "laotian": {
+      "instruments": "traditional laotian instruments",
+      "style": "traditional laotian folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic laotian musical elements"
+    },
+    "west african": {
+      "instruments": "traditional west african instruments",
+      "style": "traditional west african folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic west african musical elements"
+    },
+    "senegalese": {
+      "instruments": "traditional senegalese instruments",
+      "style": "traditional senegalese folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic senegalese musical elements"
+    },
+    "yemenite": {
+      "instruments": "traditional yemenite instruments",
+      "style": "traditional yemenite folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic yemenite musical elements"
+    },
+    "croatian": {
+      "instruments": "traditional croatian instruments",
+      "style": "traditional croatian folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic croatian musical elements"
+    },
+    "ukrainian": {
+      "instruments": "traditional ukrainian instruments",
+      "style": "traditional ukrainian folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic ukrainian musical elements"
+    },
+    "moldovian": {
+      "instruments": "traditional moldovian instruments",
+      "style": "traditional moldovian folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic moldovian musical elements"
+    },
+    "saudi arabian": {
+      "instruments": "traditional saudi arabian instruments",
+      "style": "traditional saudi arabian folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic saudi arabian musical elements"
+    },
+    "kenyan": {
+      "instruments": "traditional kenyan instruments",
+      "style": "traditional kenyan folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic kenyan musical elements"
+    },
+    "israeli": {
+      "instruments": "traditional israeli instruments",
+      "style": "traditional israeli folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic israeli musical elements"
+    },
+    "jordanian": {
+      "instruments": "traditional jordanian instruments",
+      "style": "traditional jordanian folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic jordanian musical elements"
+    },
+    "ghanaian": {
+      "instruments": "traditional ghanaian instruments",
+      "style": "traditional ghanaian folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic ghanaian musical elements"
+    },
+    "slovakian": {
+      "instruments": "traditional slovakian instruments",
+      "style": "traditional slovakian folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic slovakian musical elements"
+    },
+    "albanian": {
+      "instruments": "traditional albanian instruments",
+      "style": "traditional albanian folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic albanian musical elements"
+    },
+    "malinese": {
+      "instruments": "traditional malinese instruments",
+      "style": "traditional malinese folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic malinese musical elements"
+    },
+    "tanzanian": {
+      "instruments": "traditional tanzanian instruments",
+      "style": "traditional tanzanian folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic tanzanian musical elements"
+    },
+    "south african": {
+      "instruments": "traditional south african instruments",
+      "style": "traditional south african folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic south african musical elements"
+    },
+    "slovenian": {
+      "instruments": "traditional slovenian instruments",
+      "style": "traditional slovenian folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic slovenian musical elements"
     }
   }
 }

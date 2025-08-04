@@ -12,6 +12,7 @@ from datetime import datetime, timedelta
 from database import db
 from video_generator import VideoRecipeGenerator
 
+
 logger = logging.getLogger(__name__)
 
 class AsyncVideoWorker:
@@ -70,7 +71,8 @@ class AsyncVideoWorker:
         """Process a single video generation task"""
         task_id = task['task_id']
         print(f"🔍 DEBUG: Processing task {task_id}, status: {task.get('status')}")
-        
+        print(f"🔍 DEBUG: Task recipe_id: {task.get('recipe_id')}")
+
         try:
             # Check if task is stuck (processing for too long)
             if task['status'] == 'processing':
@@ -103,7 +105,7 @@ class AsyncVideoWorker:
         task_id = task['task_id']
         recipe_id = task['recipe_id']
         
-        print(f"🔍 DEBUG: Starting generation for {task_id}")
+        print(f"🔍 DEBUG: Starting generation for {task_id}, recipe_id: {recipe_id}")
         logger.info(f"🎬 Starting generation for task {task_id}")
         
         # Update status
@@ -146,11 +148,26 @@ Enjoy your delicious {task['cuisine']} {task.get('dish_type', 'dish')}!
                     WHERE recipe_id = ?
                 ''', (recipe_text, recipe_id))
             
-            # STEP 3: Generate video
+           # STEP 3: Generate video
             logger.info(f"🎥 Generating video for task {task_id}")
+            
+            # Get matched recipe data for wise parser
+            matched_recipe_data = None
+            with sqlite3.connect('recipegen.db') as conn:
+                cursor = conn.execute(
+                    'SELECT matched_recipe_data FROM recipes WHERE recipe_id = ?',
+                    (recipe_id,)
+                )
+                result = cursor.fetchone()
+                print(f"🔍 DEBUG: Recipe {recipe_id} data check: {result}")
+                if result and result[0]:
+                    matched_recipe_data = json.loads(result[0])
+                    logger.info(f"🎯 Found matched recipe for wise parsing")
+            
             result = self.generator.generate_video(
                 cuisine=task['cuisine'],
                 ingredients=ingredients,
+                recipe_data=matched_recipe_data,
                 dish_type=task.get('dish_type', 'dish'),
                 use_fast_model=True,
                 enable_audio=True,

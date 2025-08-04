@@ -101,6 +101,8 @@ def generate_video_fast():
         cuisine = data.get("cuisine", "")
         dish_type = data.get("dish_type", "")
         
+        print(f"🔍 RAW ingredients received from frontend: {ingredients}")
+
         # Generate unique IDs for tracking
         recipe_id = str(uuid.uuid4())
         task_id = str(uuid.uuid4())

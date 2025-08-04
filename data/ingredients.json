@@ -3,7 +3,7 @@
     "name": "Anchovy",
     "slug": "anchovy",
     "type": "fish",
-    "cuisine": ["brazilian", "greek", "russian", "spanish", "mediterranean", "portuguese"],
+    "cuisine": ["brazilian", "italian", "turkish", "greek", "russian", "croatian", "moroccan", "spanish", "french", "portuguese"],
     "image": "anchovy.jpg",
     "kashrut": "kosher",
     "notes": "Permitted if scales present and species is kosher. Verify each type."
@@ -12,7 +12,7 @@
     "name": "Apple",
     "slug": "apple",
     "type": "fruit",
-    "cuisine": ["indian", "danish", "dutch", "chinese"],
+    "cuisine": ["indian", "albanian", "moldovian", "polish", "croatian", "danish", "slovakian", "dutch", "romanian", "chinese"],
     "image": "apple.jpg"
   },
   {
@@ -26,14 +26,14 @@
     "name": "Basmati Rice",
     "slug": "basmati_rice",
     "type": "grain",
-    "cuisine": ["indian", "persian", "pakistani", "middle eastern", "caribbean"],
+    "cuisine": ["indian", "persian", "pakistani", "yemenite", "saudi arabian", "iranian", "surinamese", "jamaican", "guyanese", "trinbagonian"],
     "image": "basmati_rice.jpg"
   },
   {
     "name": "Beef",
     "slug": "beef",
     "type": "meats",
-    "cuisine": ["brazilian", "austrian", "hungarian", "polish", "jewish", "jamaican", "southeast asian", "french", "chinese", "thai", "korean", "japanese", "romanian", "russian", "american"],
+    "cuisine": ["brazilian", "argentinian", "burmese", "singaporean", "british", "thai", "vietnamese", "austrian", "hungarian", "polish", "cambodian", "jewish", "jamaican", "french", "chinese", "thai", "korean", "japanese", "indonesian", "romanian", "filipino", "malaysian", "russian", "american"],
     "image": "beef.jpg",
     "kashrut": "kosher",
     "notes": "Only kosher with shechita and supervision. Not with dairy."
@@ -64,7 +64,7 @@
     "name": "Butter",
     "slug": "butter",
     "type": "milk product",
-    "cuisine": ["french", "japanese", "mediterranean", "american", "indian", "middle eastern"],
+    "cuisine": ["french", "greek", "lebanese", "iranian", "japanese", "turkish", "italian", "american", "indian"],
     "image": "butter.jpg",
     "kashrut": "kosher",
     "notes": "Requires kosher certification. Never with meat."
@@ -87,10 +87,17 @@
     "name": "Chicken",
     "slug": "chicken",
     "type": "meats",
-    "cuisine": ["brazilian", "chinese", "cuban", "russian", "southeast asian", "thai", "american", "french", "jewish"],
+    "cuisine": ["brazilian", "chinese", "cuban", "russian", "indonesian", "thai", "malaysian", "singaporean", "vietnamese", "filipino", "argentinian", "american", "french", "jewish"],
     "image": "chicken.jpg",
     "kashrut": "kosher",
     "notes": "Only kosher with shechita and supervision. Never with dairy."
+  },
+  {
+    "name": "Chickpeas",
+    "slug": "chickpeas",
+    "type": "legume",
+    "cuisine": ["indian", "greek", "israeli", "syrian", "lebanese", "turkish", "jordanian", "italian", "spanish", "moroccan", "tunisian", "algerian", "egyptian", "lybian"],
+    "image": "chickpeas.jpg"
   },
   {
     "name": "Chili Peppers",
@@ -131,7 +138,7 @@
     "name": "Crab",
     "slug": "crab",
     "type": "seafood",
-    "cuisine": ["brazilian", "chinese", "japanese", "american", "caribbean", "italian", "indian", "korean", "singaporean", "thai", "vietnamese"],
+    "cuisine": ["brazilian", "chinese", "japanese", "american", "creole", "saint-martin Creole", "jamaican", "puerto rican", "italian", "indian", "korean", "singaporean", "thai", "vietnamese"],
     "image": "crab.jpg",
     "kashrut": "non-kosher"
   },
@@ -199,7 +206,7 @@
     "name": "Guava",
     "slug": "guava",
     "type": "fruit",
-    "cuisine": ["brazilian", "caribbean", "southeast asian", "indian"],
+    "cuisine": ["brazilian", "cuban", "barbadian", "creole", "haitian", "burmese", "cambodian", "malaysian", "filipino", "indonesian", "thai", "indian"],
     "image": "guava.jpg"
   },
   {
@@ -215,7 +222,7 @@
     "name": "Lamb",
     "slug": "lamb",
     "type": "meats",
-    "cuisine": ["greek", "russian", "jewish", "mediterranean", "american"],
+    "cuisine": ["greek", "italian", "russian", "jewish", "moroccan", "turkish", "lebanese", "american"],
     "image": "lamb.jpg",
     "kashrut": "kosher",
     "notes": "Kosher only with shechita and supervision."
@@ -224,7 +231,7 @@
     "name": "Lemongrass",
     "slug": "lemongrass",
     "type": "vegetable",
-    "cuisine": ["vietnamese", "caribbean", "burmese", "indonesian", "cambodian", "malaysian", "thai", "african"],
+    "cuisine": ["vietnamese", "ghanaian", "tanzanian", "algerian", "nigerian", "haitian", "cuban", "antiguan", "creole", "trinbagonian", "jamaican", "burmese", "indonesian", "cambodian", "malaysian", "thai", "malinese"],
     "image": "lemongrass.jpg"
   },
   {
@@ -284,7 +291,7 @@
     "name": "Onions",
     "slug": "onions",
     "type": "vegetable",
-    "cuisine": ["french", "greek", "jewish", "american", "indian", "russian"],
+    "cuisine": ["french", "british", "greek", "jewish", "american", "indian", "russian"],
     "image": "onions.jpg"
   },
   {
@@ -298,14 +305,14 @@
     "name": "Palm Oil",
     "slug": "palm_oil",
     "type": "culinary components",
-    "cuisine": ["west african", "jewish", "southeast asian", "brazilian"],
+    "cuisine": ["thai", "jewish", "indonesian", "malaysian", "brazilian"],
     "image": "palm_oil.jpg"
   },
   {
     "name": "Paprika",
     "slug": "paprika",
     "type": "spice",
-    "cuisine": ["hungarian", "portuguese", "spanish", "african", "mexican"],
+    "cuisine": ["hungarian", "moroccan", "portuguese", "spanish", "south african", "kenyan", "ethiopian", "mexican"],
     "image": "paprika.jpg"
   },
   {
@@ -326,7 +333,7 @@
     "name": "Peanut",
     "slug": "peanut",
     "type": "legume",
-    "cuisine": ["african", "southeast asian", "chinese", "brazilian"],
+    "cuisine": ["nigerian", "senegalese", "ethiopian", "vietnamese", "filipino", "indonesian", "thai", "chinese", "brazilian"],
     "image": "peanut.jpg"
   },
   {
@@ -341,7 +348,7 @@
     "name": "Pork",
     "slug": "pork",
     "type": "meats",
-    "cuisine": ["brazilian", "thai", "chinese", "austrian", "korean", "cuban", "russian", "southeast asian", "american"],
+    "cuisine": ["brazilian", "argentinian", "thai", "indonesian", "singaporean", "filipino", "chinese", "austrian", "korean", "cuban", "russian", "vietnamese", "american"],
     "image": "pork.jpg",
     "kashrut": "non-kosher",
     "notes": "Always not kosher."
@@ -375,14 +382,21 @@
     "name": "Rosemary",
     "slug": "rosemary",
     "type": "herb",
-    "cuisine": ["french", "american"],
+    "cuisine": ["turkish", "persian", "egyptian", "french", "american", "moroccan", "lebanese", "italian", "spanish", "greek", "indian"],
     "image": "rosemary.jpg"
+  },
+  {
+    "name": "Saffron",
+    "slug": "saffron",
+    "type": "spice",
+    "cuisine": ["indian", "persian", "spanish", "italian", "moroccan", "swedish"],
+    "image": "saffron.jpg"
   },
   {
     "name": "Sake",
     "slug": "sake",
     "type": "wine",
-    "cuisine": ["japanese"],
+    "cuisine": ["japanese", "south korean", "malaysian", "chinese", "thai", "vietnamese"],
     "image": "sake.jpg",
     "kashrut": "requires-supervision",
     "notes": "Requires kosher certification due to additives."
@@ -391,7 +405,7 @@
     "name": "Salmon",
     "slug": "salmon",
     "type": "fish",
-    "cuisine": ["japanese", "jewish", "scandinavian", "caribbean", "spanish", "italian", "brazilian", "american"],
+    "cuisine": ["japanese", "caymanian", "jamaican", "jewish", "trinbagonian", "scandinavian", "spanish", "italian", "brazilian", "american"],
     "image": "salmon.jpg",
     "kashrut": "kosher",
     "notes": "Kosher species, always check for scales."
@@ -400,28 +414,28 @@
     "name": "Scallions",
     "slug": "scallions",
     "type": "vegetable",
-    "cuisine": ["chinese", "korean", "japanese"],
+    "cuisine": ["italian", "chinese", "korean", "japanese", "south korean", "thai", "india", "vietnamese", "filipino"],
     "image": "scallion.jpg"
   },
   {
     "name": "Sesame Oil",
     "slug": "sesame_oil",
     "type": "culinary components",
-    "cuisine": ["chinese", "korean"],
+    "cuisine": ["chinese", "japanese", "korean", "south indian"],
     "image": "sesame_oil.jpg"
   },
   {
     "name": "Shallots",
     "slug": "shallots",
     "type": "vegetable",
-    "cuisine": ["french", "thai"],
+    "cuisine": ["french", "thai", "indonesian", "thai", "vietnamese", "turkish"],
     "image": "shallot.jpg"
   },
   {
     "name": "Sherry",
     "slug": "sherry",
     "type": "wine",
-    "cuisine": ["spanish", "french"],
+    "cuisine": ["spanish", "french", "chinese", "puerto rican"],
     "image": "sherry.jpg",
     "kashrut": "requires-supervision",
     "notes": "All grape wine requires kosher supervision."
@@ -439,7 +453,7 @@
     "name": "Soy Sauce",
     "slug": "soy_sauce",
     "type": "culinary components",
-    "cuisine": ["chinese", "korean"],
+    "cuisine": ["chinese", "korean", "turkish", "japanese", "indonesian", "thai", "filipino"],
     "image": "soy_sauce.jpg",
     "kashrut": "contextual",
     "notes": "Some brands may use wine or flavorings that require supervision."
@@ -448,21 +462,21 @@
     "name": "Tamarind",
     "slug": "tamarind",
     "type": "fruit",
-    "cuisine": ["thai", "indian", "mexican", "caribbean"],
+    "cuisine": ["thai", "grenadian", "belizean", "puerto rican", "indian", "mexican", "barbadian", "guyanese", "jamaican", "trinbagonian"],
     "image": "tamarind.jpg"
   },
   {
     "name": "Tarragon",
     "slug": "tarragon",
     "type": "herb",
-    "cuisine": ["french", "eastern european", "russian"],
+    "cuisine": ["french", "georgian", "slovenian", "romanian", "hungarian", "ukrainian", "russian", "spanish", "greek", "italian", "georgian"],
     "image": "tarragon.jpg"
   },
   {
     "name": "Thyme",
     "slug": "thyme",
     "type": "herb",
-    "cuisine": ["french", "american", "caribbean", "italian", "middle eastern"],
+    "cuisine": ["french", "saudi arabian", "egyptian", "american", "jamaican", "trinbagonian", "barbadian", "kittitian and nevisian", "guyanese", "saint-martin Creole", "italian", "israeli", "lebanese", "syrian", "jordanian"],
     "image": "thyme.jpg"
   },
   {
@@ -476,14 +490,14 @@
     "name": "Turmeric",
     "slug": "turmeric",
     "type": "spice",
-    "cuisine": ["indian", "persian"],
+    "cuisine": ["indian", "persian", "trinbagonian", "jamaican", "guyanese", "moroccan", "malaysian", "thai", "indonesian"],
     "image": "turmeric.jpg"
   },
   {
     "name": "Veal",
     "slug": "veal",
     "type": "meats",
-    "cuisine": ["french", "turkish", "italian", "austrian", "mediterranean", "hungarian", "spanish", "portuguese"],
+    "cuisine": ["french", "greek", "turkish", "italian", "austrian", "spanish", "hungarian", "spanish", "portuguese"],
     "image": "veal.jpg",
     "kashrut": "requires-supervision",
     "notes": "Only kosher with shechita and supervision."
@@ -524,7 +538,7 @@
     "name": "Zucchini",
     "slug": "zucchini",
     "type": "vegetable",
-    "cuisine": ["french", "middle eastern", "mexican", "portuguese", "american", "italian", "brazilian", "turkey"],
+    "cuisine": ["french", "egyptian", "jordanian", "syrian", "lebanese", "turkish", "mexican", "portuguese", "american", "italian", "brazilian"],
     "image": "zucchini.jpg"
   }
 ]

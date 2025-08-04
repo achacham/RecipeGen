@@ -8,10 +8,12 @@ from typing import Dict, List, Tuple, Optional
 from datetime import datetime
 import threading
 from dotenv import load_dotenv
+from datetime import datetime
 
 import sys
 sys.path.append(str(Path(__file__).parent))
 from music_config import music_db
+from recipe_parser import wise_parser  # ADD THIS IMPORT
 
 # Load environment
 load_dotenv()
@@ -247,52 +249,28 @@ class VideoRecipeGenerator:
        
        return f"Audio: sizzling, rhythmic chopping, aromatic steam rising, a warm, traditional {cuisine_lower} orchestral score with cultural instruments, melodic and inviting rhythm"
    
-   def build_dynamic_cuisine_prompt(self, cuisine: str, ingredients: List[str], dish_type: str, enable_audio: bool = True) -> str:
+   def build_dynamic_cuisine_prompt(self, cuisine: str, ingredients: List[str], dish_type: str, 
+                                enable_audio: bool = True, recipe_data: Dict = None) -> str:
     """
     Build cuisine-specific prompts - OPTIMIZED FOR PROVIDER
+    Now includes wise recipe parsing
     """
     ingredient_list = ", ".join(ingredients)
     
     print(f"🏗️ BUILDING PROMPT FOR: {cuisine} with {ingredient_list}")
     
-    # Generate ingredient actions using existing method
-    ingredient_actions = self.generate_ingredient_specific_actions(ingredients, dish_type)
-    
     # KIE OPTIMIZATION: Shorter, action-focused prompts
     if self.provider == 'kie':
         print("⚡ Using KIE-optimized prompt (action-focused)")
         
-        # Add emphasis and additional cooking verbs for KIE
-        emphasized_actions = []
-        for action in ingredient_actions:
-            # Add emphasis to key verbs
-            emphasized_action = action.replace('adding', 'ADD').replace('drizzling', 'DRIZZLE').replace('tossing', 'TOSS')
-            emphasized_actions.append(emphasized_action)
-        
+             
         #====================================================================================================
-        # KIE-optimized prompt with enhanced structure
-        # 1. Visual Style (always cinematic for food)
-        visual_style = "Cinematic food video, professional culinary photography style"
-
-        # 2. Camera Work (based on dish type - NOT hardcoded, just descriptive)
-        if 'soup' in dish_type.lower():
-            camera_work = "Medium shot of pot, then close-up of simmering liquid with steam rising"
-        elif 'skewer' in dish_type.lower() or 'grill' in dish_type.lower():
-            camera_work = "Rotating shot around meat, then extreme close-up of sizzling surface"
-        elif 'baked' in dish_type.lower():
-            camera_work = "Wide shot of oven opening, then close-up through oven window showing browning"
-        elif 'sandwich' in dish_type.lower():
-            camera_work = "Overhead shot of assembly, then side angle showing layers"
-        else:
-            camera_work = "Dynamic shots focusing on cooking transformation"
-
-        # 3. Build the complete prompt
+        # KIE-optimized prompt
         prompt = (
-            f"{visual_style}. "
-            f"{camera_work}. "
+            f"Cinematic food video, professional culinary photography style. "
+            f"Dynamic shots focusing on cooking transformation. "
             f"{cuisine.title()} chef in authentic {cuisine.lower()} culinary kitchen preparing {dish_type} with {ingredient_list}. "
-            f"COMPLETE COOKING SEQUENCE: "
-            f"{'. '.join(emphasized_actions)}. "
+            f"COMPLETE COOKING SEQUENCE: using traditional cooking methods. "
             f"Show food transformation, textures changing, colors developing. "
             f"Professional {cuisine.lower()} kitchen with cultural elements and proper traditional cookware. "
         )
@@ -336,23 +314,39 @@ class VideoRecipeGenerator:
             else:
                 audio_section = ""
         
-        # TRADITIONAL AUTHENTIC PROMPT
-        prompt = (
-            f"A traditional cooking scene in {kitchen_desc} showing FULL-BODY {character_desc} "
-            f"preparing {dish_type} using {ingredient_list}. "
-            f"Wide angle view showing complete traditional kitchen setting and full cook from head to toe. "
-            f"COOK CLEARLY VISIBLE throughout in traditional cultural attire with authentic cooking movements. "
-            f"Traditional cooking sequence: {', '.join(ingredient_actions[:3])} "
-            f"in traditional cookware with intense sizzling and aromatic steam. "
-            f"Cook expertly prepares ingredients using {style_desc}, "
-            f"showing COMPLETE TRADITIONAL COOKING PROCESS in authentic cultural setting. "
-            f"Warm traditional lighting, authentic cultural atmosphere, and traditional cooking methods. "
-            f"Cook's cultural identity and expertise clearly visible through traditional dress and movements. "
-            f"{audio_section}"
-            f"Authentic cultural cooking, traditional home atmosphere, complete traditional cooking demonstration."
-        )
+                # TRADITIONAL AUTHENTIC PROMPT
+                prompt = (
+                    f"A traditional cooking scene in {kitchen_desc} showing FULL-BODY {character_desc} "
+                    f"preparing {dish_type} using {ingredient_list}. "
+                    f"Wide angle view showing complete traditional kitchen setting and full cook from head to toe. "
+                    f"COOK CLEARLY VISIBLE throughout in traditional cultural attire with authentic cooking movements. "
+                    f"Cook expertly prepares ingredients using {style_desc} "
+                    f"in traditional cookware with intense sizzling and aromatic steam, "
+                    f"showing COMPLETE TRADITIONAL COOKING PROCESS in authentic cultural setting. "
+                    f"Warm traditional lighting, authentic cultural atmosphere, and traditional cooking methods. "
+                    f"Cook's cultural identity and expertise clearly visible through traditional dress and movements. "
+                    f"{audio_section}"
+                    f"Authentic cultural cooking, traditional home atmosphere, complete traditional cooking demonstration."
+                )
+    
+    # WISE PARSER INTEGRATION - Extract hero moments from matched recipe
+    # Apply wise parser if recipe data provided
+    if recipe_data and 'steps' in recipe_data:
+        hero_moments = wise_parser.extract_hero_moments(recipe_data)
+        if hero_moments:
+            prompt = wise_parser.build_recipe_aware_prompt(prompt, hero_moments)
+            print(f"🎯 WISE PARSER: Extracted {len(hero_moments)} moments")
     
     print(f"📝 GENERATED PROMPT: {prompt}")
+    
+    # Save prompt to file for inspection
+    with open('latest_prompt.txt', 'w', encoding='utf-8') as f:
+        f.write(f"=== PROMPT FOR {cuisine.upper()} {dish_type.upper()} ===\n")
+        f.write(f"Ingredients: {ingredient_list}\n")
+        f.write(f"Timestamp: {datetime.now().isoformat()}\n")
+        f.write("="*50 + "\n\n")
+        f.write(prompt)
+    
     return prompt
 
    def call_fal_api(self, prompt: str, duration: int, cuisine: str = "", ingredients: List[str] = None, 
@@ -693,9 +687,10 @@ class VideoRecipeGenerator:
        except Exception as e:
            return False, f"Download failed: {str(e)}"
 
-   def generate_video(self, cuisine: str, ingredients: List[str], **kwargs) -> Dict:
+   def generate_video(self, cuisine: str, ingredients: List[str], recipe_data: Dict = None, **kwargs) -> Dict:
     """
     MULTI-PROVIDER: Generate video with different providers + MMAudio enhancement
+    Now includes recipe-aware generation
     """
     print(f"\n🚀 === STARTING VIDEO GENERATION ===")
     print(f"🌍 CUISINE: {cuisine}")
@@ -721,8 +716,8 @@ class VideoRecipeGenerator:
     enhance_prompt = kwargs.get('enhance_prompt', False)
     async_mode = kwargs.get('async_mode', False)
     
-    # Build COOKING-FOCUSED cuisine-specific prompt with CONDITIONAL audio
-    prompt = self.build_dynamic_cuisine_prompt(cuisine, validated_ingredients, dish_type, enable_audio)
+    # Build COOKING-FOCUSED cuisine-specific prompt with CONDITIONAL audio and RECIPE AWARENESS
+    prompt = self.build_dynamic_cuisine_prompt(cuisine, validated_ingredients, dish_type, enable_audio, recipe_data)
     
     print(f"⚡ GENERATION SETTINGS:")
     print(f"   - Cuisine: {cuisine}")
@@ -921,4 +916,29 @@ class VideoRecipeGenerator:
                 "error": result.get("error", "Unknown error"),
                 "request_id": request_id
             }
-       
+
+# BRIDGE FUNCTION FOR MAIN.PY INTEGRATION
+def generate_video_with_cuisine(cuisine, ingredients, dish_type=None, provider='kie', recipe_data=None):
+    """Bridge function for main.py integration"""
+    generator = VideoRecipeGenerator()
+    if provider != generator.provider:
+        generator.set_provider(provider)
+    
+    result = generator.generate_video(
+        cuisine, 
+        ingredients, 
+        recipe_data=recipe_data,
+        dish_type=dish_type, 
+        async_mode=True  # For KIE async processing
+    )
+    
+    # Extract what main.py expects
+    if result['success']:
+        if result.get('request_id'):  # Async mode
+            return result['video_url'], result['local_path'], result['request_id']
+        else:
+            return result['video_url'], result['local_path'], None
+    else:
+        raise Exception(result['error'])
+    
+    

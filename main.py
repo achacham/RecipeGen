@@ -11,11 +11,12 @@ from async_worker import worker
 import json
 import os
 import openai
-import sys  # <-- Already imported here
+import sys
 import requests
 import logging
 import uuid
 import sqlite3
+from recipe_matcher import recipe_matcher
 from pathlib import Path
 from datetime import datetime
 from dotenv import load_dotenv
@@ -27,7 +28,7 @@ from music_config import music_db
 def initialize_music_database():
     """Initialize and sync music database on startup"""
     # Sync with ingredients.json
-    ingredients_path = Path(__file__).parent / "ingredients.json"
+    ingredients_path = Path(__file__).parent / "data" / "ingredients.json"  # ← Add "data"
     if ingredients_path.exists():
         new_cuisines = music_db.sync_with_ingredients(ingredients_path)
         if new_cuisines:
@@ -37,6 +38,14 @@ def initialize_music_database():
 
 # Call it right here, before any routes
 initialize_music_database()
+
+# Initialize database schema
+with sqlite3.connect('recipegen.db') as conn:
+    try:
+        conn.execute('ALTER TABLE recipes ADD COLUMN matched_recipe_data TEXT')
+        print("✅ Added matched_recipe_data column")
+    except sqlite3.OperationalError:
+        pass  # Column exists
 
 # === Configuration and Setup ===
 print("✅ ✅ ✅ THIS IS THE REAL main.py FROM videos FOLDER")
@@ -214,6 +223,45 @@ def get_recipe(recipe_id):
             return jsonify(r)
     return jsonify({'error': 'Recipe not found'}), 404
 
+@app.route('/get_full_recipe/<recipe_id>')
+def get_full_recipe(recipe_id):
+    """Get the full recipe after payment"""
+    try:
+        print(f"🔓 UNLOCK RECIPE CALLED! Recipe ID: {recipe_id}")
+        
+        # Get the matched recipe ID from database
+        with sqlite3.connect('recipegen.db') as conn:
+            cursor = conn.execute(
+                'SELECT matched_recipe_id FROM recipes WHERE recipe_id = ?',
+                (recipe_id,)
+            )
+            result = cursor.fetchone()
+            
+        if result and result[0]:
+            matched_recipe_id = result[0]
+            print(f"📍 Found matched recipe ID: {matched_recipe_id}")
+            # Get the full recipe from matcher
+            full_recipe = recipe_matcher.get_recipe_by_id(matched_recipe_id)
+            
+            if full_recipe:
+                return jsonify({
+                    "success": True,
+                    "recipe": full_recipe
+                })
+        
+        return jsonify({
+            "success": False,
+            "error": "Recipe not found"
+        })
+    except Exception as e:
+        print(f"❌ ERROR in get_full_recipe: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
+
 @app.route('/check_video_status/<task_id>', methods=['GET'])
 def check_video_status(task_id):
     """
@@ -255,6 +303,44 @@ def check_video_status(task_id):
         logger.error(f"Status check error: {e}")
         return jsonify({"error": str(e)}), 500
 
+@app.route('/add_ingredient', methods=['POST'])
+def add_ingredient():
+    """Add new ingredient and update music database if needed - FOR FUTURE EDITOR"""
+    try:
+        ingredient_data = request.get_json()
+        
+        # Load current ingredients
+        with open("data/ingredients.json", "r", encoding="utf-8") as f:
+            ingredients = json.load(f)
+        
+        # Add new ingredient
+        ingredients.append(ingredient_data)
+        
+        # Save updated ingredients
+        with open("data/ingredients.json", "w", encoding="utf-8") as f:
+            json.dump(ingredients, f, indent=2, ensure_ascii=False)
+        
+        # Update music database if new cuisine
+        if 'cuisine' in ingredient_data:
+            cuisines = ingredient_data['cuisine']
+            if isinstance(cuisines, str):
+                cuisines = [cuisines]
+            
+            for cuisine in cuisines:
+                if cuisine.lower() not in music_db.music_data:
+                    music_db.add_cuisine(cuisine)
+                    print(f"🎵 Added {cuisine} to music database")
+        
+        # Update the global INGREDIENTS_LIST and INGREDIENTS_BY_SLUG
+        global INGREDIENTS_LIST, INGREDIENTS_BY_SLUG
+        INGREDIENTS_LIST = ingredients
+        INGREDIENTS_BY_SLUG = {item["slug"]: item for item in ingredients}
+        
+        return jsonify({"success": True, "message": "Ingredient added successfully"})
+        
+    except Exception as e:
+        logger.error(f"Error adding ingredient: {e}")
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/generate_recipe_instant', methods=['POST'])
 def generate_recipe_instant():
@@ -276,13 +362,27 @@ def generate_recipe_instant():
         recipe_id = str(uuid.uuid4())
         task_id = str(uuid.uuid4())
         
-        # Store placeholder recipe in database
+        # PHASE 2 ADDITION: Find matching recipe!
+        matched_recipe = recipe_matcher.find_recipe(cuisine, ingredients, dish_type)
+        matched_recipe_id = matched_recipe.get('recipe_id') if matched_recipe else None
+
+          
+               
+        # Store placeholder recipe in database WITH matched recipe reference
         with sqlite3.connect('recipegen.db') as conn:
             conn.execute('''
-                INSERT INTO recipes (recipe_id, cuisine_id, dish_type, ingredients, recipe_text, video_task_id)
-                VALUES (?, ?, ?, ?, ?, ?)
-            ''', (recipe_id, 0, dish_type, json.dumps(ingredients), "GENERATING", task_id))
-        
+                INSERT INTO recipes (recipe_id, cuisine_id, dish_type, ingredients, recipe_text, video_task_id, matched_recipe_id)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+            ''', (recipe_id, 0, dish_type, json.dumps(ingredients), "GENERATING", task_id, matched_recipe_id))
+            
+            # Store matched recipe data in SAME transaction
+            if matched_recipe:
+                matched_recipe_json = json.dumps(matched_recipe)
+                conn.execute(
+                    'UPDATE recipes SET matched_recipe_data = ? WHERE recipe_id = ?',
+                    (matched_recipe_json, recipe_id)
+                )
+                
         # Queue BOTH recipe generation AND video generation
         db.create_video_task(
             task_id=task_id,
@@ -296,7 +396,6 @@ def generate_recipe_instant():
         
         # Return INSTANT teaser
         ingredient_list = ", ".join(ingredient_names[:3]) + "..." if len(ingredient_names) > 3 else ", ".join(ingredient_names)
-        
         return jsonify({
             "success": True,
             "recipe_id": recipe_id,
@@ -304,7 +403,6 @@ def generate_recipe_instant():
             "teaser": f"Your delicious {cuisine.title()} {dish_type} with {ingredient_list} is being prepared!",
             "price": "$2.99"
         })
-        
     except Exception as e:
         logger.error(f"Error: {e}")
         return jsonify({"error": str(e)}), 500

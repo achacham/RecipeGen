@@ -1,3 +1,11 @@
+# /*
+# * RecipeGen™ - AI-Powered Culinary Video & Recipe Generation Platform
+# * © Copyright By Abraham Chachamovits
+# * RecipeGen™ is a trademark of Abraham Chachamovits
+# * 
+# * File: main.py
+# */
+
 """
 RecipeGen Backend API
 Main Flask application for recipe generation, video creation, and chat functionality
@@ -16,10 +24,13 @@ import requests
 import logging
 import uuid
 import sqlite3
-from recipe_matcher import recipe_matcher
+from recipe_matcher_4d import recipe_matcher_4d
 from pathlib import Path
 from datetime import datetime
 from dotenv import load_dotenv
+# On app startup, regenerate supported cuisines
+from update_supported_cuisines import update_supported_cuisines
+update_supported_cuisines()
 
 # No need to import sys again
 sys.path.append(str(Path(__file__).parent))
@@ -232,22 +243,33 @@ def get_full_recipe(recipe_id):
         # Get the matched recipe ID from database
         with sqlite3.connect('recipegen.db') as conn:
             cursor = conn.execute(
-                'SELECT matched_recipe_id FROM recipes WHERE recipe_id = ?',
+                'SELECT matched_recipe_id, matched_recipe_data FROM recipes WHERE recipe_id = ?',
                 (recipe_id,)
             )
             result = cursor.fetchone()
             
-        if result and result[0]:
-            matched_recipe_id = result[0]
-            print(f"📍 Found matched recipe ID: {matched_recipe_id}")
-            # Get the full recipe from matcher
-            full_recipe = recipe_matcher.get_recipe_by_id(matched_recipe_id)
+        if result:
+            matched_recipe_id, matched_recipe_data = result
             
-            if full_recipe:
+            # First try to get from stored matched_recipe_data (includes essential recipes)
+            if matched_recipe_data:
+                print(f"📍 Found recipe data in database")
+                full_recipe = json.loads(matched_recipe_data)
                 return jsonify({
                     "success": True,
                     "recipe": full_recipe
                 })
+            
+            # Fallback to recipe_matcher_4d if no stored data
+            elif matched_recipe_id:
+                print(f"📍 Found matched recipe ID: {matched_recipe_id}")
+                full_recipe = recipe_matcher_4d.get_recipe_by_id(matched_recipe_id)
+                
+                if full_recipe:
+                    return jsonify({
+                        "success": True,
+                        "recipe": full_recipe
+                    })
         
         return jsonify({
             "success": False,
@@ -351,6 +373,9 @@ def generate_recipe_instant():
         cuisine = data.get("cuisine", "")
         dish_type = data.get("dish_type", "")
         
+        # CRITICAL: Check if this is an essential recipe request
+        is_essential = data.get('is_essential', False)
+
         # Get ingredient names for teaser only
         ingredient_names = []
         for slug in ingredients:
@@ -362,12 +387,96 @@ def generate_recipe_instant():
         recipe_id = str(uuid.uuid4())
         task_id = str(uuid.uuid4())
         
-        # PHASE 2 ADDITION: Find matching recipe!
-        matched_recipe = recipe_matcher.find_recipe(cuisine, ingredients, dish_type)
+        # If this is an essential recipe request, skip the 4D search!
+        if is_essential:
+            print("✨ Essential recipe requested - skipping 4D search")
+            matched_recipe = None  # This will trigger essential recipe creation below
+        else:
+            # Normal 4D search
+            chef_preference = data.get("chef_preference", "traditional")
+            matched_recipe = recipe_matcher_4d.find_recipe(cuisine, ingredients, dish_type, chef_preference)
+
+               
+        # INTELLIGENT ALTERNATIVES SYSTEM
+        # ================================
+        # After building the complete 4D cascade logic, we discovered that many valid
+        # user combinations (like Singaporean Baked Crab) simply don't exist in any
+        # recipe database. Rather than silently falling back to generic recipes,
+        # we now engage the user with intelligent alternatives.
+        #
+        # This transforms RecipeGen from a "dumb search" into a culinary advisor
+        # that understands relationships between cuisines, cooking methods, and
+        # ingredients. Like a skilled chef who says "We're out of salmon, but
+        # I have beautiful sea bass that would work perfectly."
+        #
+        # The 4D system's journey through all levels provides rich context about
+        # WHY a recipe wasn't found, enabling us to suggest smart alternatives.
+        if isinstance(matched_recipe, dict) and matched_recipe.get('type') == 'no_match':
+            print("🤔 No direct match found - preparing intelligent alternatives")
+            
+            # Store the failure context for potential future use
+            with sqlite3.connect('recipegen.db') as conn:
+                conn.execute('''
+                    INSERT INTO recipes (recipe_id, cuisine_id, dish_type, ingredients, recipe_text, video_task_id, matched_recipe_id, matched_recipe_data)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                ''', (recipe_id, 0, dish_type, json.dumps(ingredients), "NO_MATCH", task_id, "alternatives", json.dumps(matched_recipe)))
+            
+            # Return alternatives to the frontend for user interaction
+            # This is NOT admitting defeat - it's demonstrating culinary intelligence
+            return jsonify({
+                "success": False,
+                "recipe_id": recipe_id,
+                "no_match": True,
+                "reason": matched_recipe['search_summary']['reason'],
+                "alternatives": matched_recipe['alternatives'],
+                "apis_checked": matched_recipe['search_summary']['apis_checked'],
+                "original_request": {
+                    "cuisine": cuisine.title(),
+                    "dish_type": dish_type.replace('-', ' ').title(),
+                    "ingredients": ingredient_names
+                },
+                "message": f"We searched extensively but couldn't find {cuisine.title()} {dish_type.replace('-', ' ')} "
+                          f"with your selected ingredients. Here are some excellent alternatives we think you'll love:"
+            })
+        
+        # If we have a real recipe match, continue as before
         matched_recipe_id = matched_recipe.get('recipe_id') if matched_recipe else None
 
-          
-               
+        # FALLBACK PHILOSOPHY - The Essential Recipe
+        # ==========================================
+        # [Keep existing fallback comment and logic...]
+        if not matched_recipe:
+            # Create essential recipe - simple, honest, universal
+            matched_recipe = {
+                'recipe_id': f'essential-{recipe_id}',
+                'title': f"{cuisine.title()} {dish_type.title() if dish_type else 'Dish'} with {', '.join(ingredient_names)}",
+                'cuisine': cuisine,
+                'dish_type': dish_type or 'general',
+                'ingredients': [
+                    {
+                        'name': name,
+                        'amount': '1 cup',
+                        'slug': ingredients[i] if i < len(ingredients) else name.lower().replace(' ', '-')
+                    }
+                    for i, name in enumerate(ingredient_names)
+                ],
+                'steps': [
+                    {'step': 1, 'instruction': f'Prepare all ingredients - wash and cut as needed'},
+                    {'step': 2, 'instruction': f'Heat pan or wok with oil until hot'},
+                    {'step': 3, 'instruction': f'Cook {ingredient_names[0] if ingredient_names else "main ingredient"} until done'},
+                    {'step': 4, 'instruction': f'Add remaining ingredients and seasonings'},
+                    {'step': 5, 'instruction': f'Cook together until everything is well combined'},
+                    {'step': 6, 'instruction': f'Taste and adjust seasoning as needed'},
+                    {'step': 7, 'instruction': f'Garnish and serve hot'}
+                ],
+                'source': 'RecipeGen Essential',
+                'servings': 4,
+                'prep_time': 15,
+                'cook_time': 20
+            }
+            matched_recipe_id = matched_recipe['recipe_id']
+        
+        # [Rest of the function remains the same...]
         # Store placeholder recipe in database WITH matched recipe reference
         with sqlite3.connect('recipegen.db') as conn:
             conn.execute('''
@@ -390,17 +499,23 @@ def generate_recipe_instant():
             cuisine=cuisine or "international",
             ingredients=ingredient_names,
             dish_type=dish_type,
-            prompt="pending",  # Recipe text will be generated async
+            prompt="pending",
             provider='kie'
         )
         
         # Return INSTANT teaser
         ingredient_list = ", ".join(ingredient_names[:3]) + "..." if len(ingredient_names) > 3 else ", ".join(ingredient_names)
+        # Include actual recipe info if we have it
+        recipe_title = matched_recipe.get('title', f"{cuisine.title()} {dish_type}")
+        recipe_image = matched_recipe.get('image_url', '')
+
         return jsonify({
             "success": True,
             "recipe_id": recipe_id,
             "task_id": task_id,
             "teaser": f"Your delicious {cuisine.title()} {dish_type} with {ingredient_list} is being prepared!",
+            "recipe_title": recipe_title,  # Add actual recipe title
+            "recipe_image": recipe_image,    # Add recipe image if available
             "price": "$2.99"
         })
     except Exception as e:

@@ -38,30 +38,7 @@ class TheMealDBFetcher:
                 return meals[0]
         return None
     
-    def determine_dish_type(self, meal: Dict) -> str:
-        """Determine dish type ONLY from explicit keywords in title"""
-        title = meal.get('strMeal', '').lower()
-        
-        # Map of keywords to dish types - this is DATA, not hardcoding
-        dish_type_keywords = {
-            'baked-dish': ['pie', 'casserole', 'bake', 'roast'],
-            'soup': ['soup', 'stew', 'broth'],
-            'salad': ['salad'],
-            'sandwich': ['sandwich', 'burger'],
-            'pasta': ['pasta', 'spaghetti', 'lasagne', 'linguine', 'penne'],
-            'curry': ['curry'],
-            'stir-fry': ['stir fry', 'stir-fry'],
-            'wrap': ['wrap', 'burrito'],
-            'skewer': ['skewer', 'kebab'],
-            'risotto': ['risotto'],
-            'bowl': ['bowl']
-        }
-        
-        # Check title against keywords
-        for dish_type, keywords in dish_type_keywords.items():
-            if any(keyword in title for keyword in keywords):
-                return dish_type
-        
+       
         # Cannot determine - return None or 'unknown'
         return None  # Let the system decide what to do
 
@@ -151,22 +128,8 @@ class TheMealDBFetcher:
     }
         
         cuisine = area_to_cuisine.get(meal.get('strArea', ''), 'international')
-        
-        # Determine dish type from category
-        category_to_dish_type = {
-            "Beef": "stir-fry",
-            "Chicken": "baked-dish",
-            "Pasta": "pasta",
-            "Seafood": "stir-fry",
-            "Vegetarian": "stir-fry",
-            "Breakfast": "baked-dish",
-            "Dessert": "dessert",
-            "Soup": "soup",
-            "Starter": "salad",
-            "Side": "bowl"
-        }
-        
-        dish_type = self.determine_dish_type(meal)
+             
+        dish_type = meal.get('strCategory', '').lower() if meal.get('strCategory') else None
         
         # Build recipe object
         recipe = {

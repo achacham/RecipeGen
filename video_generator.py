@@ -1,3 +1,11 @@
+# /*
+# * RecipeGen™ - AI-Powered Culinary Video & Recipe Generation Platform
+# * © Copyright By Abraham Chachamovits
+# * RecipeGen™ is a trademark of Abraham Chachamovits
+# * 
+# * File: video_generator.py
+# */
+
 import os
 import json
 import uuid

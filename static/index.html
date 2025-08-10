@@ -1,6 +1,47 @@
+<!--
+ ============================================================================
+  RecipeGen™ - AI-Powered Culinary Video & Recipe Generation Platform
+ ============================================================================
+  
+  Version: 2.0 (Business Model with 4D Intelligent Recipe Matching)
+  Last Updated: August 2025
+
+  © Copyright By Abraham Chachamovits
+  RecipeGen™ is a trademark of Abraham Chachamovits
+  
+  OVERVIEW:
+  RecipeGen transforms ingredient selection into personalized cooking videos
+  and recipes using advanced AI. Built with a sophisticated 4D cascade logic
+  that searches local databases, multiple APIs, and sister cuisines before
+  gracefully falling back to essential recipes.
+  
+  KEY FEATURES:
+  • Visual ingredient selection from 81+ global cuisines
+  • Kosher validation for Jewish cuisine
+  • AI-generated 8-second recipe trailer videos
+  • Intelligent recipe matching with verified alternatives
+  • $2.99 pay-per-recipe business model
+  • Multi-cuisine music generation
+  • Real-time chat assistance
+  
+  TECHNICAL ARCHITECTURE:
+  • Frontend: Vanilla JavaScript with Tailwind CSS
+  • Backend: Flask (Python) with SQLite
+  • Video Generation: KIE AI API
+  • Recipe Sources: Local DB + Spoonacular + TheMealDB
+  • 4D Cascade: Local → APIs → Sister Cuisines → Essential
+  
+  PHILOSOPHY:
+  Built with 1980s engineering principles - reliable, modular, honest.
+  No hardcoding. No false promises. Always delivers value.
+  
+  Created with pen, paper, and night-breeze programming wisdom.
+ ============================================================================
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>RecipeGen — Choose Ingredients</title>
@@ -222,6 +263,47 @@
 
 </div> <!-- END #mainInterface -->
 
+<!-- Chef Selection Modal -->
+<div id="chefSelectionModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+  <div class="bg-white rounded-lg shadow-2xl p-6 max-w-4xl w-full">
+    <h2 class="text-3xl font-bold text-center mb-6">Choose Your Chef</h2>
+    <div class="grid grid-cols-2 gap-6">
+      <!-- Traditional Cook -->
+      <div class="chef-option cursor-pointer p-6 border-2 border-gray-300 rounded-lg hover:border-green-500 hover:shadow-lg transition-all" 
+          onclick="selectChef('traditional')">
+        <div class="text-center">
+          <div style="width: 0.75in; height: 0.75in; background: #f0f0f0; border-radius: 50%; margin: 0 auto; display: flex; align-items: center; justify-content: center; font-size: 3.3rem;">
+            👨‍🍳
+          </div>
+          <h3 class="text-xl font-bold mt-4">Traditional Cook</h3>
+          <p class="text-gray-600 mt-2">Classic recipes from our database and APIs</p>
+          <div class="mt-4 text-sm text-gray-500">
+            • Authentic cuisines<br>
+            • Verified recipes<br>
+            • Traditional methods
+          </div>
+        </div>
+      </div>
+      
+      <!-- A.I. Chef -->
+      <div class="chef-option cursor-pointer p-6 border-2 border-gray-300 rounded-lg hover:border-blue-500 hover:shadow-lg transition-all" 
+           onclick="selectChef('ai')">
+        <div class="text-center">
+          <img src="/static/images/The_Swedish_Chef.jpg" 
+               alt="A.I. Chef" 
+               style="width: 0.75in; height: 0.75in; object-fit: cover; border-radius: 50%; margin: 0 auto;">
+          <h3 class="text-xl font-bold mt-4">A.I. Chef</h3>
+          <p class="text-gray-600 mt-2">Creative AI-generated fusion recipes</p>
+          <div class="mt-4 text-sm text-gray-500">
+            • Innovative combinations<br>
+            • Custom creations<br>
+            • Fusion techniques
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Kosher Validation Modal -->
 <div id="kosherModal"
@@ -236,7 +318,6 @@
   </div>
 </div>
 
-<!-- [UNCHANGED HEAD CONTENT ABOVE] -->
 <script>
   // Global variables
   const grid = document.getElementById("ingredientGrid");
@@ -246,105 +327,110 @@
   const selected = new Set();
   let ingredients = [];
   let ingredientsReady = false;
-  let selectedDishType = null; // Track selected dish type
+  let selectedDishType = null;
+  let currentAlternatives = null;
+  let selectedChef = null; // Track chef selection
 
   // Helper to show kosher modal with support for multiple errors
-function showKosherModal(title, msg) {
-  document.getElementById("kosherModalTitle").textContent = title;
-  const content = Array.isArray(msg)
-    ? msg.map(e => `<div>- ${e}</div>`).join("")
-    : msg;
-  document.getElementById("kosherModalMsg").innerHTML = content;
-  document.getElementById("kosherModal").classList.remove("hidden");
-}
+  function showKosherModal(title, msg) {
+    document.getElementById("kosherModalTitle").textContent = title;
+    const content = Array.isArray(msg)
+      ? msg.map(e => `<div>- ${e}</div>`).join("")
+      : msg;
+    document.getElementById("kosherModalMsg").innerHTML = content;
+    document.getElementById("kosherModal").classList.remove("hidden");
+  }
 
-// Make sure the close button works
-document.getElementById("closeKosherModal").onclick = () => {
-  document.getElementById("kosherModal").classList.add("hidden");
-};
+  document.getElementById("closeKosherModal").onclick = () => {
+    document.getElementById("kosherModal").classList.add("hidden");
+  };
 
-// Main click handler for recipe generation
-document.getElementById("generateRecipeBtn").onclick = async () => {
-  const cuisine = document.getElementById("cuisineSelect").value;
-  const ingredients = Array.from(selected);
-  
-  console.log("🚀 RECIPE GENERATION WITH BUSINESS MODEL!");
-  console.log("Cuisine selected:", cuisine);
-  console.log("Ingredients selected:", ingredients);
-  console.log("Dish type selected:", selectedDishType);
-
-  // Show loader
-  document.getElementById("videoBox").classList.remove("hidden");
-  document.getElementById("phasedLoader").innerText = "🎬 Creating your recipe trailer... Get ready for a tantalizing preview!";
-  document.getElementById("phasedLoader").classList.add("loader-dot");
-  document.getElementById("videoPreview").style.display = "none";
-
-  // [Keep all the kosher validation code as is...]
-  
-  try {
-    // Get recipe (but only teaser!)
-    const response = await fetch("/generate_recipe_instant", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ 
-        cuisine, 
-        ingredients,
-        dish_type: selectedDishType
-      })
-    });
+  // Handle alternative selection
+  async function selectAlternative(altIndex) {
+    const alternative = currentAlternatives[altIndex];
     
-    const result = await response.json();
+    console.log("🔄 User selected alternative:", alternative);
     
-    if (result.success) {
-      // Show TEASER only - NO VIDEO YET!
-      document.getElementById("phasedLoader").innerHTML = 
-        `<div class="text-center p-6 bg-gray-50 rounded">
-          <h3 class="text-2xl font-bold mb-4">${result.teaser}</h3>
-          <div class="text-gray-600 mb-4">
-            <div class="text-lg mb-2">🎬 Your 8-second recipe trailer is generating...</div>
-            <div class="text-sm">Watch the highlights, then unlock the full recipe!</div>
-          </div>
-          <div class="mt-6 p-4 bg-yellow-100 rounded">
-            <div class="text-2xl font-bold text-green-700">${result.price}</div>
-            <div class="text-sm text-gray-700">Full recipe with detailed steps, techniques & chef secrets</div>
-          </div>
-          <input type="hidden" id="recipeId" value="${result.recipe_id}" />
-          <input type="hidden" id="taskId" value="${result.task_id}" />
-        </div>`;
+    document.getElementById("phasedLoader").innerHTML = 
+      `<div class="text-center p-4">
+        <div class="loader-dot">🔄 Generating your ${alternative.cuisine} ${alternative.dish_type} recipe</div>
+      </div>`;
+    
+    try {
+      const response = await fetch("/generate_recipe_instant", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          cuisine: alternative.cuisine, 
+          ingredients: alternative.ingredients,
+          dish_type: alternative.dish_type,
+          is_alternative: true,
+          is_essential: alternative.is_essential || false,
+          chef_preference: selectedChef
+        })
+      });
       
-      // Poll for video status every 10 seconds
-      const pollInterval = setInterval(async () => {
-        const taskId = document.getElementById("taskId").value;
-        const statusResponse = await fetch(`/check_video_status/${taskId}`);
-        const status = await statusResponse.json();
+      const result = await response.json();
+      
+      if (result.success) {
+        handleSuccessfulRecipeGeneration(result);
+      } else if (result.no_match) {
+        document.getElementById("phasedLoader").innerHTML = 
+          `<div class="text-center p-6 bg-red-50 rounded">
+            <h3 class="text-xl font-bold text-red-700 mb-2">Unable to Generate Recipe</h3>
+            <p>We're having trouble finding recipes for this combination. Please try different ingredients or dish types.</p>
+          </div>`;
+      } else {
+        document.getElementById("phasedLoader").innerHTML = 
+          `<div class="text-center p-6 bg-red-50 rounded">
+            <h3 class="text-xl font-bold text-red-700 mb-2">Error</h3>
+            <p>${result.error || 'Failed to generate recipe. Please try again.'}</p>
+          </div>`;
+      }
+    } catch (error) {
+      console.error("Error selecting alternative:", error);
+      document.getElementById("phasedLoader").innerHTML = 
+        `<div class="text-center p-6 bg-red-50 rounded">
+          <h3 class="text-xl font-bold text-red-700">Error</h3>
+          <p>Failed to generate alternative recipe. Please try again.</p>
+        </div>`;
+    }
+  }
+
+  // Handle successful recipe generation
+  function handleSuccessfulRecipeGeneration(result) {
+    document.getElementById("phasedLoader").innerHTML = 
+      `<div class="text-center p-6 bg-gray-50 rounded">
+        <h3 class="text-2xl font-bold mb-4">${result.recipe_title || result.teaser}</h3>
+        ${result.recipe_image ? `<img src="${result.recipe_image}" class="w-full max-w-md mx-auto rounded shadow mb-4" alt="${result.recipe_title}">` : ''}
+        <div class="text-gray-600 mb-4">
+          <div class="text-lg mb-2">🎬 Your 8-second recipe trailer is generating...</div>
+          <div class="text-sm">Watch the highlights, then unlock the full recipe!</div>
+        </div>
+        <div class="mt-6 p-4 bg-yellow-100 rounded">
+          <div class="text-2xl font-bold text-green-700">${result.price}</div>
+          <div class="text-sm text-gray-700">Full recipe with detailed steps, techniques & chef secrets</div>
+        </div>
+        <input type="hidden" id="recipeId" value="${result.recipe_id}" />
+        <input type="hidden" id="taskId" value="${result.task_id}" />
+      </div>`;
+    
+    const pollInterval = setInterval(async () => {
+      const taskId = document.getElementById("taskId").value;
+      const statusResponse = await fetch(`/check_video_status/${taskId}`);
+      const status = await statusResponse.json();
+      
+      if (status.ready || status.status === 'failed') {
+        clearInterval(pollInterval);
         
-        if (status.ready) {
-          clearInterval(pollInterval);
-          
-          // Calculate video source URL
-          let videoSrc = '';
-          if (status.local_path) {
-            // Extract filename from path
-            const filename = status.local_path.split('\\').pop().split('/').pop();
-            videoSrc = `/output/${filename}`;
-            
-            console.log("=== VIDEO DEBUG ===");
-            console.log("Video filename:", filename);
-            console.log("Video src:", videoSrc);
-            console.log("Full status object:", status);
-          } else if (status.video_url) {
-            videoSrc = status.video_url;
-          }
-          
-          // NOW show the video!
+        if (status.status === 'failed') {
+          // Video failed, but recipe still exists - show unlock button anyway
           document.getElementById("phasedLoader").innerHTML = 
             `<div class="text-center p-6 bg-gray-50 rounded">
-              <h3 class="text-2xl font-bold mb-4">${result.teaser}</h3>
-              <div class="mt-4 p-4 bg-green-100 rounded">
-                <div class="text-lg font-bold mb-2">✅ Your recipe trailer is ready!</div>
-                <video controls class="w-full rounded shadow mb-4" src="${videoSrc}">
-                  Your browser does not support the video tag.
-                </video>
+              <h3 class="text-2xl font-bold mb-4">${result.recipe_title || result.teaser}</h3>
+              ${result.recipe_image ? `<img src="${result.recipe_image}" class="w-full max-w-md mx-auto rounded shadow mb-4" alt="${result.recipe_title}">` : ''}
+              <div class="mt-4 p-4 bg-yellow-100 rounded">
+                <div class="text-sm text-gray-600 mb-2">⚠️ Video generation unavailable</div>
                 <input type="hidden" id="recipeId" value="${result.recipe_id}" />
                 <button onclick="purchaseRecipe()" 
                         class="bg-green-600 text-white px-6 py-3 rounded-lg font-bold text-lg hover:bg-green-700">
@@ -352,160 +438,342 @@ document.getElementById("generateRecipeBtn").onclick = async () => {
                 </button>
               </div>
             </div>`;
-          
-          console.log("Video displayed with source:", videoSrc);
+          return;
         }
-      }, 10000); // Check every 10 seconds
+        
+        let videoSrc = '';
+        if (status.local_path) {
+          const filename = status.local_path.split('\\').pop().split('/').pop();
+          videoSrc = `/output/${filename}`;
+        } else if (status.video_url) {
+          videoSrc = status.video_url;
+        }
+        
+    document.getElementById("phasedLoader").innerHTML = 
+      `<div class="text-center p-6 bg-gray-50 rounded">
+        <h3 class="text-2xl font-bold mb-4">${result.recipe_title || result.teaser}</h3>
+        ${result.recipe_image ? `<img src="${result.recipe_image}" class="w-full max-w-md mx-auto rounded shadow mb-4" alt="${result.recipe_title}">` : ''}
+            <div class="mt-4 p-4 bg-green-100 rounded">
+              <div class="text-lg font-bold mb-2">✅ Your recipe trailer is ready!</div>
+              <video controls class="w-full rounded shadow mb-4" src="${videoSrc}">
+                Your browser does not support the video tag.
+              </video>
+              <input type="hidden" id="recipeId" value="${result.recipe_id}" />
+              <button onclick="purchaseRecipe()" 
+                      class="bg-green-600 text-white px-6 py-3 rounded-lg font-bold text-lg hover:bg-green-700">
+                🔓 Unlock Full Recipe for ${result.price}
+              </button>
+            </div>
+          </div>`;
+      }
+    }, 3000);
+  }
+
+  // Chef selection handler
+  function selectChef(chefType) {
+    selectedChef = chefType;
+    document.getElementById("chefSelectionModal").classList.add("hidden");
+    console.log("👨‍🍳 Chef selected:", chefType);
+    generateRecipeWithChef();
+  }
+
+  // Generate recipe with selected chef
+  async function generateRecipeWithChef() {
+    const cuisine = document.getElementById("cuisineSelect").value;
+    const ingredients = Array.from(selected);
+    
+    console.log("🚀 RECIPE GENERATION WITH CHEF:", selectedChef);
+    console.log("Cuisine:", cuisine);
+    console.log("Ingredients:", ingredients);
+    console.log("Dish type:", selectedDishType);
+
+    document.getElementById("videoBox").classList.remove("hidden");
+    document.getElementById("phasedLoader").innerText = "🔍 Searching for your perfect recipe...";
+    document.getElementById("phasedLoader").classList.add("loader-dot");
+    document.getElementById("videoPreview").style.display = "none";
+
+    if (cuisine === "jewish") {
+      const validationResponse = await fetch("/validate_ingredients", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ingredients, mode: "jewish" })
+      });
       
-    } else {
-      document.getElementById("phasedLoader").innerText = "❌ Recipe generation failed.";
+      const validation = await validationResponse.json();
+      
+      if (validation.problems && validation.problems.length > 0) {
+        document.getElementById("phasedLoader").innerText = "";
+        document.getElementById("videoBox").classList.add("hidden");
+        const errorMessages = validation.problems.map(p => p.error || `${p.slug} - Unknown issue`);
+        showKosherModal("⚠️ Kosher Validation", errorMessages);
+        return;
+      }
     }
     
-  } catch (error) {
-    document.getElementById("phasedLoader").innerText = "❌ Error contacting server.";
-    console.error("Recipe generation error:", error);
-  }
-};
-
-
-// Add purchase function
-function purchaseRecipe() {
-  const recipeId = document.getElementById("recipeId").value;
-  
-  // Fetch the full recipe
-  fetch(`/get_full_recipe/${recipeId}`)
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        // Display the full recipe
-        displayFullRecipe(data.recipe);
-      } else {
-        alert("Recipe not found!");
+    try {
+      const response = await fetch("/generate_recipe_instant", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          cuisine, 
+          ingredients,
+          dish_type: selectedDishType,
+          chef_preference: selectedChef
+        })
+      });
+      
+      const result = await response.json();
+      
+      if (!result.success && result.no_match) {
+        console.log("🤔 No direct match - showing alternatives");
+        currentAlternatives = result.alternatives;
+        
+        document.getElementById("phasedLoader").innerHTML = 
+          `<div class="bg-yellow-50 border-2 border-yellow-400 rounded-lg p-6">
+            <h3 class="text-xl font-bold mb-3 text-gray-800">🤔 ${result.message}</h3>
+            <p class="text-gray-700 mb-4">${result.reason}</p>
+            
+            <h4 class="font-semibold mb-3">Try one of these alternatives:</h4>
+            <div class="space-y-3">
+              ${result.alternatives.map((alt, idx) => `
+                <button onclick="selectAlternative(${idx})" 
+                        class="w-full text-left p-4 bg-white border-2 border-gray-300 rounded-lg hover:border-green-500 hover:bg-green-50 transition-all">
+                  <div class="font-semibold text-lg">
+                    ${alt.cuisine.charAt(0).toUpperCase() + alt.cuisine.slice(1)} 
+                    ${alt.dish_type.replace('-', ' ').charAt(0).toUpperCase() + alt.dish_type.replace('-', ' ').slice(1)}
+                  </div>
+                  <div class="text-sm text-gray-600 mt-1">
+                    ${alt.reason}
+                  </div>
+                  <div class="text-xs text-gray-500 mt-2">
+                    Confidence: ${Math.round(alt.confidence * 100)}%
+                  </div>
+                </button>
+              `).join('')}
+            </div>
+            
+            <div class="mt-4 pt-4 border-t border-gray-300">
+              <p class="text-sm text-gray-600">
+                Searched ${result.apis_checked} recipe databases • 
+                Originally requested: ${result.original_request.cuisine} ${result.original_request.dish_type}
+              </p>
+            </div>
+          </div>`;
+        
+        return;
       }
+      
+      if (result.success) {
+        handleSuccessfulRecipeGeneration(result);
+      } else {
+        document.getElementById("phasedLoader").innerText = "❌ Recipe generation failed.";
+      }
+      
+    } catch (error) {
+      document.getElementById("phasedLoader").innerText = "❌ Error contacting server.";
+      console.error("Recipe generation error:", error);
+    }
+  }
+
+  // Main recipe generation button - shows chef selection
+  document.getElementById("generateRecipeBtn").onclick = async () => {
+    const cuisine = document.getElementById("cuisineSelect").value;
+    const ingredients = Array.from(selected);
+    
+    if (!cuisine) {
+      alert("Please select a cuisine first!");
+      return;
+    }
+    
+    if (ingredients.length === 0) {
+      alert("Please select at least one ingredient!");
+      return;
+    }
+
+    document.getElementById("chefSelectionModal").classList.remove("hidden");
+  };
+
+  // Purchase/unlock recipe function
+  function purchaseRecipe() {
+    const recipeId = document.getElementById("recipeId").value;
+    
+    console.log("🔓 Unlocking recipe:", recipeId);
+    
+    document.getElementById("phasedLoader").innerHTML = 
+      `<div class="text-center p-4">
+        <div class="loader-dot">🔓 Unlocking your recipe</div>
+      </div>`;
+    
+    fetch(`/get_full_recipe/${recipeId}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          displayFullRecipe(data.recipe);
+        } else {
+          alert("Recipe not found!");
+        }
+      })
+      .catch(error => {
+        console.error("Error fetching recipe:", error);
+        alert("Error unlocking recipe. Please try again.");
+      });
+  }
+
+  function displayFullRecipe(recipe) {
+    const ingredients = recipe.all_ingredients || recipe.ingredients || [];
+    
+    const recipeHTML = `
+      <div class="p-6 bg-white rounded-lg shadow-lg border-2 border-green-500">
+        <div class="mb-4 p-3 bg-green-100 rounded">
+          <span class="text-green-700 font-bold">✅ Recipe Unlocked!</span>
+        </div>
+        
+        <h2 class="text-3xl font-bold mb-4">${recipe.title}</h2>
+        
+        <div class="flex gap-4 text-gray-600 mb-6">
+          <span>🍽️ ${recipe.cuisine}</span>
+          <span>👥 ${recipe.servings || 4} servings</span>
+          <span>⏱️ ${(recipe.prep_time || 15) + (recipe.cook_time || 30)} minutes</span>
+        </div>
+        
+        <div class="grid md:grid-cols-2 gap-6">
+          <div>
+            <h3 class="text-xl font-bold mb-3 text-green-700">📝 Ingredients:</h3>
+            <ul class="space-y-2">
+              ${ingredients.map(ing => `
+                <li class="flex items-start">
+                  <span class="text-green-500 mr-2">•</span>
+                  <span>${ing.amount || ''} ${ing.name || ing.item || ing}</span>
+                </li>
+              `).join('')}
+            </ul>
+          </div>
+          
+          <div>
+            <h3 class="text-xl font-bold mb-3 text-green-700">👨‍🍳 Instructions:</h3>
+              <ol class="space-y-3">
+              ${(recipe.steps || recipe.instructions || []).map((step, idx) => `
+                <li class="flex items-start">
+                  <span class="bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm mr-3 flex-shrink-0">
+                    ${idx + 1}
+                  </span>
+                  <span>${step.instruction || step.text || step}</span>
+                </li>
+              `).join('')}
+            </ol>
+          </div>
+        </div>
+        
+        <div class="mt-6 p-4 bg-gray-100 rounded">
+          <h4 class="font-bold mb-2">💡 Chef's Tips:</h4>
+          <p class="text-gray-700">${recipe.chef_notes || 'Enjoy your homemade ' + recipe.title + '!'}</p>
+        </div>
+        
+        <button onclick="window.print()" 
+                class="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+          🖨️ Print Recipe
+        </button>
+      </div>
+    `;
+    
+    document.getElementById("phasedLoader").innerHTML = recipeHTML;
+    document.getElementById("videoBox").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  // Ingredient fetch & rendering
+  fetch("/ingredients")
+    .then(res => res.json())
+    .then(data => {
+      ingredients = data;
+      populateCuisineOptions();
+      populateTypeButtons();
+      renderIngredients(ingredients);
+      ingredientsReady = true;
     });
-}
 
-function displayFullRecipe(recipe) {
-  // Show the recipe in a nice format
-  const recipeHTML = `
-    <div class="p-6 bg-white rounded shadow">
-      <h2 class="text-3xl font-bold mb-4">${recipe.title}</h2>
-      <p class="text-gray-600 mb-4">${recipe.cuisine} • ${recipe.servings} servings • ${recipe.prep_time + recipe.cook_time} minutes</p>
-      
-      <h3 class="text-xl font-bold mb-2">Ingredients:</h3>
-      <ul class="list-disc ml-6 mb-4">
-        ${recipe.all_ingredients.map(ing => `<li>${ing.amount} ${ing.name}</li>`).join('')}
-      </ul>
-      
-      <h3 class="text-xl font-bold mb-2">Instructions:</h3>
-      <ol class="list-decimal ml-6">
-        ${recipe.steps.map(step => `<li class="mb-2">${step.instruction}</li>`).join('')}
-      </ol>
-    </div>
-  `;
-  
-  document.getElementById("phasedLoader").innerHTML = recipeHTML;
-}
+  function populateCuisineOptions() {
+    const c = new Set();
+    ingredients.forEach(i => i.cuisine.forEach(x => c.add(x)));
+    [...c].sort().forEach(cc => {
+      const o = document.createElement("option");
+      o.value = cc;
+      o.textContent = cc.charAt(0).toUpperCase() + cc.slice(1);
+      cuisineSelect.appendChild(o);
+    });
+  }
 
+  function populateTypeButtons() {
+    const types = [...new Set(ingredients.map(i => i.type))].sort();
+    types.forEach(t => {
+      if (t === "meat" || t === "fish") return;
+      const b = document.createElement("button");
+      b.textContent = t.charAt(0).toUpperCase() + t.slice(1);
+      b.className = "w-full px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 text-sm font-medium";
+      b.onclick = () => renderIngredients(ingredients.filter(i => i.type === t));
+      document.getElementById("typeFilter").appendChild(b);
+    });
+  }
 
-// Ingredient fetch & rendering
-fetch("/ingredients")
- .then(res => res.json())
- .then(data => {
-   ingredients = data;
-   populateCuisineOptions();
-   populateTypeButtons();
-   renderIngredients(ingredients);
-   ingredientsReady = true;
- });
+  function renderIngredients(data) {
+    grid.innerHTML = "";
 
-function populateCuisineOptions() {
- const c = new Set();
- ingredients.forEach(i => i.cuisine.forEach(x => c.add(x)));
- [...c].sort().forEach(cc => {
-   const o = document.createElement("option");
-   o.value = cc;
-   o.textContent = cc.charAt(0).toUpperCase() + cc.slice(1);
-   cuisineSelect.appendChild(o);
- });
-}
+    data.forEach(i => {
+      const card = document.createElement("div");
+      card.className = "relative border rounded shadow hover:scale-105 transition-transform";
+      card.onclick = () => toggleSelection(i.slug, card);
 
-function populateTypeButtons() {
- const types = [...new Set(ingredients.map(i => i.type))].sort();
- types.forEach(t => {
-   if (t === "meat" || t === "fish") return;
-   const b = document.createElement("button");
-   b.textContent = t.charAt(0).toUpperCase() + t.slice(1);
-   b.className = "w-full px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 text-sm font-medium";
-   b.onclick = () => renderIngredients(ingredients.filter(i => i.type === t));
-   document.getElementById("typeFilter").appendChild(b);
- });
-}
+      const img = document.createElement("img");
+      img.src = `/static/images/ingredients/${i.image}`;
+      img.className = "w-full h-36 object-cover rounded-t";
+      img.alt = i.name;
 
-function renderIngredients(data) {
- grid.innerHTML = "";
+      const name = document.createElement("div");
+      name.textContent = i.name;
+      name.className = "text-center py-2 text-sm font-medium";
 
- data.forEach(i => {
-   const card = document.createElement("div");
-   card.className = "relative border rounded shadow hover:scale-105 transition-transform";
-   card.onclick = () => toggleSelection(i.slug, card);
+      const check = document.createElement("div");
+      check.id = `check-${i.slug}`;
+      check.className = "absolute top-2 right-2 w-5 h-5 rounded-full bg-green-500";
+      check.style.display = selected.has(i.slug) ? "block" : "none";
 
-   const img = document.createElement("img");
-   img.src = `/static/images/ingredients/${i.image}`;
-   img.className = "w-full h-36 object-cover rounded-t";
-   img.alt = i.name;
+      if (selected.has(i.slug)) {
+        card.classList.add("ring-2", "ring-green-500");
+      }
 
-   const name = document.createElement("div");
-   name.textContent = i.name;
-   name.className = "text-center py-2 text-sm font-medium";
+      card.append(img, name, check);
+      grid.appendChild(card);
+    });
+  }
 
-   const check = document.createElement("div");
-   check.id = `check-${i.slug}`;
-   check.className = "absolute top-2 right-2 w-5 h-5 rounded-full bg-green-500";
-   check.style.display = selected.has(i.slug) ? "block" : "none";
+  function toggleSelection(slug, card) {
+    const c = document.getElementById(`check-${slug}`);
+    if (selected.has(slug)) {
+      selected.delete(slug);
+      c.style.display = "none";
+      card.classList.remove("ring-2", "ring-green-500");
+    } else {
+      selected.add(slug);
+      c.style.display = "block";
+      card.classList.add("ring-2", "ring-green-500");
+    }
+    updateSelectionBar();
+  }
 
-   // If selected, apply visual highlight
-   if (selected.has(i.slug)) {
-     card.classList.add("ring-2", "ring-green-500");
-   }
+  function updateSelectionBar() {
+    const n = selected.size;
+    document.getElementById("selectionCount").textContent = `${n} ingredient${n !== 1 ? "s" : ""} selected`;
+    selectionBar.style.display = n > 0 ? "flex" : "none";
+  }
 
-   card.append(img, name, check);
-   grid.appendChild(card);
- });
-}
-
-function toggleSelection(slug, card) {
- const c = document.getElementById(`check-${slug}`);
- if (selected.has(slug)) {
-   selected.delete(slug);
-   c.style.display = "none";
-   card.classList.remove("ring-2", "ring-green-500");
- } else {
-   selected.add(slug);
-   c.style.display = "block";
-   card.classList.add("ring-2", "ring-green-500");
- }
- updateSelectionBar();
-}
-
-function updateSelectionBar() {
- const n = selected.size;
- document.getElementById("selectionCount").textContent = `${n} ingredient${n !== 1 ? "s" : ""} selected`;
- selectionBar.style.display = n > 0 ? "flex" : "none";
-}
-
-cuisineSelect.onchange = e => {
- // Clear previous selections on cuisine switch
- selected.clear();
- document.querySelectorAll("[id^='check-']").forEach(el => el.style.display = "none");
- document.querySelectorAll(".ring-green-500").forEach(el => {
-   el.classList.remove("ring-2", "ring-green-500");
- });
- updateSelectionBar();
-
- // Load filtered ingredients
- renderIngredients(ingredients.filter(i => i.cuisine.includes(e.target.value)));
-};
+  cuisineSelect.onchange = e => {
+    selected.clear();
+    document.querySelectorAll("[id^='check-']").forEach(el => el.style.display = "none");
+    document.querySelectorAll(".ring-green-500").forEach(el => {
+      el.classList.remove("ring-2", "ring-green-500");
+    });
+    updateSelectionBar();
+    renderIngredients(ingredients.filter(i => i.cuisine.includes(e.target.value)));
+  };
 
   document.getElementById("surpriseBtn").onclick = () => {
     const allC = [...new Set(ingredients.flatMap(i => i.cuisine))];
@@ -539,7 +807,7 @@ cuisineSelect.onchange = e => {
     renderIngredients(ingredients.filter(i => i.type === type));
   }
 
-  // === Generate Video ===
+  // Generate Video
   document.getElementById("generateVideoBtn").onclick = async () => {
     const res = await fetch("/generate_video", {
       method: "POST",
@@ -615,7 +883,7 @@ cuisineSelect.onchange = e => {
     }
   });
 
-  // === Dish‑Type Selector Logic ===
+  // Dish-Type Selector Logic
   const dishTypes = [
     {
       id: "curry",
@@ -704,7 +972,7 @@ cuisineSelect.onchange = e => {
   }
 
   function handleDishCardClick(dishType) {
-    selectedDishType = dishType; // Store selected dish type
+    selectedDishType = dishType;
     if (cuisineSelect) cuisineSelect.value = "";
     renderIngredients(ingredients);
     showMainInterface();
@@ -716,7 +984,7 @@ cuisineSelect.onchange = e => {
     dishTypes.forEach(dt => {
       const card = document.createElement("div");
       card.className = "dish-card cursor-pointer rounded-lg overflow-hidden shadow-lg hover:shadow-2xl bg-white transition-all flex flex-col p-4";
-      card.onclick = () => handleDishCardClick(dt.id); // Pass dish type ID
+      card.onclick = () => handleDishCardClick(dt.id);
       
       const img = document.createElement("img");
       img.src = dt.image;

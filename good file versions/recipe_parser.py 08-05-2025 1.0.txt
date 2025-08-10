@@ -1,0 +1,615 @@
+"""
+The Wise Parser - Extracts hero moments from recipes for video generation
+Philosophy: Humble, bounded, and wise - extracts, never creates
+Now with Narrative Intelligence: tells stories, not just moments
+"""
+
+import re
+from typing import List, Dict, Optional, Tuple
+
+class WiseRecipeParser:
+    """Extracts 3-4 key visual moments from recipes for 8-second videos"""
+    
+    def __init__(self):
+        # EXPANDED hero moment indicators - comprehensive coverage
+        self.hero_patterns = {
+            'distinctive_techniques': [
+                # Pastry work
+                'puff pastry', 'phyllo', 'filo', 'shortcrust', 'choux', 'croissant',
+                'lattice', 'crimp', 'fold', 'roll out', 'blind bake', 'dock',
+                'egg wash', 'brush with egg', 'beaten egg', 'egg yolk',
+                'pastry over', 'over the top', 'pie dish', 'rim', 'edges', 
+                
+                # Fire techniques
+                'flambé', 'flame', 'ignite', 'torch', 'char', 'blacken', 'scorch',
+                
+                # Browning/coloring
+                'caramelize', 'brûlée', 'golden brown', 'golden-brown', 'bronzed',
+                'glazed', 'lacquered', 'burnished', 'toasted', 'charred',
+                
+                # Assembly/decoration
+                'layer', 'stack', 'assemble', 'decorate', 'garnish', 'plate',
+                'pipe', 'swirl', 'drizzle', 'dust', 'sprinkle', 'arrange',
+                
+                # Specialized cooking
+                'sous vide', 'confit', 'cure', 'smoke', 'pickle', 'ferment',
+                'deglaze', 'emulsify', 'clarify', 'temper', 'bloom', 'proof'
+            ],
+            
+            'visual_transformations': [
+                # Basic visual actions
+                'brush', 'lay', 'place', 'cover', 'spread', 'coat', 'dip',
+                'fill', 'fold', 'seal', 'press', 'shape',
+                
+                # Rising/expanding
+                'rise', 'rising', 'puff up', 'puff', 'double in size', 'expand',
+                'inflate', 'balloon', 'grow', 'swell', 'proof', 'ferment',
+                
+                # Melting/liquifying
+                'melt', 'melting', 'liquify', 'dissolve', 'liquefy', 'render',
+                
+                # Bubbling/boiling
+                'bubble', 'bubbling', 'simmer', 'boil', 'rolling boil', 'foam',
+                'froth', 'effervesce', 'percolate',
+                
+                # Texture changes
+                'crisp', 'crispy', 'crunchy', 'firm up', 'gel', 'thicken',
+                'reduce', 'concentrate', 'crystallize', 'solidify', 'coagulate',
+                'reduced by half', 'volume of liquid', 'reduce until',
+                
+                # Color changes
+                'brown', 'golden', 'amber', 'mahogany', 'bronze', 'darken',
+                'lighten', 'redden', 'turn golden', 'color develops',
+                'browned on each side', 'until golden', 'golden-brown',
+                
+                # Time-based visual cues
+                'until golden', 'until browned', 'until crispy', 'until bubbling',
+                'until reduced', 'until thickened', 'until set', 'until firm',
+                
+                # Finishing
+                'glaze', 'shine', 'gloss', 'sheen', 'lustrous', 'mirror-like'
+            ],
+            
+            'signature_actions': [
+                # Core cooking actions
+                'fry', 'sear', 'sauté', 'cook', 'heat', 'warm', 'transfer',
+
+                # Wrapping/encasing
+                'stuff', 'wrap', 'encase', 'enrobe', 'coat', 'dredge', 'bread',
+                'batter', 'crust', 'seal', 'fold over', 'tuck', 'roll up',
+                
+                # Liquid applications
+                'baste', 'brush with', 'drizzle over', 'pour over', 'ladle',
+                'spoon over', 'cascade', 'ribbon', 'stream', 'flood',
+                
+                # Cutting/shaping
+                'julienne', 'brunoise', 'chiffonade', 'dice', 'mince', 'shave',
+                'ribbon', 'mandoline', 'tournée', 'score', 'butterfly',
+                
+                # Final touches
+                'torch', 'broil', 'gratinate', 'finish under', 'crown with',
+                'top with', 'scatter over', 'nestle', 'cascade', 'fan out'
+            ],
+            
+            'dramatic_moments': [
+                # Temperature contrasts
+                'shock in ice', 'plunge into', 'flash freeze', 'blast chill',
+                'sear over high', 'quick fry', 'flash in pan',
+                
+                # Dramatic techniques
+                'tableside', 'en papillote', 'salt crust', 'hay smoking',
+                'cedar plank', 'banana leaf', 'parchment paper', 'foil packet',
+                
+                # Molecular/modern
+                'spherification', 'gelification', 'foam', 'espuma', 'dust',
+                'crisp', 'glass', 'chip', 'powder', 'snow',
+                
+                # Traditional spectacular
+                'whole roasted', 'spit roast', 'tandoor', 'wood-fired',
+                'coal roasted', 'salt baked', 'clay baked', 'pit cooked'
+            ]
+        }
+        
+        # Dish-type specific priorities
+        self.dish_priorities = {
+            'pie': ['pastry over', 'lay', 'brush with egg', 'beaten egg', 'crimp', 'edges', 'rim', 'golden-brown', 'puff pastry'],
+            'stew': ['reduce', 'reduced by half', 'simmer', 'bubble', 'thicken', 'brown', 'sear'],
+            'roast': ['sear', 'brown', 'baste', 'golden', 'crispy', 'rest', 'carve'],
+            'baked': ['rise', 'golden', 'puff', 'crisp', 'brush', 'glaze', 'brown'],
+            'fried': ['sizzle', 'golden', 'crispy', 'flip', 'bubble', 'float', 'drain'],
+            'grilled': ['char', 'grill marks', 'flame', 'sear', 'blacken', 'smoke'],
+            'stir-fry': ['toss', 'flame', 'sizzle', 'coat', 'glisten', 'wok'],
+            'steamed': ['steam', 'moist', 'tender', 'wrap', 'basket', 'vapor']
+        }
+        
+        # Hero shots - THE defining moment for each dish type
+        self.hero_shots = {
+            'pie': ['lay the pastry', 'over the top', 'cover with pastry', 'place the pastry', 'drape', 'top with pastry'],
+            'stew': ['ladle', 'thick and', 'rich sauce', 'tender meat'],
+            'roast': ['carve', 'rest', 'crackling', 'juices run'],
+            'baked': ['rise', 'golden top', 'spring back', 'dome'],
+            'fried': ['flip', 'both sides', 'float', 'golden and crispy'],
+            'grilled': ['grill marks', 'char lines', 'flame', 'sear marks'],
+            'stir-fry': ['toss', 'wok hei', 'high heat', 'constantly moving'],
+            'steamed': ['steam rises', 'tender', 'translucent', 'moist']
+        }
+
+        # Filler phrases to skip
+        self.skip_phrases = [
+            'preheat', 'set aside', 'remove from heat', 'let rest', 'let cool',
+            'set timer', 'prepare ingredients', 'wash', 'pat dry', 'room temperature',
+            'meanwhile', 'in the meantime', 'while waiting', 'clean', 'reserve',
+            'keep warm', 'transfer to plate', 'repeat process', 'continue',
+            'occasionally', 'if needed', 'taste for seasoning', 'adjust seasoning',
+            'gather ingredients', 'read through', 'have ready', 'to serve', 'serve',
+            'refrigerate until', 'chill until', 'freeze until', 'cool completely',
+            'bring to room temperature', 'let stand', 'allow to rest',
+            'stir occasionally', 'stir frequently', 'check frequently',
+            'line with parchment', 'grease the pan', 'spray with cooking spray',
+            'season to taste', 'salt to taste', 'add salt and pepper',
+            'discard', 'strain and discard', 'remove and discard',
+            'cover with plastic wrap', 'cover with foil', 'cover tightly',
+            'see notes', 'see tip', 'optional', 'if desired',
+            'for serving', 'for garnish', 'to finish'
+        ]
+        
+        # Cooking stages for narrative flow
+        self.cooking_stages = {
+            'preparation': ['chop', 'dice', 'slice', 'mince', 'prepare', 'season', 'marinate', 'mix', 'combine', 'toss'],
+            'initial_cooking': ['heat', 'sear', 'brown', 'fry', 'sauté', 'cook', 'simmer'],
+            'transformation': ['reduce', 'thicken', 'caramelize', 'melt', 'dissolve', 'bubble', 'add the wine'],
+            'assembly': ['transfer', 'layer', 'stack', 'fill', 'stuff', 'wrap', 'cover', 'lay', 'place', 'arrange', 'brush the rim'],
+            'finishing': ['glaze', 'brush', 'garnish', 'crimp', 'seal', 'score', 'dust', 'drizzle', 'trim'],
+            'final_cooking': ['bake', 'roast', 'grill', 'broil', 'golden', 'crispy', 'done', 'golden-brown', 'place in the oven']
+        }
+        
+        # Narrative connections - what actions logically follow others
+        self.narrative_connections = {
+            'preparation': ['initial_cooking', 'assembly'],
+            'initial_cooking': ['transformation', 'assembly'],
+            'transformation': ['assembly', 'finishing'],
+            'assembly': ['finishing', 'final_cooking'],
+            'finishing': ['final_cooking'],
+            'final_cooking': []
+        }
+
+    def extract_hero_moments(self, recipe: Dict) -> List[str]:
+        """
+        Extract 3-4 hero moments from a recipe with narrative flow
+        Returns a story, not just moments
+        """
+        if not recipe or 'steps' not in recipe:
+            return []
+        
+        # Get dish type for prioritization
+        dish_type = recipe.get('dish_type', '').lower()
+        title = recipe.get('title', '').lower()
+        
+        # Detect dish type from title if needed
+        if 'pie' in title:
+            dish_type = 'pie'
+        elif 'stew' in title or 'braise' in title:
+            dish_type = 'stew'
+        elif 'roast' in title:
+            dish_type = 'roast'
+        
+        # Extract all possible moments with their metadata
+        all_moments = self._extract_all_moments_with_metadata(recipe.get('steps', []), dish_type)
+        
+        # Build narrative sequence
+        narrative_moments = self._build_narrative_sequence(all_moments, dish_type, recipe.get('steps', []))
+        
+        return narrative_moments[:4]
+    
+    def _extract_all_moments_with_metadata(self, steps: List[Dict], dish_type: str) -> List[Dict]:
+        """Extract all moments with step number, stage, and priority"""
+        all_moments = []
+        
+        for step in steps:
+            step_num = step.get('step', 0)
+            instruction = step.get('instruction', '')
+
+            # DEBUG: See what patterns we find
+            if step_num in [4, 6, 11]:  # Key steps we care about
+                print(f"   📌 Step {step_num} patterns check: {instruction[:60]}...")
+
+            # Skip pure filler steps
+            if self._is_pure_filler(instruction):
+                continue
+
+            # DEBUG: See what's being processed
+            print(f"🔍 Processing step {step_num}: {instruction[:50]}...")
+            
+            # Extract ALL patterns from this instruction
+            moments_in_step = self._extract_all_patterns_from_instruction(instruction, dish_type, step_num)
+            
+            for moment in moments_in_step:
+                stage = self._determine_cooking_stage(moment['text'])
+                is_hero = self._is_hero_shot(moment['text'], dish_type)
+                is_priority = self._is_priority_moment(moment['text'], dish_type)
+                
+                all_moments.append({
+                    'text': moment['text'],
+                    'step': step_num,
+                    'stage': stage,
+                    'is_hero': is_hero,
+                    'is_priority': is_priority,
+                    'pattern': moment['pattern']
+                })
+        
+        return all_moments
+    
+    def _is_pure_filler(self, instruction: str) -> bool:
+        """Check if entire instruction is just filler"""
+        instruction_lower = instruction.lower()
+        filler_only = ['preheat the oven', 'set aside to cool', 'let rest', 'remove from the oven']
+        return any(filler in instruction_lower for filler in filler_only)
+    
+    def _extract_all_patterns_from_instruction(self, instruction: str, dish_type: str, step_num: int) -> List[Dict]:
+        """Extract ALL patterns from a single instruction, not just the first"""
+        found_moments = []
+        instruction_lower = instruction.lower()
+        
+        # DEBUG: See what patterns we find
+        if step_num in [4, 6, 11]:  # Key steps we care about
+            print(f"   📌 Step {step_num} patterns check: {instruction[:60]}...")
+
+        # Split instruction into segments for compound sentences
+        segments = self._smart_split_instruction(instruction)
+
+        # DEBUG: See what segments were created
+        if step_num in [4, 6, 11]:
+            print(f"      Segments: {segments}")
+        
+        for segment in segments:
+            segment_lower = segment.lower()
+            
+            # DEBUG: Track segment processing
+            if step_num in [4, 6] and len(segment.split()) >= 3:
+                print(f"         Checking segment: '{segment}'")
+
+            # Skip if it's a serving instruction
+            if any(serve_word in segment_lower for serve_word in ['to serve', 'serve', 'plate', 'alongside']):
+                continue
+                
+            # Check all pattern categories - PRIORITIZE signature_actions for cooking steps
+            found_in_segment = False
+            pattern_order = ['signature_actions', 'visual_transformations', 'distinctive_techniques', 'dramatic_moments']
+
+            for pattern_type in pattern_order:
+                if pattern_type not in self.hero_patterns:
+                    continue
+                    
+                patterns = self.hero_patterns[pattern_type]
+                
+                # Debug which pattern category we're checking
+                if step_num in [4, 6] and pattern_type in ['signature_actions', 'visual_transformations']:
+                    print(f"            🔍 Checking {pattern_type}: {patterns[:5]}...")
+
+                for pattern in patterns:
+                    if pattern in segment_lower:
+                        print(f"            ✅ FOUND: pattern '{pattern}' in '{segment}'")
+                        found_moments.append({
+                            'text': segment.strip(),
+                            'pattern': pattern,
+                            'pattern_type': pattern_type
+                        })
+                        found_in_segment = True
+                        break  # Break inner pattern loop only
+                
+                if found_in_segment:
+                    break  # Break pattern_type loop only after finding one pattern per segment
+
+        # Special handling for hero shots in compound sentences
+        for pattern in self.hero_shots.get(dish_type, []):
+            if pattern in instruction_lower:
+                # Extract the specific part containing the hero shot
+                hero_segment = self._extract_hero_segment(instruction, pattern)
+                if hero_segment and not any(m['text'] == hero_segment for m in found_moments):
+                    found_moments.append({
+                        'text': hero_segment,
+                        'pattern': pattern,
+                        'pattern_type': 'hero_shot'
+                    })
+        
+        return found_moments
+    
+    def _smart_split_instruction(self, instruction: str) -> List[str]:
+        """Split instruction intelligently to handle compound sentences"""
+        # Prevent fragmenting important phrases before splitting
+        # - "or until" often part of cooking duration (e.g., "cook for 20 min, or until golden")
+        # - "then place" is a complete action
+        # - "and lay" is a key pastry instruction
+        instruction = instruction.replace(', or until', ' or until')
+        instruction = instruction.replace(', then place', ' then place')
+        segments = re.split(r'[,;.]|\bthen\b|\band\b(?! lay)', instruction)
+        
+        # Clean and filter segments
+        cleaned_segments = []
+        for segment in segments:
+            cleaned = segment.strip()
+            if cleaned and len(cleaned.split()) >= 3:  # At least 3 words
+                cleaned_segments.append(cleaned)
+        
+        return cleaned_segments
+    
+    def _extract_hero_segment(self, instruction: str, pattern: str) -> str:
+        """Extract the specific segment containing a hero pattern"""
+        # Find the pattern location
+        pattern_lower = pattern.lower()
+        instruction_lower = instruction.lower()
+        
+        if pattern_lower not in instruction_lower:
+            return ""
+        
+        # Extract a meaningful chunk around the pattern
+        pos = instruction_lower.find(pattern_lower)
+        
+        # Look for natural boundaries
+        start = pos
+        end = pos + len(pattern)
+        
+        # Extend to include the complete action
+        words_before = instruction_lower[:pos].split()
+        words_after = instruction_lower[end:].split()
+        
+        # Include 2-3 words before if they're relevant
+        if len(words_before) >= 2:
+            verb_words = ['lay', 'place', 'put', 'drape', 'cover', 'brush', 'roll']
+            for i in range(min(3, len(words_before))):
+                if words_before[-(i+1)] in verb_words:
+                    start = instruction_lower.rfind(words_before[-(i+1)], 0, pos)
+                    break
+        
+        # Include words after to complete the phrase
+        if words_after:
+            end_words = min(4, len(words_after))
+            end = instruction.find(' ', end)
+            for _ in range(end_words - 1):
+                next_space = instruction.find(' ', end + 1)
+                if next_space > 0:
+                    end = next_space
+                else:
+                    break
+        
+        result = instruction[start:end].strip()
+        
+        # Capitalize first letter if needed
+        if result and result[0].islower():
+            result = result[0].upper() + result[1:]
+            
+        return result
+    
+    def _determine_cooking_stage(self, moment: str) -> str:
+        """Determine which cooking stage this moment belongs to"""
+        moment_lower = moment.lower()
+        
+        for stage, keywords in self.cooking_stages.items():
+            for keyword in keywords:
+                if keyword in moment_lower:
+                    return stage
+        
+        return 'general'
+    
+    def _build_narrative_sequence(self, all_moments: List[Dict], dish_type: str, all_steps: List[Dict]) -> List[str]:
+        """Build a coherent narrative from all extracted moments"""
+        # Sort moments by step number (ASCENDING for proper temporal order)
+        all_moments.sort(key=lambda x: x['step'])
+        
+        # Find the hero shot
+        hero_moment = None
+        for moment in all_moments:
+            if moment['is_hero']:
+                hero_moment = moment
+                break
+        
+        # Group moments by stage
+        staged_moments = {}
+        for stage in self.cooking_stages.keys():
+            staged_moments[stage] = [m for m in all_moments if m['stage'] == stage]
+        
+        # Build narrative following logical cooking flow
+        narrative = []
+        used_stages = set()
+        
+        # Follow the cooking flow
+        stage_order = ['preparation', 'initial_cooking', 'transformation', 'assembly', 'finishing', 'final_cooking']
+        
+        for stage in stage_order:
+            if staged_moments.get(stage):
+                # Pick the best moment from this stage
+                candidates = staged_moments[stage]
+                
+                # Prioritize hero shot if it's in this stage
+                if hero_moment and hero_moment['stage'] == stage:
+                    narrative.append(hero_moment)
+                    used_stages.add(stage)
+                    continue
+                
+                # Otherwise pick priority moments first
+                priority_candidates = [m for m in candidates if m['is_priority']]
+                if priority_candidates:
+                    narrative.append(priority_candidates[0])
+                elif candidates:
+                    narrative.append(candidates[0])
+                
+                used_stages.add(stage)
+                
+                # Stop at 4 moments
+                if len(narrative) >= 4:
+                    break
+        
+        # If we didn't get the hero shot yet, insert it at the appropriate position
+        if hero_moment and hero_moment not in narrative:
+            # Find the right position based on its stage
+            insert_position = self._find_narrative_position(hero_moment['stage'], narrative)
+            narrative.insert(insert_position, hero_moment)
+        
+        # Fill gaps in the narrative if needed
+        narrative = self._fill_narrative_gaps(narrative, all_moments, staged_moments)
+        
+        # Convert to text, maintaining temporal order
+        narrative_texts = []
+        for moment in narrative[:4]:
+            narrative_texts.append(moment['text'])
+        
+        return narrative_texts
+    
+    def _find_narrative_position(self, target_stage: str, narrative: List[Dict]) -> int:
+        """Find where to insert a moment based on its stage"""
+        stage_order = ['preparation', 'initial_cooking', 'transformation', 'assembly', 'finishing', 'final_cooking']
+        target_index = stage_order.index(target_stage) if target_stage in stage_order else 3
+        
+        # Find the right position in the narrative
+        for i, moment in enumerate(narrative):
+            moment_stage = moment.get('stage', 'general')
+            if moment_stage in stage_order:
+                moment_index = stage_order.index(moment_stage)
+                if moment_index > target_index:
+                    return i
+        
+        return len(narrative)
+    
+    def _fill_narrative_gaps(self, narrative: List[Dict], all_moments: List[Dict], staged_moments: Dict[str, List]) -> List[Dict]:
+        """Dynamically fill gaps in the narrative"""
+        if len(narrative) >= 4:
+            return narrative
+        
+        # Check what stages we have
+        covered_stages = set(m['stage'] for m in narrative)
+        
+        # Look for logical connections
+        for i in range(len(narrative) - 1):
+            current_stage = narrative[i]['stage']
+            next_stage = narrative[i + 1]['stage']
+            
+            # Check if there's a gap in the logical flow
+            if current_stage in self.narrative_connections:
+                expected_next = self.narrative_connections[current_stage]
+                
+                # If we jumped stages, look for connecting moments
+                if next_stage not in expected_next:
+                    # Find a connecting moment
+                    for bridge_stage in expected_next:
+                        if bridge_stage in staged_moments and bridge_stage not in covered_stages:
+                            candidates = staged_moments[bridge_stage]
+                            if candidates:
+                                # Insert the connecting moment
+                                narrative.insert(i + 1, candidates[0])
+                                covered_stages.add(bridge_stage)
+                                if len(narrative) >= 4:
+                                    return narrative[:4]
+                                break
+        
+        return narrative
+    
+    def _pick_best_moment_from_stage(self, stage_moments: List[Dict], dish_type: str) -> Optional[Dict]:
+        """Pick the most relevant moment from a cooking stage"""
+        if not stage_moments:
+            return None
+            
+        # Check for priority patterns first
+        for moment in stage_moments:
+            if moment['is_priority']:
+                return moment
+        
+        # Return the first moment from this stage (maintaining temporal order)
+        return stage_moments[0]
+    
+    def _is_priority_moment(self, moment: str, dish_type: str) -> bool:
+        """Check if moment contains priority patterns for dish type"""
+        if dish_type not in self.dish_priorities:
+            return False
+        
+        moment_lower = moment.lower()
+        priority_patterns = self.dish_priorities.get(dish_type, [])
+        
+        for pattern in priority_patterns:
+            if pattern in moment_lower:
+                return True
+        return False
+    
+    def _should_skip_moment(self, moment: str) -> bool:
+        """Check if moment should be skipped as filler"""
+        moment_lower = moment.lower()
+        
+        # Skip if contains filler phrases
+        for skip_phrase in self.skip_phrases:
+            if skip_phrase in moment_lower:
+                return True
+        
+        # Skip very short moments (likely fragments)
+        if len(moment.split()) < 4:
+            return True
+            
+        # Skip moments without visual action verbs
+        action_verbs = ['pour', 'mix', 'stir', 'cook', 'bake', 'fry', 'grill',
+                        'brown', 'sear', 'flip', 'roll', 'brush', 'spread', 'layer',
+                        'fold', 'crimp', 'cut', 'chop', 'slice', 'dice', 'lay', 'place',
+                        'cover', 'drape', 'top', 'fill', 'transfer']
+        
+        has_action = any(verb in moment_lower for verb in action_verbs)
+        if not has_action:
+            return True
+            
+        return False
+
+    def _is_hero_shot(self, moment: str, dish_type: str) -> bool:
+        """Check if this is THE defining moment for the dish"""
+        if dish_type not in self.hero_shots:
+            return False
+            
+        moment_lower = moment.lower()
+        hero_patterns = self.hero_shots.get(dish_type, [])
+        
+        for pattern in hero_patterns:
+            if pattern in moment_lower:
+                return True
+        return False
+    
+    def build_recipe_aware_prompt(self, base_prompt: str, hero_moments: List[str]) -> str:
+        """
+        Integrate hero moments into existing prompt with narrative flow
+        """
+        if not hero_moments:
+            return base_prompt
+            
+        # Build a narrative sequence description
+        narrative_sequence = self._create_narrative_description(hero_moments)
+        
+        # Find and replace the cooking sequence
+        if "COMPLETE COOKING SEQUENCE:" in base_prompt:
+            sequence = "COMPLETE COOKING SEQUENCE: " + narrative_sequence
+            parts = base_prompt.split("COMPLETE COOKING SEQUENCE:")
+            if len(parts) == 2:
+                # Find end of current sequence
+                after_sequence = parts[1]
+                # Look for the next major section
+                markers = ['Show food transformation', 'Professional', 'Audio:', 'traditional']
+                earliest_marker = len(after_sequence)
+                
+                for marker in markers:
+                    pos = after_sequence.find(marker)
+                    if pos > 0 and pos < earliest_marker:
+                        earliest_marker = pos
+                        
+                remaining = after_sequence[earliest_marker:] if earliest_marker < len(after_sequence) else ""
+                return parts[0] + sequence + ". " + remaining
+        
+        return base_prompt
+    
+    def _create_narrative_description(self, moments: List[str]) -> str:
+        """Create a flowing narrative from moments"""
+        if not moments:
+            return ""
+    
+        # Extract text from moment dictionaries if needed
+        if moments and isinstance(moments[0], dict):
+            moment_texts = [m.get('text', '') for m in moments]
+            return ". ".join(moment_texts)
+    
+        # Simply join with periods for clarity
+        return ". ".join(moments)
+
+# Global instance
+wise_parser = WiseRecipeParser()

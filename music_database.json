@@ -619,6 +619,66 @@
       "style": "traditional slovenian folk",
       "tempo": "culturally appropriate rhythm",
       "characteristics": "authentic slovenian musical elements"
+    },
+    "moldovan": {
+      "instruments": "traditional moldovan instruments",
+      "style": "traditional moldovan folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic moldovan musical elements"
+    },
+    "libyan": {
+      "instruments": "traditional libyan instruments",
+      "style": "traditional libyan folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic libyan musical elements"
+    },
+    "taiwanese": {
+      "instruments": "traditional taiwanese instruments",
+      "style": "traditional taiwanese folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic taiwanese musical elements"
+    },
+    "mongolian": {
+      "instruments": "traditional mongolian instruments",
+      "style": "traditional mongolian folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic mongolian musical elements"
+    },
+    "uzbek": {
+      "instruments": "traditional uzbek instruments",
+      "style": "traditional uzbek folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic uzbek musical elements"
+    },
+    "rwandan": {
+      "instruments": "traditional rwandan instruments",
+      "style": "traditional rwandan folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic rwandan musical elements"
+    },
+    "kyrgyz": {
+      "instruments": "traditional kyrgyz instruments",
+      "style": "traditional kyrgyz folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic kyrgyz musical elements"
+    },
+    "ugandan": {
+      "instruments": "traditional ugandan instruments",
+      "style": "traditional ugandan folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic ugandan musical elements"
+    },
+    "kazakh": {
+      "instruments": "traditional kazakh instruments",
+      "style": "traditional kazakh folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic kazakh musical elements"
+    },
+    "trinidadian": {
+      "instruments": "traditional trinidadian instruments",
+      "style": "traditional trinidadian folk",
+      "tempo": "culturally appropriate rhythm",
+      "characteristics": "authentic trinidadian musical elements"
     }
   }
 }

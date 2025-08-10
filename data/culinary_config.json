@@ -1,0 +1,81 @@
+{
+  "universal_basics": [
+    "water", "ice", "salt", "pepper", "black pepper", "white pepper",
+    "oil", "olive oil", "vegetable oil", "cooking oil", "canola oil",
+    "butter", "sugar", "flour", "cornstarch", "baking powder", "baking soda",
+    "vinegar", "rice vinegar", "apple cider vinegar", "white vinegar",
+    "stock", "broth", "vegetable broth", "chicken broth", "beef broth"
+  ],
+  "cultural_spices": {
+    "mexican": ["cumin", "chili powder", "paprika", "oregano", "cilantro", "lime", "coriander", "garlic", "onion powder"],
+    "italian": ["basil", "oregano", "rosemary", "thyme", "garlic", "parsley", "red pepper flakes"],
+    "chinese": ["ginger", "garlic", "soy sauce", "sesame oil", "star anise", "five spice", "rice vinegar", "shaoxing wine"],
+    "indian": ["turmeric", "cumin", "coriander", "garam masala", "cardamom", "mustard seeds", "curry leaves", "ginger", "garlic"],
+    "thai": ["lemongrass", "galangal", "kaffir lime", "thai basil", "fish sauce", "chili", "garlic", "shallots"],
+    "ethiopian": ["berbere", "mitmita", "korarima", "ajwain", "fenugreek", "ginger", "garlic"],
+    "japanese": ["miso", "mirin", "sake", "dashi", "soy sauce", "wasabi", "sesame seeds", "rice vinegar"],
+    "french": ["herbes de provence", "thyme", "bay leaf", "tarragon", "butter", "wine", "shallots"],
+    "greek": ["oregano", "lemon", "olive oil", "garlic", "dill", "mint", "cinnamon"],
+    "korean": ["gochujang", "doenjang", "sesame oil", "soy sauce", "garlic", "ginger", "scallions"],
+    "spanish": ["paprika", "saffron", "garlic", "olive oil", "parsley", "bay leaf"],
+    "vietnamese": ["fish sauce", "lime", "lemongrass", "mint", "cilantro", "thai basil", "garlic"],
+    "moroccan": ["ras el hanout", "cumin", "cinnamon", "ginger", "paprika", "preserved lemon", "olives"],
+    "british": ["mustard", "worcestershire", "thyme", "sage", "bay leaf", "black pepper"],
+    "german": ["caraway", "mustard", "paprika", "dill", "juniper berries", "bay leaf"],
+    "russian": ["dill", "sour cream", "paprika", "bay leaf", "black pepper", "garlic"],
+    "brazilian": ["cumin", "paprika", "bay leaf", "oregano", "garlic", "lime", "cilantro"],
+    "turkish": ["sumac", "cumin", "paprika", "mint", "red pepper", "oregano", "garlic"],
+    "lebanese": ["zaatar", "sumac", "allspice", "cinnamon", "mint", "parsley", "lemon"],
+    "persian": ["saffron", "turmeric", "sumac", "dried lime", "rose petals", "cinnamon", "cardamom"],
+    "malaysian": ["belacan", "tamarind", "lemongrass", "galangal", "chili", "coconut", "turmeric"],
+    "indonesian": ["sambal", "kecap manis", "galangal", "lemongrass", "tamarind", "coconut", "turmeric"],
+    "filipino": ["vinegar", "soy sauce", "bay leaf", "black pepper", "garlic", "fish sauce"],
+    "taiwanese": ["soy sauce", "rice wine", "sesame oil", "star anise", "five spice", "garlic", "ginger"],
+    "mongolian": ["soy sauce", "ginger", "garlic", "sesame", "scallions", "chili"],
+    "default": ["salt", "pepper", "garlic", "onion powder", "olive oil"]
+  },
+  "cooking_methods": {
+    "stir-fry": {
+      "heat": "high",
+      "time": "10-15 minutes",
+      "equipment": "wok or large skillet",
+      "technique": "constant movement, quick cooking"
+    },
+    "curry": {
+      "heat": "medium to low",
+      "time": "30-45 minutes",
+      "equipment": "pot or deep pan",
+      "technique": "simmer in liquid, build layers of flavor"
+    },
+    "baked-dish": {
+      "heat": "350-400°F",
+      "time": "30-60 minutes",
+      "equipment": "oven and baking dish",
+      "technique": "even heat, often covered then uncovered"
+    },
+    "soup": {
+      "heat": "medium to low",
+      "time": "45-90 minutes",
+      "equipment": "large pot",
+      "technique": "simmer to develop flavors"
+    },
+    "salad": {
+      "heat": "none",
+      "time": "10-15 minutes",
+      "equipment": "mixing bowl",
+      "technique": "fresh preparation, proper dressing"
+    },
+    "grilled": {
+      "heat": "medium-high",
+      "time": "10-30 minutes",
+      "equipment": "grill or grill pan",
+      "technique": "direct heat, char marks"
+    },
+    "pasta": {
+      "heat": "high for boiling, medium for sauce",
+      "time": "15-25 minutes",
+      "equipment": "pot for pasta, pan for sauce",
+      "technique": "al dente pasta, sauce integration"
+    }
+  }
+}

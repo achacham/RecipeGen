@@ -1,0 +1,30 @@
+{
+  "chicken": {
+    "includes": ["chicken", "chicken_breast", "chicken_thigh", "chicken_wing", "chicken_leg", "chicken_drumstick", "whole_chicken"],
+    "search_behavior": "inclusive"
+  },
+  "beef": {
+    "includes": ["beef", "ground_beef", "beef_steak", "beef_roast", "beef_brisket", "beef_ribs", "beef_chuck", "sirloin"],
+    "search_behavior": "inclusive"
+  },
+  "pork": {
+    "includes": ["pork", "ground_pork", "pork_chop", "pork_loin", "pork_shoulder", "pork_belly", "bacon", "ham"],
+    "search_behavior": "inclusive"
+  },
+  "fish": {
+    "includes": ["fish", "salmon", "tuna", "cod", "halibut", "tilapia", "sea_bass", "trout", "mackerel"],
+    "search_behavior": "inclusive"
+  },
+  "rice": {
+    "includes": ["rice", "white_rice", "brown_rice", "basmati_rice", "jasmine_rice", "arborio_rice", "wild_rice"],
+    "search_behavior": "inclusive"
+  },
+  "pasta": {
+    "includes": ["pasta", "spaghetti", "penne", "linguine", "fettuccine", "rigatoni", "fusilli", "macaroni", "lasagna"],
+    "search_behavior": "inclusive"
+  },
+  "cheese": {
+    "includes": ["cheese", "cheddar", "mozzarella", "parmesan", "swiss", "gouda", "brie", "feta", "ricotta"],
+    "search_behavior": "inclusive"
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "timestamp": "2025-08-07 10:30:15",
+  "summary": {
+    "total_tests": 6,
+    "passed": 3,
+    "success_rate": "50.0%"
+  },
+  "results": [
+    {
+      "test": "Mexican Chicken (Level 1)",
+      "expected_level": 1,
+      "actual_level": 1,
+      "success": true,
+      "time": 0.011995553970336914,
+      "recipe_title": "Crock Pot Chicken Baked Tacos"
+    },
+    {
+      "test": "Thai Green Curry (Level 2)",
+      "expected_level": 2,
+      "actual_level": 2,
+      "success": true,
+      "time": 1.3774299621582031,
+      "recipe_title": "Ayam Percik"
+    },
+    {
+      "test": "Taiwanese Pork (Level 3)",
+      "expected_level": 3,
+      "actual_level": 1,
+      "success": false,
+      "time": 0.006106376647949219,
+      "recipe_title": "Hot and Sour Soup"
+    },
+    {
+      "test": "Ethiopian Plantain Stir-Fry (Level 4)",
+      "expected_level": 4,
+      "actual_level": 4,
+      "success": true,
+      "time": 7.512274980545044,
+      "recipe_title": "Spiced Plantain Stir-Fry"
+    },
+    {
+      "test": "Mongolian Pasta (Level 3 or 4)",
+      "expected_level": 3,
+      "actual_level": 2,
+      "success": false,
+      "time": 0.7998673915863037,
+      "recipe_title": "Curry Beef Over Rice Noodles"
+    },
+    {
+      "test": "French Baked Chicken (Level 1 or 2)",
+      "expected_level": 2,
+      "actual_level": 1,
+      "success": false,
+      "time": 0.004004955291748047,
+      "recipe_title": "Coq au vin"
+    }
+  ]
+}

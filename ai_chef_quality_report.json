@@ -1,0 +1,834 @@
+{
+  "test_date": "2025-08-07T09:09:28.855780",
+  "total_tests": 12,
+  "results": [
+    {
+      "description": "Impossible combo #1",
+      "input": {
+        "cuisine": "ethiopian",
+        "dish_type": "stir-fry",
+        "ingredients": [
+          "plantain",
+          "onions"
+        ]
+      },
+      "recipe": {
+        "title": "Ethiopian Plantain Stir-Fry",
+        "ingredients": [
+          {
+            "item": "plantain",
+            "amount": "2"
+          },
+          {
+            "item": "onions",
+            "amount": "2"
+          },
+          {
+            "item": "berbere",
+            "amount": "1 tsp"
+          },
+          {
+            "item": "mitmita",
+            "amount": "1 tsp"
+          },
+          {
+            "item": "korarima",
+            "amount": "1 tsp"
+          },
+          {
+            "item": "ajwain",
+            "amount": "1 tsp"
+          },
+          {
+            "item": "ginger",
+            "amount": "1 tsp"
+          },
+          {
+            "item": "garlic",
+            "amount": "1 tsp"
+          }
+        ],
+        "instructions": [
+          "Slice plantains and onions.",
+          "Heat oil, add onions, ginger, and garlic.",
+          "Add plantains, berbere, mitmita, korarima, ajwain.",
+          "Cook until plantains are tender.",
+          "Season with salt and pepper, serve hot."
+        ],
+        "prep_time": "15 min",
+        "cook_time": "20 min",
+        "servings": 4,
+        "cuisine": "ethiopian",
+        "dish_type": "stir-fry"
+      },
+      "evaluation": {
+        "overall_score": 100,
+        "issues": [],
+        "strengths": [
+          "Good title"
+        ]
+      }
+    },
+    {
+      "description": "Non-traditional Mexican",
+      "input": {
+        "cuisine": "mexican",
+        "dish_type": "stir-fry",
+        "ingredients": [
+          "chicken",
+          "peppers",
+          "onions"
+        ]
+      },
+      "recipe": {
+        "title": "Mexican Chicken Stir-Fry",
+        "ingredients": [
+          {
+            "item": "chicken",
+            "amount": "1 lb"
+          },
+          {
+            "item": "peppers",
+            "amount": "2 cups"
+          },
+          {
+            "item": "onions",
+            "amount": "1 cup"
+          },
+          {
+            "item": "cumin",
+            "amount": "1 tsp"
+          },
+          {
+            "item": "chili powder",
+            "amount": "1 tsp"
+          },
+          {
+            "item": "paprika",
+            "amount": "1 tsp"
+          },
+          {
+            "item": "garlic",
+            "amount": "2 cloves"
+          },
+          {
+            "item": "lime",
+            "amount": "1"
+          }
+        ],
+        "instructions": [
+          "Marinate chicken with lime, cumin, chili powder",
+          "Sauté chicken, peppers, onions with spices",
+          "Add garlic, paprika, oregano, cilantro",
+          "Season with salt, pepper, coriander, onion powder",
+          "Serve hot and enjoy!"
+        ],
+        "prep_time": "15 min",
+        "cook_time": "15 min",
+        "servings": 4,
+        "cuisine": "mexican",
+        "dish_type": "stir-fry"
+      },
+      "evaluation": {
+        "overall_score": 100,
+        "issues": [],
+        "strengths": [
+          "Good title"
+        ]
+      }
+    },
+    {
+      "description": "Italian curry fusion",
+      "input": {
+        "cuisine": "italian",
+        "dish_type": "curry",
+        "ingredients": [
+          "tomatoes",
+          "chicken"
+        ]
+      },
+      "recipe": {
+        "title": "Italian Chicken Curry",
+        "ingredients": [
+          {
+            "item": "chicken",
+            "amount": "500g"
+          },
+          {
+            "item": "tomatoes",
+            "amount": "400g"
+          },
+          {
+            "item": "basil",
+            "amount": "1 tbsp"
+          },
+          {
+            "item": "oregano",
+            "amount": "1 tbsp"
+          },
+          {
+            "item": "garlic",
+            "amount": "2 cloves"
+          },
+          {
+            "item": "water",
+            "amount": "1 cup"
+          },
+          {
+            "item": "salt",
+            "amount": "to taste"
+          },
+          {
+            "item": "pepper",
+            "amount": "to taste"
+          }
+        ],
+        "instructions": [
+          "Step 1: Brown chicken in oil",
+          "Step 2: Add garlic, tomatoes, water, and spices",
+          "Step 3: Simmer for 20 minutes",
+          "Step 4: Adjust seasoning with salt and pepper",
+          "Step 5: Serve hot with parsley garnish"
+        ],
+        "prep_time": "15 min",
+        "cook_time": "30 min",
+        "servings": 4,
+        "cuisine": "italian",
+        "dish_type": "curry"
+      },
+      "evaluation": {
+        "overall_score": 100,
+        "issues": [],
+        "strengths": [
+          "Good title"
+        ]
+      }
+    },
+    {
+      "description": "Chinese baking",
+      "input": {
+        "cuisine": "chinese",
+        "dish_type": "baked-dish",
+        "ingredients": [
+          "pork",
+          "cabbage",
+          "carrots",
+          "potatoes"
+        ]
+      },
+      "recipe": {
+        "title": "Baked Chinese Pork Casserole",
+        "ingredients": [
+          {
+            "item": "pork",
+            "amount": "1 lb"
+          },
+          {
+            "item": "cabbage",
+            "amount": "1/2 head"
+          },
+          {
+            "item": "carrots",
+            "amount": "2"
+          },
+          {
+            "item": "potatoes",
+            "amount": "2"
+          },
+          {
+            "item": "ginger",
+            "amount": "1 tbsp"
+          },
+          {
+            "item": "garlic",
+            "amount": "2 cloves"
+          },
+          {
+            "item": "soy sauce",
+            "amount": "2 tbsp"
+          },
+          {
+            "item": "sesame oil",
+            "amount": "1 tbsp"
+          }
+        ],
+        "instructions": [
+          "Preheat oven to 375°F.",
+          "Combine all ingredients in a casserole dish.",
+          "Cover with foil and bake for 45 minutes.",
+          "Remove foil, increase temperature to 425°F, bake for 15 more minutes.",
+          "Serve hot and enjoy!"
+        ],
+        "prep_time": "15 min",
+        "cook_time": "1 hr",
+        "servings": 4,
+        "cuisine": "chinese",
+        "dish_type": "baked-dish"
+      },
+      "evaluation": {
+        "overall_score": 100,
+        "issues": [],
+        "strengths": [
+          "Good title"
+        ]
+      }
+    },
+    {
+      "description": "Indian pasta fusion",
+      "input": {
+        "cuisine": "indian",
+        "dish_type": "pasta",
+        "ingredients": [
+          "chicken",
+          "tomatoes",
+          "cream",
+          "pasta"
+        ]
+      },
+      "recipe": {
+        "title": "Indian Chicken Pasta",
+        "ingredients": [
+          {
+            "item": "chicken",
+            "amount": "1 lb"
+          },
+          {
+            "item": "tomatoes",
+            "amount": "2 cups"
+          },
+          {
+            "item": "cream",
+            "amount": "1 cup"
+          },
+          {
+            "item": "pasta",
+            "amount": "8 oz"
+          },
+          {
+            "item": "turmeric",
+            "amount": "1 tsp"
+          },
+          {
+            "item": "cumin",
+            "amount": "1 tsp"
+          },
+          {
+            "item": "garlic",
+            "amount": "2 cloves"
+          },
+          {
+            "item": "ginger",
+            "amount": "1 inch"
+          }
+        ],
+        "instructions": [
+          "Step 1: Cook pasta al dente.",
+          "Step 2: Sauté chicken with spices.",
+          "Step 3: Add tomatoes, cream, and seasonings.",
+          "Step 4: Simmer until chicken is cooked.",
+          "Step 5: Serve chicken sauce over pasta."
+        ],
+        "prep_time": "15 min",
+        "cook_time": "25 min",
+        "servings": 4,
+        "cuisine": "indian",
+        "dish_type": "pasta"
+      },
+      "evaluation": {
+        "overall_score": 100,
+        "issues": [],
+        "strengths": [
+          "Good title"
+        ]
+      }
+    },
+    {
+      "description": "Traditional Japanese",
+      "input": {
+        "cuisine": "japanese",
+        "dish_type": "soup",
+        "ingredients": [
+          "tofu",
+          "mushrooms",
+          "seaweed",
+          "noodles"
+        ]
+      },
+      "recipe": {
+        "title": "Japanese Tofu Mushroom Soup",
+        "ingredients": [
+          {
+            "item": "tofu",
+            "amount": "200g"
+          },
+          {
+            "item": "mushrooms",
+            "amount": "150g"
+          },
+          {
+            "item": "seaweed",
+            "amount": "30g"
+          },
+          {
+            "item": "noodles",
+            "amount": "100g"
+          },
+          {
+            "item": "miso",
+            "amount": "2 tbsp"
+          },
+          {
+            "item": "soy sauce",
+            "amount": "1 tbsp"
+          },
+          {
+            "item": "dashi",
+            "amount": "500ml"
+          },
+          {
+            "item": "mirin",
+            "amount": "1 tbsp"
+          }
+        ],
+        "instructions": [
+          "1. Prepare ingredients",
+          "2. Boil dashi broth",
+          "3. Add miso, mirin, tofu, mushrooms",
+          "4. Simmer for 10 mins",
+          "5. Serve with noodles and seaweed"
+        ],
+        "prep_time": "15 min",
+        "cook_time": "15 min",
+        "servings": 4,
+        "cuisine": "japanese",
+        "dish_type": "soup"
+      },
+      "evaluation": {
+        "overall_score": 90,
+        "issues": [
+          "Soup cooking too quickly"
+        ],
+        "strengths": [
+          "Good title"
+        ]
+      }
+    },
+    {
+      "description": "Complex Thai",
+      "input": {
+        "cuisine": "thai",
+        "dish_type": "curry",
+        "ingredients": [
+          "shrimp",
+          "coconut_milk",
+          "bamboo_shoots",
+          "peppers",
+          "basil",
+          "eggplant"
+        ]
+      },
+      "recipe": {
+        "title": "Thai Shrimp Curry",
+        "ingredients": [
+          {
+            "item": "shrimp",
+            "amount": "1 lb"
+          },
+          {
+            "item": "coconut_milk",
+            "amount": "1 can"
+          },
+          {
+            "item": "bamboo_shoots",
+            "amount": "1 cup"
+          },
+          {
+            "item": "peppers",
+            "amount": "2"
+          },
+          {
+            "item": "basil",
+            "amount": "1 cup"
+          },
+          {
+            "item": "eggplant",
+            "amount": "1"
+          },
+          {
+            "item": "lemongrass",
+            "amount": "2 stalks"
+          },
+          {
+            "item": "galangal",
+            "amount": "2 slices"
+          }
+        ],
+        "instructions": [
+          "Step 1: Prepare ingredients",
+          "Step 2: Cook shrimp and vegetables",
+          "Step 3: Add coconut milk and spices",
+          "Step 4: Simmer until flavors blend",
+          "Step 5: Serve hot with rice"
+        ],
+        "prep_time": "20 min",
+        "cook_time": "25 min",
+        "servings": 4,
+        "cuisine": "thai",
+        "dish_type": "curry"
+      },
+      "evaluation": {
+        "overall_score": 100,
+        "issues": [],
+        "strengths": [
+          "Good title"
+        ]
+      }
+    },
+    {
+      "description": "Complex French",
+      "input": {
+        "cuisine": "french",
+        "dish_type": "baked-dish",
+        "ingredients": [
+          "chicken",
+          "potatoes",
+          "carrots",
+          "onions",
+          "mushrooms",
+          "wine"
+        ]
+      },
+      "recipe": {
+        "title": "French Baked Chicken",
+        "ingredients": [
+          {
+            "item": "chicken",
+            "amount": "4 pieces"
+          },
+          {
+            "item": "potatoes",
+            "amount": "4"
+          },
+          {
+            "item": "carrots",
+            "amount": "4"
+          },
+          {
+            "item": "onions",
+            "amount": "2"
+          },
+          {
+            "item": "mushrooms",
+            "amount": "8 oz"
+          },
+          {
+            "item": "wine",
+            "amount": "1 cup"
+          },
+          {
+            "item": "butter",
+            "amount": "4 tbsp"
+          },
+          {
+            "item": "herbes de provence",
+            "amount": "1 tbsp"
+          }
+        ],
+        "instructions": [
+          "Preheat oven to 375°F.",
+          "Season chicken and veggies, place in baking dish.",
+          "Mix wine, butter, herbs; pour over chicken.",
+          "Cover and bake for 45 mins.",
+          "Uncover, bake 15 mins more."
+        ],
+        "prep_time": "20 min",
+        "cook_time": "60 min",
+        "servings": 4,
+        "cuisine": "french",
+        "dish_type": "baked-dish"
+      },
+      "evaluation": {
+        "overall_score": 100,
+        "issues": [],
+        "strengths": [
+          "Good title"
+        ]
+      }
+    },
+    {
+      "description": "Korean-Italian fusion",
+      "input": {
+        "cuisine": "korean",
+        "dish_type": "pasta",
+        "ingredients": [
+          "kimchi",
+          "pork",
+          "pasta",
+          "cheese"
+        ]
+      },
+      "recipe": {
+        "title": "Kimchi Pork Pasta",
+        "ingredients": [
+          {
+            "item": "kimchi",
+            "amount": "1 cup"
+          },
+          {
+            "item": "pork",
+            "amount": "1/2 lb"
+          },
+          {
+            "item": "pasta",
+            "amount": "8 oz"
+          },
+          {
+            "item": "cheese",
+            "amount": "1/2 cup"
+          },
+          {
+            "item": "gochujang",
+            "amount": "2 tbsp"
+          },
+          {
+            "item": "garlic",
+            "amount": "2 cloves"
+          },
+          {
+            "item": "ginger",
+            "amount": "1 tsp"
+          },
+          {
+            "item": "scallions",
+            "amount": "2 pcs"
+          }
+        ],
+        "instructions": [
+          "Cook pasta according to package",
+          "Stir-fry pork with garlic, ginger, gochujang",
+          "Add kimchi, scallions, soy sauce, sesame oil",
+          "Combine pasta with pork mixture",
+          "Top with cheese and serve hot"
+        ],
+        "prep_time": "15 min",
+        "cook_time": "20 min",
+        "servings": 4,
+        "cuisine": "korean",
+        "dish_type": "pasta"
+      },
+      "evaluation": {
+        "overall_score": 100,
+        "issues": [],
+        "strengths": [
+          "Good title"
+        ]
+      }
+    },
+    {
+      "description": "Moroccan stir-fry",
+      "input": {
+        "cuisine": "moroccan",
+        "dish_type": "stir-fry",
+        "ingredients": [
+          "lamb",
+          "dates",
+          "almonds",
+          "couscous"
+        ]
+      },
+      "recipe": {
+        "title": "Moroccan Lamb Stir-Fry",
+        "ingredients": [
+          {
+            "item": "lamb",
+            "amount": "1 lb"
+          },
+          {
+            "item": "dates",
+            "amount": "1 cup"
+          },
+          {
+            "item": "almonds",
+            "amount": "1/2 cup"
+          },
+          {
+            "item": "couscous",
+            "amount": "1 cup"
+          },
+          {
+            "item": "ras el hanout",
+            "amount": "1 tbsp"
+          },
+          {
+            "item": "cumin",
+            "amount": "1 tsp"
+          },
+          {
+            "item": "cinnamon",
+            "amount": "1 tsp"
+          },
+          {
+            "item": "olives",
+            "amount": "1/2 cup"
+          }
+        ],
+        "instructions": [
+          "Marinate lamb with spices",
+          "Stir-fry lamb, dates, almonds",
+          "Cook couscous separately",
+          "Combine all ingredients",
+          "Serve hot with preserved lemon garnish"
+        ],
+        "prep_time": "15 min",
+        "cook_time": "20 min",
+        "servings": 4,
+        "cuisine": "moroccan",
+        "dish_type": "stir-fry"
+      },
+      "evaluation": {
+        "overall_score": 100,
+        "issues": [],
+        "strengths": [
+          "Good title"
+        ]
+      }
+    },
+    {
+      "description": "Vegetarian Indian",
+      "input": {
+        "cuisine": "indian",
+        "dish_type": "curry",
+        "ingredients": [
+          "chickpeas",
+          "spinach",
+          "tomatoes",
+          "potatoes"
+        ]
+      },
+      "recipe": {
+        "title": "Chickpea Spinach Curry",
+        "ingredients": [
+          {
+            "item": "chickpeas",
+            "amount": "1 can"
+          },
+          {
+            "item": "spinach",
+            "amount": "2 cups"
+          },
+          {
+            "item": "tomatoes",
+            "amount": "2"
+          },
+          {
+            "item": "potatoes",
+            "amount": "2"
+          },
+          {
+            "item": "turmeric",
+            "amount": "1 tsp"
+          },
+          {
+            "item": "cumin",
+            "amount": "1 tsp"
+          },
+          {
+            "item": "garam masala",
+            "amount": "1 tsp"
+          },
+          {
+            "item": "ginger",
+            "amount": "1 tbsp"
+          }
+        ],
+        "instructions": [
+          "1. Saute mustard seeds, ginger, and garlic.",
+          "2. Add diced potatoes, turmeric, cumin, and coriander.",
+          "3. Stir in tomatoes and cook until soft.",
+          "4. Mix in chickpeas, spinach, and garam masala.",
+          "5. Simmer for 15 minutes. Serve hot."
+        ],
+        "prep_time": "15 min",
+        "cook_time": "25 min",
+        "servings": 4,
+        "cuisine": "indian",
+        "dish_type": "curry"
+      },
+      "evaluation": {
+        "overall_score": 100,
+        "issues": [],
+        "strengths": [
+          "Good title"
+        ]
+      }
+    },
+    {
+      "description": "Ethiopian vegetarian",
+      "input": {
+        "cuisine": "ethiopian",
+        "dish_type": "stew",
+        "ingredients": [
+          "lentils",
+          "carrots",
+          "potatoes"
+        ]
+      },
+      "recipe": {
+        "title": "Ethiopian Lentil Stew",
+        "ingredients": [
+          {
+            "item": "lentils",
+            "amount": "1 cup"
+          },
+          {
+            "item": "carrots",
+            "amount": "2"
+          },
+          {
+            "item": "potatoes",
+            "amount": "2"
+          },
+          {
+            "item": "berbere",
+            "amount": "1 tbsp"
+          },
+          {
+            "item": "ginger",
+            "amount": "1 tsp"
+          },
+          {
+            "item": "garlic",
+            "amount": "2 cloves"
+          },
+          {
+            "item": "oil",
+            "amount": "2 tbsp"
+          },
+          {
+            "item": "salt",
+            "amount": "to taste"
+          }
+        ],
+        "instructions": [
+          "Step 1: Sautee garlic and ginger in oil.",
+          "Step 2: Add berbere and vegetables, cook for 5 min.",
+          "Step 3: Pour water, add lentils, simmer for 30 min.",
+          "Step 4: Season with salt and simmer for 10 min.",
+          "Step 5: Serve hot. Enjoy!"
+        ],
+        "prep_time": "15 min",
+        "cook_time": "45 min",
+        "servings": 4,
+        "cuisine": "ethiopian",
+        "dish_type": "stew"
+      },
+      "evaluation": {
+        "overall_score": 100,
+        "issues": [],
+        "strengths": [
+          "Good title"
+        ]
+      }
+    }
+  ]
+}

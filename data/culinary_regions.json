@@ -1,0 +1,559 @@
+{
+  "regions": {
+    "african": {
+      "name": "African",
+      "subregions": {
+        "north_african": {
+          "name": "North African",
+          "countries": [
+            "algerian",
+            "egyptian",
+            "libyan",
+            "moroccan",
+            "sudanese",
+            "tunisian"
+          ]
+        },
+        "west_african": {
+          "name": "West African",
+          "countries": [
+            "ghanaian",
+            "ivorian",
+            "malian",
+            "nigerian",
+            "senegalese"
+          ]
+        },
+        "east_african": {
+          "name": "East African",
+          "countries": [
+            "ethiopian",
+            "kenyan",
+            "rwandan",
+            "somali",
+            "tanzanian",
+            "ugandan"
+          ]
+        },
+        "central_african": {
+          "name": "Central African",
+          "countries": [
+            "cameroonian",
+            "congolese"
+          ]
+        },
+        "southern_african": {
+          "name": "Southern African",
+          "countries": [
+            "botswanan",
+            "namibian",
+            "south african",
+            "zimbabwean"
+          ]
+        }
+      }
+    },
+    "asian": {
+      "name": "Asian",
+      "subregions": {
+        "southeast_asian": {
+          "name": "Southeast Asian",
+          "countries": [
+            "bruneian",
+            "burmese",
+            "cambodian",
+            "filipino",
+            "indonesian",
+            "laotian",
+            "malaysian",
+            "singaporean",
+            "thai",
+            "timorese",
+            "vietnamese"
+          ]
+        },
+        "east_asian": {
+          "name": "East Asian",
+          "countries": [
+            "chinese",
+            "japanese",
+            "korean",
+            "taiwanese"
+          ]
+        },
+        "central_asian": {
+          "name": "Central Asian",
+          "countries": [
+            "afghan",
+            "kazakh",
+            "kyrgyz",
+            "mongolian",
+            "tajik",
+            "tibetan",
+            "turkmen",
+            "uzbek"
+          ]
+        },
+        "south_asian": {
+          "name": "South Asian",
+          "countries": [
+            "bangladeshi",
+            "bhutanese",
+            "indian",
+            "maldivian",
+            "nepalese",
+            "pakistani",
+            "sri lankan"
+          ]
+        },
+        "western_asian": {
+          "name": "Western Asian",
+          "countries": [
+            "armenian",
+            "azerbaijani",
+            "bahraini",
+            "emirati",
+            "iranian",
+            "iraqi",
+            "kuwaiti",
+            "omani",
+            "persian",
+            "qatari",
+            "saudi arabian",
+            "yemeni"
+          ]
+        }
+      }
+    },
+    "european": {
+      "name": "European",
+      "subregions": {
+        "western_european": {
+          "name": "Western European",
+          "countries": [
+            "austrian",
+            "belgian",
+            "british",
+            "dutch",
+            "french",
+            "german",
+            "irish",
+            "luxembourgish",
+            "swiss"
+          ]
+        },
+        "southern_european": {
+          "name": "Southern European",
+          "countries": [
+            "cypriot",
+            "greek",
+            "italian",
+            "maltese",
+            "portuguese",
+            "spanish"
+          ]
+        },
+        "northern_european": {
+          "name": "Northern European",
+          "countries": [
+            "danish",
+            "estonian",
+            "finnish",
+            "icelandic",
+            "latvian",
+            "lithuanian",
+            "norwegian",
+            "scandinavian",
+            "swedish"
+          ]
+        },
+        "eastern_european": {
+          "name": "Eastern European",
+          "countries": [
+            "albanian",
+            "belarusian",
+            "bosnian",
+            "bulgarian",
+            "croatian",
+            "czech",
+            "hungarian",
+            "macedonian",
+            "moldovan",
+            "montenegrin",
+            "polish",
+            "romanian",
+            "russian",
+            "serbian",
+            "slovakian",
+            "slovenian",
+            "ukrainian"
+          ]
+        },
+        "caucasian": {
+          "name": "Caucasian",
+          "countries": [
+            "georgian"
+          ]
+        }
+      }
+    },
+    "middle_eastern": {
+      "name": "Middle Eastern",
+      "subregions": {
+        "levantine": {
+          "name": "Levantine",
+          "countries": [
+            "israeli",
+            "jordanian",
+            "lebanese",
+            "palestinian",
+            "syrian"
+          ]
+        },
+        "anatolian": {
+          "name": "Anatolian",
+          "countries": [
+            "turkish"
+          ]
+        }
+      }
+    },
+    "caribbean": {
+      "name": "Caribbean",
+      "subregions": {
+        "greater_antilles": {
+          "name": "Greater Antilles",
+          "countries": [
+            "caymanian",
+            "cuban",
+            "dominican",
+            "haitian",
+            "jamaican",
+            "puerto rican"
+          ]
+        },
+        "lesser_antilles": {
+          "name": "Lesser Antilles",
+          "countries": [
+            "antiguan",
+            "barbadian",
+            "grenadian",
+            "kittitian",
+            "saint lucian",
+            "trinidadian",
+            "vincentian"
+          ]
+        },
+        "mainland_caribbean": {
+          "name": "Mainland Caribbean",
+          "countries": [
+            "belizean",
+            "guyanese",
+            "surinamese"
+          ]
+        },
+        "creole": {
+          "name": "Creole",
+          "countries": [
+            "creole",
+            "cajun"
+          ]
+        }
+      }
+    },
+    "north_american": {
+      "name": "North American",
+      "subregions": {
+        "northern_american": {
+          "name": "Northern American",
+          "countries": [
+            "american",
+            "canadian"
+          ]
+        },
+        "mesoamerican": {
+          "name": "Mesoamerican",
+          "countries": [
+            "costa rican",
+            "guatemalan",
+            "honduran",
+            "mexican",
+            "nicaraguan",
+            "panamanian",
+            "salvadoran"
+          ]
+        }
+      }
+    },
+    "south_american": {
+      "name": "South American",
+      "subregions": {
+        "amazonian": {
+          "name": "Amazonian",
+          "countries": [
+            "brazilian",
+            "guyanese",
+            "surinamese"
+          ]
+        },
+        "andean": {
+          "name": "Andean",
+          "countries": [
+            "bolivian",
+            "colombian",
+            "ecuadorian",
+            "peruvian",
+            "venezuelan"
+          ]
+        },
+        "southern_cone": {
+          "name": "Southern Cone",
+          "countries": [
+            "argentinian",
+            "chilean",
+            "paraguayan",
+            "uruguayan"
+          ]
+        }
+      }
+    },
+    "oceanian": {
+      "name": "Oceanian",
+      "subregions": {
+        "australasian": {
+          "name": "Australasian",
+          "countries": [
+            "australian",
+            "new zealander"
+          ]
+        },
+        "pacific_islands": {
+          "name": "Pacific Islands",
+          "countries": [
+            "fijian",
+            "hawaiian",
+            "samoan",
+            "tahitian",
+            "tongan"
+          ]
+        }
+      }
+    },
+    "specialty": {
+      "name": "Specialty Cuisines",
+      "subregions": {
+        "religious": {
+          "name": "Religious Cuisines",
+          "countries": [
+            "buddhist",
+            "halal",
+            "hindu",
+            "jain",
+            "jewish",
+            "kosher"
+          ]
+        },
+        "fusion": {
+          "name": "Fusion Cuisines",
+          "countries": [
+            "asian fusion",
+            "tex-mex",
+            "nikkei",
+            "chifa"
+          ]
+        },
+        "international": {
+          "name": "International",
+          "countries": [
+            "international",
+            "mediterranean",
+            "pan-african",
+            "pan-asian"
+          ]
+        }
+      }
+    }
+  },
+  "country_to_spoonacular": {
+    "afghan": "Middle Eastern",
+    "albanian": "Eastern European",
+    "algerian": "African",
+    "american": "American",
+    "antiguan": "Caribbean",
+    "argentinian": "Latin American",
+    "armenian": "Middle Eastern",
+    "australian": "American",
+    "austrian": "German",
+    "azerbaijani": "Middle Eastern",
+    "bahraini": "Middle Eastern",
+    "bangladeshi": "Indian",
+    "barbadian": "Caribbean",
+    "belarusian": "Eastern European",
+    "belgian": "European",
+    "belizean": "Caribbean",
+    "bhutanese": "Asian",
+    "bolivian": "Latin American",
+    "bosnian": "Eastern European",
+    "botswanan": "African",
+    "brazilian": "Latin American",
+    "british": "British",
+    "bruneian": "Asian",
+    "buddhist": "Asian",
+    "bulgarian": "Eastern European",
+    "burmese": "Asian",
+    "cajun": "Cajun",
+    "cambodian": "Asian",
+    "cameroonian": "African",
+    "canadian": "American",
+    "caymanian": "Caribbean",
+    "chilean": "Latin American",
+    "chinese": "Chinese",
+    "colombian": "Latin American",
+    "congolese": "African",
+    "costa rican": "Latin American",
+    "creole": "Cajun",
+    "croatian": "Eastern European",
+    "cuban": "Caribbean",
+    "cypriot": "Mediterranean",
+    "czech": "Eastern European",
+    "danish": "Nordic",
+    "dominican": "Caribbean",
+    "dutch": "European",
+    "ecuadorian": "Latin American",
+    "egyptian": "African",
+    "emirati": "Middle Eastern",
+    "estonian": "Nordic",
+    "ethiopian": "African",
+    "fijian": "Asian",
+    "filipino": "Asian",
+    "finnish": "Nordic",
+    "french": "French",
+    "georgian": "Eastern European",
+    "german": "German",
+    "ghanaian": "African",
+    "greek": "Greek",
+    "grenadian": "Caribbean",
+    "guatemalan": "Latin American",
+    "guyanese": "Caribbean",
+    "haitian": "Caribbean",
+    "halal": "Middle Eastern",
+    "hawaiian": "American",
+    "hindu": "Indian",
+    "honduran": "Latin American",
+    "hungarian": "Eastern European",
+    "icelandic": "Nordic",
+    "indian": "Indian",
+    "indonesian": "Asian",
+    "iranian": "Middle Eastern",
+    "iraqi": "Middle Eastern",
+    "irish": "Irish",
+    "israeli": "Jewish",
+    "italian": "Italian",
+    "ivorian": "African",
+    "jain": "Indian",
+    "jamaican": "Caribbean",
+    "japanese": "Japanese",
+    "jewish": "Jewish",
+    "jordanian": "Middle Eastern",
+    "kazakh": "Asian",
+    "kenyan": "African",
+    "kittitian": "Caribbean",
+    "korean": "Korean",
+    "kosher": "Jewish",
+    "kuwaiti": "Middle Eastern",
+    "kyrgyz": "Asian",
+    "laotian": "Asian",
+    "latvian": "Nordic",
+    "lebanese": "Middle Eastern",
+    "libyan": "African",
+    "lithuanian": "Nordic",
+    "luxembourgish": "European",
+    "macedonian": "Eastern European",
+    "maldivian": "Indian",
+    "malian": "African",
+    "malaysian": "Asian",
+    "maltese": "Mediterranean",
+    "mexican": "Mexican",
+    "moldovan": "Eastern European",
+    "mongolian": "Asian",
+    "montenegrin": "Eastern European",
+    "moroccan": "African",
+    "namibian": "African",
+    "nepalese": "Asian",
+    "new zealander": "American",
+    "nicaraguan": "Latin American",
+    "nigerian": "African",
+    "norwegian": "Nordic",
+    "omani": "Middle Eastern",
+    "pakistani": "Indian",
+    "palestinian": "Middle Eastern",
+    "panamanian": "Latin American",
+    "paraguayan": "Latin American",
+    "persian": "Middle Eastern",
+    "peruvian": "Latin American",
+    "polish": "Eastern European",
+    "portuguese": "European",
+    "puerto rican": "Caribbean",
+    "qatari": "Middle Eastern",
+    "romanian": "Eastern European",
+    "russian": "Eastern European",
+    "rwandan": "African",
+    "saint lucian": "Caribbean",
+    "salvadoran": "Latin American",
+    "samoan": "Asian",
+    "saudi arabian": "Middle Eastern",
+    "scandinavian": "Nordic",
+    "senegalese": "African",
+    "serbian": "Eastern European",
+    "singaporean": "Asian",
+    "slovakian": "Eastern European",
+    "slovenian": "Eastern European",
+    "somali": "African",
+    "south african": "African",
+    "spanish": "Spanish",
+    "sri lankan": "Indian",
+    "sudanese": "African",
+    "surinamese": "Caribbean",
+    "swedish": "Nordic",
+    "swiss": "European",
+    "syrian": "Middle Eastern",
+    "tahitian": "Asian",
+    "taiwanese": "Chinese",
+    "tajik": "Asian",
+    "tanzanian": "African",
+    "thai": "Thai",
+    "tibetan": "Asian",
+    "timorese": "Asian",
+    "tongan": "Asian",
+    "trinidadian": "Caribbean",
+    "tunisian": "African",
+    "turkish": "Mediterranean",
+    "turkmen": "Asian",
+    "ugandan": "African",
+    "ukrainian": "Eastern European",
+    "uruguayan": "Latin American",
+    "uzbek": "Asian",
+    "venezuelan": "Latin American",
+    "vietnamese": "Vietnamese",
+    "vincentian": "Caribbean",
+    "yemeni": "Middle Eastern",
+    "zimbabwean": "African",
+    "asian fusion": "Asian",
+    "tex-mex": "Mexican",
+    "nikkei": "Japanese",
+    "chifa": "Chinese",
+    "international": "American",
+    "mediterranean": "Mediterranean",
+    "pan-african": "African",
+    "pan-asian": "Asian"
+  },
+  "unmapped_cuisines": [],
+  "statistics": {
+    "total_cuisines": 173,
+    "mapped_cuisines": 173,
+    "unmapped_cuisines": 0,
+    "total_regions": 9,
+    "total_subregions": 32,
+    "spoonacular_categories": 24
+  }
+}

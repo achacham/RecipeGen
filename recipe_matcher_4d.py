@@ -24,6 +24,7 @@ from ai_chef_generator import AIChefGenerator
 from itertools import combinations
 import time
 
+
 def generate_protein_combinations(selected_proteins):
     """
     Generate protein combinations in decreasing order.
@@ -681,7 +682,9 @@ class RecipeMatcher4D:
                                     continue
 
                             # NOW verify dish type on OUR standardized structure
+                            print(f"🔍 DEBUG: About to verify dish_type='{dish_type}' for recipe '{formatted.get('title', 'Unknown')}'")
                             if dish_type and dish_type != 'any':
+                                print(f"🔍 DEBUG: Entering dish type verification for '{dish_type}'")
                                 if not self._verify_dish_type_match(formatted, dish_type):
                                     print(f"      ❌ Skipped '{formatted.get('title', 'Unknown')}' - not a {dish_type}")
                                     continue  # Skip this recipe, try next one
@@ -909,6 +912,12 @@ class RecipeMatcher4D:
                 'ingredients': ['curry', 'turmeric', 'cumin', 'coriander', 'garam_masala'],
                 'equipment': ['pot', 'pan', 'kadai']
             },
+            'grilled': {
+                'title_words': ['grilled', 'barbecue', 'bbq', 'charcoal', 'grill'],
+                'instruction_patterns': ['grill', 'barbecue', 'char', 'grill marks', 'over fire'],
+                'equipment': ['grill', 'barbecue', 'charcoal'],
+                'avoid_words': ['taco', 'burrito', 'wrap', 'slow cooker', 'crock pot']
+            },
             'soup': {
                 'title_words': ['soup', 'stew', 'broth', 'bisque', 'chowder', 'consomme'],
                 'instruction_patterns': ['simmer', 'boil', 'broth', 'stock', 'ladle', 'liquid'],
@@ -936,6 +945,11 @@ class RecipeMatcher4D:
                 'title_words': ['sandwich', 'burger', 'sub', 'hoagie', 'panini'],
                 'instruction_patterns': ['layer', 'stack', 'bread', 'bun'],
                 'equipment': ['grill', 'pan', 'toaster']
+            },
+            'skewers': {
+                'title_words': ['skewer', 'skewers', 'kabob', 'kebab', 'shish', 'satay'],
+                'instruction_patterns': ['skewer', 'thread', 'grill', 'barbecue', 'stick'],
+                'equipment': ['grill', 'barbecue', 'skewer', 'stick']
             }
         }
     
@@ -1066,13 +1080,13 @@ class RecipeMatcher4D:
             ai_recipe = self.ai_chef.generate_recipe(cuisine, dish_type, ingredient_names)
             
             if ai_recipe and 'instructions' in ai_recipe and len(ai_recipe.get('instructions', [])) > 4:
-                print(f"   ✅ AI Chef generated: {ai_recipe.get('title', 'AI Recipe')}")
+                print(f"   ✅ Our Recipe generated: {ai_recipe.get('title', 'Our Recipe')}")
                 
                 # Ensure all required fields
                 ai_recipe['cuisine'] = cuisine
                 ai_recipe['dish_type'] = dish_type
                 ai_recipe['source'] = 'ai_chef'
-                ai_recipe['source_api'] = 'AI Chef'
+                ai_recipe['source_api'] = 'Our Recipe'
                 
                 # Save to database for future use
                 self._save_to_local_db(ai_recipe)

@@ -58,7 +58,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #ff6b6b;
@@ -74,13 +73,6 @@
             --gray: #636e72;
             --light: #ddd;
             --white: #ffffff;
-        }
-
-        .trademark {
-            font-size: 0.5em;
-            vertical-align: super;
-            margin-left: 1px;
-            opacity: 0.8;
         }
 
         /* VIEWPORT STRUCTURE FIX - Force 100vh containment */
@@ -126,23 +118,14 @@
         }
 
         .logo {
-            font-size: 2.80rem; /* Increased 10% from 2.4rem */
+            font-size: 1.8rem; /* Reduced from 2rem */
             font-weight: 800;
-            transition: all 0.6s ease;
-            cursor: pointer;
-            display: inline-block;
-        }
-
-        .logo-text {
-            font-family: 'Dancing Script', 'Brush Script MT', cursive;
-            font-weight: 600; /* Add weight for better visibility */
             background: linear-gradient(135deg, var(--primary) 0%, var(--pink) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
- 
         .nav {
             display: flex;
             gap: 1.5rem; /* Reduced from 2rem */
@@ -298,7 +281,7 @@
             border: 1px solid rgba(255, 255, 255, 0.3);
             display: flex;
             flex-direction: column;
-            height: 170px;
+            height: 200px; /* Fixed height optimized for cockpit */
             transition: all 0.3s ease;
         }
 
@@ -348,11 +331,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
-            position: relative;
-            /* CRITICAL: Without this min-height, flex shrinks message area too small and vertical centering fails. 
-            70px ensures proper centering within 170px container. */
-            min-height: 70px; /* Ensure minimum space for centering */
+            overflow: hidden; /* No scrolling needed */
         }
 
         .chat-messages::-webkit-scrollbar {
@@ -609,14 +588,12 @@
             backdrop-filter: blur(20px);
             border-radius: 25px;
             padding: 2rem;
-            max-width: 900px;
+            max-width: 800px;
             max-height: 80vh;
-            overflow: hidden;
+            overflow-y: auto;
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.3);
             position: relative;
-            display: flex;
-            flex-direction: column;
         }
 
         .modal-header {
@@ -651,80 +628,23 @@
             color: var(--primary);
         }
 
-        .ingredient-tabs-container {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
+        .ingredient-categories {
+            display: grid;
+            gap: 1.5rem;
         }
 
-        .ingredient-tabs {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            padding: 0 0 1rem 0;
-            border-bottom: 2px solid rgba(255, 107, 107, 0.1);
-            flex-shrink: 0;
-        }
-
-        .ingredient-tab {
-            padding: 0.75rem 1rem;
-            background: rgba(255, 255, 255, 0.7);
-            border: 2px solid rgba(255, 107, 107, 0.2);
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            white-space: nowrap;
-        }
-
-        .ingredient-tab.active {
-            background: linear-gradient(135deg, var(--accent) 0%, var(--secondary) 100%);
-            color: white;
-            border-color: var(--accent);
-        }
-
-        .ingredient-tab:hover:not(.active) {
-            background: rgba(255, 107, 107, 0.1);
-            color: var(--primary);
-        }
-
-        .ingredient-tab-badge {
-            background: var(--primary);
-            color: white;
-            border-radius: 12px;
-            padding: 0.2rem 0.5rem;
-            font-size: 0.7rem;
-            margin-left: 0.5rem;
-            font-weight: 600;
-        }
-
-        .ingredient-tab.active .ingredient-tab-badge {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .ingredient-tab-content {
-            flex: 1;
-            overflow-y: auto;
-            padding: 1rem 0;
-            min-height: 300px;
-            max-height: 300px;
-        }
-
-        .tab-category {
+        .category {
             background: rgba(255, 255, 255, 0.7);
             border-radius: 15px;
-            padding: 1rem;
+            padding: 1.5rem;
             border: 1px solid rgba(255, 107, 107, 0.1);
-            margin-bottom: 1rem;
         }
 
-        .tab-category-title {
-            font-size: 1rem;
+        .category-title {
+            font-size: 1.1rem;
             font-weight: 600;
             color: var(--dark);
-            margin-bottom: 0.75rem;
+            margin-bottom: 1rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
@@ -732,7 +652,7 @@
 
         .ingredient-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 0.75rem;
         }
 
@@ -776,11 +696,10 @@
         }
 
         .modal-footer {
-            margin-top: 1rem; /* Reduced from 2rem - brings buttons up */
+            margin-top: 2rem;
             display: flex;
-            justify-content: center; /* Changed from space-between - centers buttons */
+            justify-content: space-between;
             gap: 1rem;
-            padding-bottom: 1rem; /* Add padding to prevent cutoff */
         }
 
         .modal-btn {
@@ -954,52 +873,13 @@
                 grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
             }
         }
-
-/* Chef Hat Trademark Enhancement */
-.chef-hat-tm {
-    font-size: 0.60em;
-    display: inline-block;
-    margin-left: -4px; /* Even closer to title (was -2px) */
-    vertical-align: super;
-    position: relative;
-    top: -0.1em; /* Lower position (was -0.3em) */
-    animation: chefPulse 3s ease-in-out infinite;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
-}
-
-/* Subtle chef hat pulse animation */
-@keyframes chefPulse {
-    0%, 100% { 
-        transform: scale(1);
-        opacity: 0.8;
-    }
-    50% { 
-        transform: scale(1.2);
-        opacity: 1;
-    }
-}
-
-/* Hover effect for interactivity */
-.logo:hover .chef-hat-tm {
-    animation: chefFlicker 0.8s ease-in-out;
-    transform: scale(1.15);
-}
-
-@keyframes chefFlicker {
-    0%, 100% { opacity: 1; }
-    25% { opacity: 0.7; }
-    75% { opacity: 1; }
-}
-
     </style>
 </head>
 <body>
     <!-- Header -->
     <header class="header">
         <div class="header-content">
-            <div class="logo" id="dynamicLogo">
-                <span class="logo-text">RecipeGen</span><span class="chef-hat-tm">👨‍🍳</span><span class="trademark">™</span>
-            </div>
+            <div class="logo">RecipeGen™</div>
             <nav class="nav">
                 <a href="#"><i class="fas fa-home"></i> Home</a>
                 <a href="#"><i class="fas fa-book"></i> Recipes</a>
@@ -1071,7 +951,8 @@
                         <div class="chat-messages" id="chatMessages">
                             <div class="message bot">
                                 <div class="message-content">
-                                     Hi! I'm your culinary assistant. What would you like to cook today?
+                                    <i class="fas fa-chef-hat" style="margin-right: 0.5rem; color: var(--primary);"></i>
+                                    Hi! I'm your personal culinary assistant. Tell me what you'd like to cook, ask about ingredients, or get cooking tips! What delicious creation can I help you with today?
                                 </div>
                             </div>
                         </div>
@@ -1127,13 +1008,8 @@
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-            <div class="ingredient-tabs-container">
-                <div class="ingredient-tabs" id="ingredientTabs">
-                    <!-- Tabs will be populated by JavaScript -->
-                </div>
-                <div class="ingredient-tab-content" id="ingredientTabContent">
-                    <!-- Current tab content will be shown here -->
-                </div>
+            <div class="ingredient-categories" id="ingredientCategories">
+                <!-- Categories will be loaded here from ingredients.json -->
             </div>
             <div class="modal-footer">
                 <button class="modal-btn secondary" id="clearSelection">Clear All</button>
@@ -1241,32 +1117,6 @@
             }
         }
 
-        // Generate intelligent, compact ingredient confirmation messages
-        function generateIntelligentIngredientMessage() {
-            const cuisine = userSelections.cuisine;
-            const dishType = userSelections.dishType;
-            
-            // Compact ingredient list (first 3 max to save space)
-            const ingredientList = selectedIngredients.length > 3 
-                ? `${selectedIngredients.slice(0, 3).join(', ')} + ${selectedIngredients.length - 3} more`
-                : selectedIngredients.join(', ');
-            
-            let message = '';
-            
-            if (cuisine && dishType) {
-                // Context-aware messages for known combinations
-                message = `🔥 ${ingredientList} for ${cuisine} ${dishType.toLowerCase()}? Perfect choice! Those flavors will be incredible together.`;
-            } else if (cuisine) {
-                message = `✨ Great ${cuisine} ingredients: ${ingredientList}! I can already imagine the amazing flavors.`;
-            } else if (dishType) {
-                message = `👌 ${ingredientList} for ${dishType.toLowerCase()}? Excellent combination - this will be delicious!`;
-            } else {
-                message = `🌟 ${ingredientList} - fantastic ingredients! These will work beautifully together.`;
-            }
-            
-            addMessage(message, 'bot');
-        }
-
         // Generate dynamic message using templates
         function generateMessage(template, cuisine = '', dishType = '') {
             return template
@@ -1293,7 +1143,7 @@
         // Handle cuisine selection - DYNAMIC
         function handleCuisineSelection(cuisine) {
             userSelections.cuisine = cuisine;
-            const message = `${cuisine.charAt(0).toUpperCase() + cuisine.slice(1)} cuisine! Excellent choice - these flavors never disappoint.`;
+            const message = getRandomDynamicMessage(messageTemplates.cuisine_templates, cuisine);
             sendContextualMessage(message);
         }
 
@@ -1303,7 +1153,7 @@
             
             let message;
             if (userSelections.cuisine) {
-                message = `Perfect combination! ${userSelections.cuisine.charAt(0).toUpperCase() + userSelections.cuisine.slice(1)} ${dishType.toLowerCase()} brings together amazing flavors.`;
+                message = getRandomDynamicMessage(messageTemplates.combination_templates, userSelections.cuisine, dishType);
             } else {
                 message = `${dishType} is a wonderful choice! Perfect for bringing out great flavors.`;
             }
@@ -1346,100 +1196,39 @@
             }
         }
 
-        // Global variables for tabbed ingredients
-        let ingredientsByTab = {};
-        let currentActiveTab = '';
-
-        // Populate ingredients modal with tabs
+        // Populate ingredients modal with categories
         function populateIngredientsModal() {
-            const ingredientTabs = document.getElementById('ingredientTabs');
-            const ingredientTabContent = document.getElementById('ingredientTabContent');
+            ingredientCategories.innerHTML = '';
             
-            ingredientTabs.innerHTML = '';
-            ingredientTabContent.innerHTML = '';
-            ingredientsByTab = {};
-            
-            // Group ingredients by type for tabs
+            // Group ingredients by type from your array structure
+            const groupedIngredients = {};
             ingredientsData.forEach(ingredient => {
-                const type = ingredient.type || 'other';
-                let tabName = type.charAt(0).toUpperCase() + type.slice(1);
+                const category = ingredient.type || 'Other';
+                const categoryName = category.charAt(0).toUpperCase() + category.slice(1) + 's';
                 
-                // Smart pluralization - don't add 's' if already ends in 's'
-                if (!tabName.endsWith('s')) {
-                    tabName += 's';
+                if (!groupedIngredients[categoryName]) {
+                    groupedIngredients[categoryName] = [];
                 }
-                
-                if (!ingredientsByTab[tabName]) {
-                    ingredientsByTab[tabName] = [];
-                }
-                ingredientsByTab[tabName].push(ingredient.name);
+                groupedIngredients[categoryName].push(ingredient.name);
             });
             
-            // Create tabs
-            Object.keys(ingredientsByTab).forEach((tabName, index) => {
-                const tab = document.createElement('div');
-                tab.className = 'ingredient-tab';
-                tab.dataset.tab = tabName;
+            // Create category sections
+            Object.entries(groupedIngredients).forEach(([category, ingredients]) => {
+                const categoryDiv = document.createElement('div');
+                categoryDiv.className = 'category';
                 
-                const badge = document.createElement('span');
-                badge.className = 'ingredient-tab-badge';
-                badge.textContent = '0';
+                const categoryTitle = document.createElement('div');
+                categoryTitle.className = 'category-title';
+                categoryTitle.innerHTML = `<i class="fas fa-tags"></i> ${category}`;
                 
-                tab.innerHTML = tabName;
-                tab.appendChild(badge);
+                const ingredientGrid = document.createElement('div');
+                ingredientGrid.className = 'ingredient-grid';
                 
-                tab.addEventListener('click', () => switchTab(tabName));
-                ingredientTabs.appendChild(tab);
-                
-                // Set first tab as active
-                if (index === 0) {
-                    currentActiveTab = tabName;
-                    tab.classList.add('active');
-                }
-            });
-            
-            // Show first tab content
-            if (currentActiveTab) {
-                showTabContent(currentActiveTab);
-            }
-        }
-
-        // Switch to a different tab
-        function switchTab(tabName) {
-            // Update tab visual state
-            document.querySelectorAll('.ingredient-tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
-            
-            // Update current tab and show content
-            currentActiveTab = tabName;
-            showTabContent(tabName);
-        }
-
-        // Show content for the active tab
-        function showTabContent(tabName) {
-            const ingredientTabContent = document.getElementById('ingredientTabContent');
-            ingredientTabContent.innerHTML = '';
-            
-            const ingredients = ingredientsByTab[tabName] || [];
-            
-            const categoryDiv = document.createElement('div');
-            categoryDiv.className = 'tab-category';
-            
-            const ingredientGrid = document.createElement('div');
-            ingredientGrid.className = 'ingredient-grid';
-            
-            ingredients.forEach(ingredient => {
+                ingredients.forEach(ingredient => {
                     const ingredientItem = document.createElement('div');
                     ingredientItem.className = 'ingredient-item';
                     ingredientItem.textContent = ingredient;
                     ingredientItem.dataset.ingredient = ingredient;
-                    
-                    // Restore selected state if ingredient was previously selected
-                    if (selectedIngredients.includes(ingredient)) {
-                        ingredientItem.classList.add('selected');
-                    }
                     
                     ingredientItem.addEventListener('click', () => {
                         toggleIngredient(ingredientItem, ingredient);
@@ -1448,23 +1237,9 @@
                     ingredientGrid.appendChild(ingredientItem);
                 });
                 
+                categoryDiv.appendChild(categoryTitle);
                 categoryDiv.appendChild(ingredientGrid);
-                ingredientTabContent.appendChild(categoryDiv);
-        }
-
-        // Update tab badges with selection counts
-        function updateTabBadges() {
-            Object.keys(ingredientsByTab).forEach(tabName => {
-                const tab = document.querySelector(`[data-tab="${tabName}"]`);
-                const badge = tab.querySelector('.ingredient-tab-badge');
-                
-                const tabIngredients = ingredientsByTab[tabName];
-                const selectedCount = selectedIngredients.filter(ingredient => 
-                    tabIngredients.includes(ingredient)
-                ).length;
-                
-                badge.textContent = selectedCount;
-                badge.style.display = selectedCount > 0 ? 'inline' : 'none';
+                ingredientCategories.appendChild(categoryDiv);
             });
         }
 
@@ -1477,9 +1252,6 @@
                 selectedIngredients.push(ingredient);
                 element.classList.add('selected');
             }
-            
-            // Update tab badges after selection change
-            updateTabBadges();
         }
 
         // Populate dish type and cuisine dropdowns
@@ -1526,13 +1298,11 @@
             document.querySelectorAll('.ingredient-item.selected').forEach(item => {
                 item.classList.remove('selected');
             });
-            // Update tab badges after clearing
-            updateTabBadges();
         });
 
         confirmSelection.addEventListener('click', () => {
             if (selectedIngredients.length > 0) {
-                generateIntelligentIngredientMessage();
+                addMessage(`I've selected: ${selectedIngredients.join(', ')}. What would you like me to cook with these ingredients?`, 'bot');
             }
             ingredientModal.classList.remove('show');
         });
@@ -1592,20 +1362,16 @@
             contentDiv.className = 'message-content';
             
             if (type === 'bot') {
-                contentDiv.innerHTML = text; // Just show the text with its emoji
+                contentDiv.innerHTML = `<i class="fas fa-robot" style="margin-right: 0.5rem; color: var(--primary);"></i>${text}`;
             } else {
                 contentDiv.textContent = text;
             }
             
-            // Clear ALL previous messages and ensure clean slate
+            // Clear previous messages and add new one centered
             chatMessages.innerHTML = '';
-            // Remove any typing indicators that might be lingering
-            const existingTyping = document.getElementById('typingIndicator');
-            if (existingTyping) {
-                existingTyping.remove();
-            }
             messageDiv.appendChild(contentDiv);
             chatMessages.appendChild(messageDiv);
+            // No scroll code needed - message appears centered automatically
 
         }
 
@@ -1662,7 +1428,7 @@
             const cuisine = document.getElementById('cuisineSelect').value;
             
             if (!dishType || !cuisine) {
-                showErrorModal('Missing Selection', 'Please select both dish type and cuisine before generating your recipe.');
+                alert('Please select both dish type and cuisine.');
                 return;
             }
             
@@ -1834,7 +1600,7 @@
             
             // Show progressive loading in right panel
             document.querySelector('.info-card').innerHTML = `
-                <div id="recipeProgress" class="text-center py-8" style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
+                <div id="recipeProgress" class="text-center py-8">
                     <div id="progressText" class="text-2xl font-bold mb-4 text-gray-700">🔍 Searching for your perfect recipe...</div>
                     <div class="loader-dots text-lg text-gray-500">Finding the best match</div>
                 </div>
@@ -1862,8 +1628,6 @@
                     // Update to "Recipe found" state
                     document.getElementById('progressText').innerHTML = '✅ Recipe found! Creating your 8-second recipe trailer...';
                     document.querySelector('.loader-dots').innerHTML = 'Watch the highlights, then unlock the full recipe!';
-                    // Ensure parent container stays centered
-                    document.getElementById('recipeProgress').style.cssText = 'display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; text-align: center; padding: 2rem;';
                     
                     // Store recipe data for later unlock
                     window.currentRecipeId = data.recipe_id;
@@ -1908,24 +1672,8 @@
             const cuisine = this.value;
             if (cuisine) {
                 handleCuisineSelection(cuisine);
-                // Update logo colors based on cuisine selection
-                updateLogoCuisine(cuisine);
             }
         });
-
-        // Update logo colors based on selected cuisine
-        function updateLogoCuisine(cuisine) {
-            const logo = document.getElementById('dynamicLogo');
-            
-            // Remove any existing cuisine classes
-            logo.className = logo.className.replace(/cuisine-\w+/g, '');
-            
-            // Add the new cuisine class
-            if (cuisine) {
-                console.log('Selected cuisine:', cuisine);
-                logo.classList.add(`cuisine-${cuisine.toLowerCase()}`);
-            }
-        }
 
         // Dish type selection handler - NEW
         document.getElementById('dishTypeSelect').addEventListener('change', function() {
@@ -1940,11 +1688,6 @@
             console.log('DOM loaded, calling loadIngredients...');
             loadIngredients();
             loadMessageTemplates();
-            
-            // Set up error modal close handler AFTER DOM is loaded
-            document.getElementById("closeErrorModal").onclick = () => {
-                document.getElementById("errorModal").classList.add("hidden");
-            };
         });
 
         function displayFullRecipe(recipe) {
@@ -2057,29 +1800,6 @@
           }
         }
 
-        // Show elegant error modal instead of ugly alert
-        function showErrorModal(title, message) {
-            document.getElementById("errorModalTitle").textContent = title;
-            document.getElementById("errorModalMsg").textContent = message;
-            document.getElementById("errorModal").classList.remove("hidden");
-        }
-
-
    </script>
-
-<!-- Error Modal -->
-<div id="errorModal"
-     class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50 hidden">
-  <div class="bg-white rounded-lg shadow-2xl p-6 max-w-lg w-full border-2 border-red-500">
-    <div id="errorModalTitle" class="text-2xl font-bold text-red-700 mb-2"></div>
-    <div id="errorModalMsg" class="text-gray-700 whitespace-pre-line mb-6"></div>
-    <button id="closeErrorModal"
-            class="bg-red-600 text-white px-5 py-2 rounded shadow hover:bg-red-700 w-full font-bold text-lg">
-      OK
-    </button>
-  </div>
-</div>
-
-
 </body>
 </html>

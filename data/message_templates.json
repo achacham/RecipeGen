@@ -1,0 +1,39 @@
+{
+  "cuisine_templates": [
+    "{cuisine} cuisine! You have excellent taste - these flavors never disappoint!",
+    "Wonderful choice! {cuisine} cooking brings such amazing variety.",
+    "{cuisine} cuisine - get ready for some incredible flavors!",
+    "Perfect! {cuisine} food is always a delicious adventure.",
+    "Great selection! {cuisine} cuisine offers such rich, satisfying dishes."
+  ],
+  "combination_templates": [
+    "Perfect match! {cuisine} {dishtype} is a wonderful combination.",
+    "Excellent choice! {cuisine} {dishtype} brings together amazing flavors.",
+    "Beautiful! {cuisine} {dishtype} is going to be delicious.",
+    "Great combo! {cuisine} {dishtype} is comfort food at its best.",
+    "Love it! {cuisine} {dishtype} is such a satisfying choice."
+  ],
+  "dietary_templates": {
+    "vegetarian": [
+      "Wonderful! Plant-based cooking opens up incredible flavor possibilities.",
+      "Perfect! Vegetarian cuisine is so creative and satisfying."
+    ],
+    "gluten-free": [
+      "Noted! Gluten-free cooking can be absolutely delicious!",
+      "Perfect! Gluten-free doesn't mean flavor-free!"
+    ],
+    "dairy-free": [
+      "Got it! Dairy-free cooking uses amazing alternatives.",
+      "Perfect! Dairy-free cuisine is incredibly creative."
+    ]
+  },
+  "ingredient_encouragement": [
+    "Nice ingredient choices! Those would work beautifully together.",
+    "I can already imagine a delicious recipe with those ingredients!",
+    "Perfect selections! Those flavors will complement each other wonderfully."
+  ],
+  "pre_generate": [
+    "You're all set! Ready to create something amazing? 🍽️",
+    "Everything looks perfect! Let's make some culinary magic happen!"
+  ]
+}

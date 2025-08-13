@@ -31,6 +31,7 @@ from dotenv import load_dotenv
 # On app startup, regenerate supported cuisines
 from update_supported_cuisines import update_supported_cuisines
 update_supported_cuisines()
+from flask import send_from_directory
 
 # No need to import sys again
 sys.path.append(str(Path(__file__).parent))
@@ -200,7 +201,122 @@ def validate_ingredients(ingredient_slugs, mode="jewish"):
     return problems
 
 
+import json
+import uuid
+from datetime import datetime
+import os
+import sys
+from io import StringIO
+
+def log_system_error(error_type, user_request, console_snapshot, resolution="unknown", additional_data=None):
+    """
+    Log system errors for Editor analysis with complete diagnostic information
+    """
+    # Generate unique error ID
+    timestamp = datetime.now()
+    error_id = f"ERR-{timestamp.strftime('%Y-%m%d-%H%M%S')}-{str(uuid.uuid4())[:8].upper()}"
+    
+    # Capture system state
+    error_event = {
+        "error_id": error_id,
+        "timestamp": timestamp.isoformat(),
+        "error_type": error_type,
+        "user_request": user_request,
+        "console_output": console_snapshot,
+        "resolution": resolution,
+        "system_state": {
+            "python_version": sys.version,
+            "openai_version": openai.__version__,
+            "database_recipes": get_database_recipe_count(),
+            "environment": "development" if app.debug else "production"
+        },
+        "additional_data": additional_data or {}
+    }
+    
+    # Save to error log file
+    save_error_to_log(error_event)
+    
+    return error_event
+
+def capture_console_output():
+    """
+    Capture recent console output for error context
+    NOTE: This is a simplified version - in production we'd implement 
+    a circular buffer to capture the last N lines
+    """
+    # For now, return a placeholder - we'll implement proper console capture later
+    return "Console output capture to be implemented with circular buffer"
+
+def save_error_to_log(error_event):
+    """
+    Save error event to JSON log file for Editor to read
+    """
+    log_file = "logs/system_errors.json"
+    
+    # Ensure logs directory exists
+    os.makedirs("logs", exist_ok=True)
+    
+    # Load existing errors or create new list
+    try:
+        with open(log_file, 'r') as f:
+            errors = json.load(f)
+    except FileNotFoundError:
+        errors = []
+    
+    # Add new error
+    errors.append(error_event)
+    
+    # Keep only last 100 errors to prevent file from growing too large
+    errors = errors[-100:]
+    
+    # Save back to file
+    with open(log_file, 'w') as f:
+        json.dump(errors, f, indent=2, ensure_ascii=False)
+    
+    print(f"📝 Error logged: {error_event['error_id']}")
+
+def get_database_recipe_count():
+    """Get current recipe count for system state logging"""
+    try:
+        with sqlite3.connect('recipegen.db') as conn:
+            cursor = conn.execute('SELECT COUNT(*) FROM recipes')
+            return cursor.fetchone()[0]
+    except:
+        return "unknown"
+
 # === Routes ===
+
+# ================================================================================
+# TEMPORARY TEST ROUTE - REMOVE BEFORE PRODUCTION
+# Purpose: Test the error logging system without waiting for real errors
+# Added: 2025-08-13 for error logging system testing
+# TODO: Remove this route before deploying to production
+# ================================================================================
+@app.route('/test_error_logging')
+def test_error_logging():
+    """
+    TEMPORARY: Test route to verify error logging functionality works correctly
+    DELETE THIS ROUTE before production deployment
+    """
+    error_event = log_system_error(
+        error_type="test_error",
+        user_request={"test": "data"},
+        console_snapshot="Test console output",
+        resolution="test_resolution"
+    )
+    return jsonify({"message": "Error logged", "error_id": error_event['error_id']})
+# ================================================================================
+
+@app.route('/mockup')
+def serve_mockup():
+    return send_from_directory('.', 'mockup.html')
+
+@app.route('/ingredients.json')
+def serve_ingredients():
+    import os
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    data_dir = os.path.join(script_dir, 'data')
+    return send_from_directory(data_dir, 'ingredients.json')
 
 @app.route('/output/<filename>')
 def serve_video(filename):
@@ -396,49 +512,35 @@ def generate_recipe_instant():
             chef_preference = data.get("chef_preference", "traditional")
             matched_recipe = recipe_matcher_4d.find_recipe(cuisine, ingredients, dish_type, chef_preference)
 
-               
-        # INTELLIGENT ALTERNATIVES SYSTEM
-        # ================================
-        # After building the complete 4D cascade logic, we discovered that many valid
-        # user combinations (like Singaporean Baked Crab) simply don't exist in any
-        # recipe database. Rather than silently falling back to generic recipes,
-        # we now engage the user with intelligent alternatives.
-        #
-        # This transforms RecipeGen from a "dumb search" into a culinary advisor
-        # that understands relationships between cuisines, cooking methods, and
-        # ingredients. Like a skilled chef who says "We're out of salmon, but
-        # I have beautiful sea bass that would work perfectly."
-        #
-        # The 4D system's journey through all levels provides rich context about
-        # WHY a recipe wasn't found, enabling us to suggest smart alternatives.
-        if isinstance(matched_recipe, dict) and matched_recipe.get('type') == 'no_match':
-            print("🤔 No direct match found - preparing intelligent alternatives")
-            
-            # Store the failure context for potential future use
-            with sqlite3.connect('recipegen.db') as conn:
-                conn.execute('''
-                    INSERT INTO recipes (recipe_id, cuisine_id, dish_type, ingredients, recipe_text, video_task_id, matched_recipe_id, matched_recipe_data)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-                ''', (recipe_id, 0, dish_type, json.dumps(ingredients), "NO_MATCH", task_id, "alternatives", json.dumps(matched_recipe)))
-            
-            # Return alternatives to the frontend for user interaction
-            # This is NOT admitting defeat - it's demonstrating culinary intelligence
-            return jsonify({
-                "success": False,
-                "recipe_id": recipe_id,
-                "no_match": True,
-                "reason": matched_recipe['search_summary']['reason'],
-                "alternatives": matched_recipe['alternatives'],
-                "apis_checked": matched_recipe['search_summary']['apis_checked'],
-                "original_request": {
-                    "cuisine": cuisine.title(),
-                    "dish_type": dish_type.replace('-', ' ').title(),
-                    "ingredients": ingredient_names
+        # ====================================================       
+        # Always deliver what the user requested
+        # ====================================================
+        # If Levels 1-3 failed, Level 4 (Our Recipe) should have generated the original request.
+        # We NEVER return only alternatives - we always give the user what they asked for.
+        if isinstance(matched_recipe, dict) and matched_recipe.get('type') == 'generation_failed':
+            # Log the error event for Editor analysis
+            error_event = log_system_error(
+                error_type="4d_search_failure",
+                user_request={
+                    "cuisine": cuisine,
+                    "dish_type": dish_type, 
+                    "ingredients": ingredients,
+                    "chef_preference": chef_preference
                 },
-                "message": f"We searched extensively but couldn't find {cuisine.title()} {dish_type.replace('-', ' ')} "
-                          f"with your selected ingredients. Here are some excellent alternatives we think you'll love:"
-            })
-        
+                console_snapshot=capture_console_output(),
+                resolution="fallback_to_ai_chef"
+            )
+            
+            print(f"🔄 4D search failed (Error ID: {error_event['error_id']}), invoking AI Chef fallback...")
+            # Trigger existing fallback instead of returning error
+            matched_recipe = None  # This triggers the existing Essential Recipe logic below
+
+        # Continue with normal flow - we should have a real recipe by now
+        if matched_recipe:
+            print(f"✅ Recipe generation successful: {matched_recipe.get('title', 'Generated Recipe')}")
+        else:
+            print("🔄 Proceeding to Essential Recipe generation...")
+                
         # If we have a real recipe match, continue as before
         matched_recipe_id = matched_recipe.get('recipe_id') if matched_recipe else None
 
@@ -506,8 +608,8 @@ def generate_recipe_instant():
         # Return INSTANT teaser
         ingredient_list = ", ".join(ingredient_names[:3]) + "..." if len(ingredient_names) > 3 else ", ".join(ingredient_names)
         # Include actual recipe info if we have it
-        recipe_title = matched_recipe.get('title', f"{cuisine.title()} {dish_type}")
-        recipe_image = matched_recipe.get('image_url', '')
+        recipe_title = matched_recipe.get('title', f"{cuisine.title()} {dish_type}") if matched_recipe else f"{cuisine.title()} {dish_type}"
+        recipe_image = matched_recipe.get('image_url', '') if matched_recipe else ''
 
         return jsonify({
             "success": True,
@@ -609,6 +711,22 @@ def chat():
                 "Please ask about food, ingredients, or this site."
             )
         })
+        
+    # PROTECT BUSINESS MODEL - Block recipe giveaways
+    recipe_blocking_patterns = [
+        "recipe for", "how to make", "how to cook", "how to prepare", 
+        "ingredients for", "instructions for", "steps to make",
+        "cooking method", "preparation steps", "how do i cook",
+        "what ingredients", "cooking instructions", "recipe steps",
+        "how to bake", "how to fry", "how to grill", "how to roast",
+        "tell me the recipe", "give me the recipe", "full recipe",
+        "complete recipe", "step by step", "cooking process"
+    ]
+
+    if any(pattern in text for pattern in recipe_blocking_patterns):
+        return jsonify({
+            "reply": "I'd love to help you create that recipe! Please use our recipe generator above - just select your cuisine and ingredients, and I'll create the complete recipe with detailed instructions and video for $2.99. It's much better than anything I could type here!"
+        })
 
     # Special handling for login questions
     if "login" in text or "log in" in text:
@@ -673,4 +791,16 @@ logger.info("🎯 Async video worker started for background processing")
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 3000))
     logger.info(f"🚀 Starting RecipeGen on port {port}")
-    app.run(host="0.0.0.0", port=port)
+
+    # ⚠️ DEVELOPMENT MODE - CHANGE BEFORE PRODUCTION! ⚠️
+    # app.run(host="0.0.0.0", port=port, debug=True)  # ← COMMENTED OUT
+    # DEVELOPMENT MODE (with auto-reload)
+    app.run(host="0.0.0.0", port=port, debug=True)
+
+    # 🚀 PRODUCTION MODE - Uncomment these lines when deploying:
+    # is_production = os.environ.get("ENVIRONMENT") == "production"
+    # app.run(
+    #     host="0.0.0.0", 
+    #     port=port, 
+    #     debug=not is_production
+    # )

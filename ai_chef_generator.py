@@ -126,6 +126,7 @@ Return ONLY valid JSON (be VERY concise):
         "Step 2",
         ...max 5 steps...
     ],
+    "chef_secrets": "One helpful cooking tip for this recipe",
     "prep_time": "X min",
     "cook_time": "Y min",
     "servings": 4,

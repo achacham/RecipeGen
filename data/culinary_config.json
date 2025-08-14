@@ -77,29 +77,5 @@
       "equipment": "pot for pasta, pan for sauce",
       "technique": "al dente pasta, sauce integration"
     }
-  },
-  "dietary_rules": {
-  "kosher": {
-    "forbidden_ingredient_families": ["pork"],
-    "forbidden_individual": ["crab", "lobster", "shrimp", "prawns", "fish_sauce"],
-    "forbidden_types": ["seafood"],
-    "mixing_prohibitions": [
-      {"group1": ["meats"], "group2": ["dairy", "milk product"]},
-      {"group1": ["meats"], "group2": ["fish"]}
-    ]
-  },
-  "vegetarian": {
-    "forbidden_when_is_meat": true
-  },
-  "gluten_free": {
-    "forbidden_ingredient_families": ["pasta"],
-    "forbidden_types": ["grain"],
-    "forbidden_individual": ["wheat", "barley", "rye", "bread", "flour"],
-    "allowed_grains": ["rice", "corn", "quinoa"]
-  },
-  "dairy_free": {
-    "forbidden_types": ["dairy", "milk product"],
-    "forbidden_ingredient_families": ["cheese"]
   }
-}
 }

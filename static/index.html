@@ -134,8 +134,8 @@
         }
 
         .logo-text {
-            font-family: 'Dancing Script', 'Brush Script MT', cursive;
-            font-weight: 600; /* Add weight for better visibility */
+            font-family: inherit; /* Use Poppins from body */
+            font-weight: 700; /* Very bold weight */
             background: linear-gradient(135deg, var(--primary) 0%, var(--pink) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -1184,6 +1184,22 @@
         </div>
     </div>
 
+
+    <!-- Kosher/Dietary Validation Modal -->
+    <div id="kosherModal"
+        class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50 hidden">
+      <div class="bg-white rounded-lg shadow-2xl p-6 max-w-lg w-full border-2 border-green-700">
+        <div id="kosherModalTitle" class="text-2xl font-bold text-green-800 mb-2"></div>
+        <div id="kosherModalMsg" class="text-gray-700 whitespace-pre-line mb-6"></div>
+        <button id="closeKosherModal"
+                class="bg-green-700 text-white px-5 py-2 rounded shadow hover:bg-green-800 w-full font-bold text-lg">
+          OK
+        </button>
+      </div>
+    </div>
+
+
+
     <script>
         // Chat functionality - CLEAN, NO HARDCODING
         const chatMessages = document.getElementById('chatMessages');
@@ -1202,6 +1218,190 @@
         let selectedIngredients = [];
         let ingredientsData = {};
 
+        // Dietary validation functions
+        function showKosherModal(title, msg) {
+            document.getElementById("kosherModalTitle").textContent = title;
+            const content = Array.isArray(msg)
+                ? msg.map(e => `<div>- ${e}</div>`).join("")
+                : msg;
+            document.getElementById("kosherModalMsg").innerHTML = content;
+            document.getElementById("kosherModal").classList.remove("hidden");
+        }
+
+        async function validateCurrentSelections() {
+            // Debug
+            console.log('Validation called with conflicts:', window.activeConflicts);
+            //
+            const selectedDietaryTags = Array.from(document.querySelectorAll('.dietary-tag.active'))
+                .map(tag => tag.textContent.trim().toLowerCase());
+            
+            if (selectedDietaryTags.length === 0 || selectedIngredients.length === 0) {
+                return; // Nothing to validate
+            }
+            
+            // Check for persistent conflicts from previous "Keep Anyway" decisions
+            if (window.activeConflicts && Object.keys(window.activeConflicts).length > 0) {
+                let stillConflicted = [];
+                
+                // Check each dietary type for persistent conflicts
+                Object.keys(window.activeConflicts).forEach(dietaryType => {
+                    const conflicts = window.activeConflicts[dietaryType];
+                    conflicts.forEach(conflict => {
+                        if (conflict.slug && selectedIngredients.some(ingredient => {
+                            const ing = ingredientsData.find(item => item.name === ingredient);
+                            return ing && ing.slug === conflict.slug;
+                        })) {
+                            stillConflicted.push(conflict);
+                        }
+                    });
+                });
+                
+                if (stillConflicted.length > 0) {
+                    // Collect the ingredient names from the conflicts
+                    const stillConflictedIngredients = stillConflicted
+                        .filter(c => c.name)
+                        .map(c => c.name);
+                    
+                    const persistentMessage = stillConflicted.map(c => c.error).join('\n') + 
+                        '\n\n(These ingredients remain in your selection)';
+                    showEnhancedKosherModal("⚠️ Ongoing Dietary Conflict", persistentMessage, stillConflictedIngredients);
+                    return; // Skip new validation since we're showing persistent conflicts
+                } else {
+                    // Conflicts resolved, clear them
+                    window.activeConflicts = {};
+                }
+            }
+            
+            // Build validation modes array
+            const modes = [];
+            if (selectedDietaryTags.some(tag => tag.includes('vegetarian'))) modes.push('vegetarian');
+            if (selectedDietaryTags.some(tag => tag.includes('gluten-free'))) modes.push('gluten-free');
+            if (selectedDietaryTags.some(tag => tag.includes('dairy-free'))) modes.push('dairy_free');
+            
+            const cuisine = document.getElementById('cuisineSelect').value;
+            if (cuisine === 'jewish') modes.push('jewish');
+            
+            if (modes.length === 0) return;
+            
+            // Call validation endpoint with multiple modes
+            try {
+                const response = await fetch('/validate_ingredients', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        ingredients: selectedIngredients.map(name => {
+                            const ingredient = ingredientsData.find(ing => ing.name === name);
+                            return ingredient ? ingredient.slug : name.toLowerCase().replace(/\s+/g, '-');
+                        }),
+                        modes: modes
+                    })
+                });
+                
+                const validation = await response.json();
+                
+                if (validation.problems && validation.problems.length > 0) {
+                    // Group conflicts by dietary type for better organization
+                    const conflictsByType = {};
+                    const conflictingIngredients = [];
+                    
+                    // Process and group conflicts
+                    validation.problems.forEach(p => {
+                        // Determine conflict type from error message
+                        let conflictType = 'general';
+                        if (p.error.includes('vegetarian')) conflictType = 'vegetarian';
+                        else if (p.error.includes('gluten')) conflictType = 'gluten_free';
+                        else if (p.error.includes('dairy')) conflictType = 'dairy_free';
+                        else if (p.error.includes('kosher') || p.error.includes('Jewish')) conflictType = 'kosher';
+                        
+                        if (!conflictsByType[conflictType]) {
+                            conflictsByType[conflictType] = [];
+                        }
+                        
+                        if (p.slug) {
+                            const conflictingItem = selectedIngredients.find(ing => {
+                                const ingredient = ingredientsData.find(item => item.name === ing);
+                                return ingredient ? ingredient.slug === p.slug : false;
+                            });
+                            if (conflictingItem) {
+                                conflictingIngredients.push(conflictingItem);
+                                conflictsByType[conflictType].push({
+                                    name: conflictingItem,
+                                    slug: p.slug,
+                                    error: p.error.replace(/^- /, '') + '!'
+                                });
+                            }
+                        } else {
+                            // Non-ingredient-specific errors (like mixing violations)
+                            conflictsByType[conflictType].push({
+                                error: p.error.replace(/^- /, '') + '!'
+                            });
+                        }
+                    });
+                    
+                    // Auto-deselect conflicting ingredients from both array AND visual interface
+                    validation.problems.forEach(p => {
+                        if (p.slug) {
+                            // Find the ingredient name being removed
+                            const removedIngredientName = selectedIngredients.find(ing => {
+                                const ingredient = ingredientsData.find(item => item.name === ing);
+                                return ingredient ? ingredient.slug === p.slug : false;
+                            });
+                            
+                            // Remove from array
+                            selectedIngredients = selectedIngredients.filter(ing => {
+                                const ingredient = ingredientsData.find(item => item.name === ing);
+                                return ingredient ? ingredient.slug !== p.slug : true;
+                            });
+                            
+                            // Remove visual selection from modal
+                            if (removedIngredientName) {
+                                const ingredientItems = document.querySelectorAll(`.ingredient-item[data-ingredient="${removedIngredientName}"]`);
+                                ingredientItems.forEach(item => {
+                                    item.classList.remove('selected');
+                                });
+                            }
+                        }
+                    });
+                    updateTabBadges();
+                    
+
+                    // Build a cleaner message from grouped conflicts
+                    let enhancedMessage = '';
+                    let conflictCount = 0;
+
+                    // For now, only vegetarian is implemented
+                    if (conflictsByType.vegetarian && conflictsByType.vegetarian.length > 0) {
+                        enhancedMessage += '🌱 Vegetarian conflicts:\n';
+                        conflictsByType.vegetarian.forEach(conflict => {
+                            if (conflict.name) {
+                                enhancedMessage += `• ${conflict.name}\n`;
+                                conflictCount++;
+                            } else {
+                                // General vegetarian message without specific ingredient
+                                enhancedMessage += `• ${conflict.error}\n`;
+                            }
+                        });
+                    }
+
+                    // Add removed items note if any
+                    if (conflictingIngredients.length > 0) {
+                        enhancedMessage += `\n(${conflictCount} item${conflictCount > 1 ? 's' : ''} temporarily removed - click 'Keep Anyway' to restore all)`;
+                    }
+
+                    // Store conflicts in grouped format for future use
+                    window.activeConflicts = conflictsByType;
+
+                    // Debug to see structure
+                    console.log('Grouped conflicts:', window.activeConflicts);
+
+                    showEnhancedKosherModal("⚠️ Dietary Validation", enhancedMessage, conflictingIngredients);
+                  }
+            } catch (error) {
+                console.error('Validation error:', error);
+            }
+        }
+
+
         // Dynamic contextual messaging system - NEW CODE
         let messageTemplates = {};
         let userSelections = {
@@ -1210,6 +1410,123 @@
             dietaryPreferences: [],
             hasIngredients: false
         };
+
+
+        function showEnhancedKosherModal(title, msg, conflictingIngredients = []) {
+            document.getElementById("kosherModalTitle").textContent = title;
+            
+            // Check if we have grouped conflicts for enhanced display
+            const hasGroupedConflicts = window.activeConflicts && typeof window.activeConflicts === 'object' && !Array.isArray(window.activeConflicts);
+            
+            // Enhanced message display with per-ingredient controls if we have grouped conflicts
+            if (hasGroupedConflicts && conflictingIngredients.length > 0) {
+                let enhancedHTML = '<div style="max-height: 300px; overflow-y: auto;">';
+                
+                // Add each dietary type's conflicts
+                Object.keys(window.activeConflicts).forEach(dietaryType => {
+                    const conflicts = window.activeConflicts[dietaryType].filter(c => c.name); // Only show conflicts with ingredients
+                    if (conflicts.length > 0) {
+                        const typeLabel = dietaryType === 'vegetarian' ? '🌱 Vegetarian' : dietaryType;
+                        enhancedHTML += `<div style="margin-bottom: 15px;"><strong>${typeLabel} conflicts:</strong><ul style="margin: 5px 0;">`;
+                        conflicts.forEach(conflict => {
+                            enhancedHTML += `<li>${conflict.name}</li>`;
+                        });
+                        enhancedHTML += '</ul></div>';
+                        }
+                        });
+
+                        enhancedHTML += '</div><p style="margin-top: 10px; font-style: italic; color: #666;">These items conflict with your dietary preferences. Choose to keep or remove them.</p>';
+                        document.getElementById("kosherModalMsg").innerHTML = enhancedHTML;
+            } else {
+                document.getElementById("kosherModalMsg").innerHTML = msg;
+            }
+            
+            // Create button container
+            const modalFooter = document.querySelector('#kosherModal .bg-white');
+            const existingButton = document.getElementById('closeKosherModal');
+            
+            // Remove existing button if it exists
+            if (existingButton) {
+                existingButton.remove();
+            }
+            
+            // Create new button container
+            const buttonContainer = document.createElement('div');
+            buttonContainer.className = 'flex gap-3 mt-6';
+
+            // Determine button text based on number of conflicts
+            const keepButtonText = conflictingIngredients.length > 1 
+                ? `Keep All (${conflictingIngredients.length} items)` 
+                : 'Keep Anyway';
+
+            buttonContainer.innerHTML = `
+                ${conflictingIngredients.length > 0 ? `
+                    <button id="keepAnywayBtn" 
+                            class="bg-gray-500 text-white px-4 py-2 rounded shadow hover:bg-gray-600 flex-1 font-bold">
+                        ${keepButtonText}
+                    </button>
+                ` : ''}
+                <button id="closeKosherModalNew" 
+                        class="bg-green-700 text-white px-4 py-2 rounded shadow hover:bg-green-800 flex-1 font-bold">
+                    Remove Conflicts
+                </button>
+            `;
+            
+            modalFooter.appendChild(buttonContainer);
+            
+            // Show modal
+            document.getElementById("kosherModal").classList.remove("hidden");
+            
+            // Event handlers
+            document.getElementById("closeKosherModalNew").onclick = () => {
+                // "Remove Conflicts" button - actually remove the conflicting ingredients
+                if (conflictingIngredients.length > 0) {
+                    // Remove each conflicting ingredient from selection
+                    conflictingIngredients.forEach(ingredientName => {
+                        // Remove from selectedIngredients array
+                        const index = selectedIngredients.indexOf(ingredientName);
+                        if (index > -1) {
+                            selectedIngredients.splice(index, 1);
+                        }
+                        
+                        // Remove visual selection in modal
+                        const ingredientItems = document.querySelectorAll(`.ingredient-item[data-ingredient="${ingredientName}"]`);
+                        ingredientItems.forEach(item => {
+                            item.classList.remove('selected');
+                        });
+                    });
+                    
+                    // Update tab badges
+                    updateTabBadges();
+                }
+                
+                // Clear active conflicts
+                window.activeConflicts = {};
+                document.getElementById("kosherModal").classList.add("hidden");
+                buttonContainer.remove();
+            };
+            
+            if (conflictingIngredients.length > 0) {
+                document.getElementById("keepAnywayBtn").onclick = () => {
+                    // Restore conflicting ingredients to both array AND visual interface
+                    conflictingIngredients.forEach(ingredient => {
+                        if (!selectedIngredients.includes(ingredient)) {
+                            selectedIngredients.push(ingredient);
+                            
+                            // Restore visual selection in modal
+                            const ingredientItems = document.querySelectorAll(`.ingredient-item[data-ingredient="${ingredient}"]`);
+                            ingredientItems.forEach(item => {
+                                item.classList.add('selected');
+                            });
+                        }
+                    });
+                    updateTabBadges();
+                    document.getElementById("kosherModal").classList.add("hidden");
+                    buttonContainer.remove();
+                };
+            }
+        }
+
 
         // Load message templates from same endpoint as ingredients
         async function loadMessageTemplates() {
@@ -1533,6 +1850,8 @@
         confirmSelection.addEventListener('click', () => {
             if (selectedIngredients.length > 0) {
                 generateIntelligentIngredientMessage();
+                // Validate dietary preferences after ingredient selection
+                setTimeout(() => validateCurrentSelections(), 100);
             }
             ingredientModal.classList.remove('show');
         });
@@ -1649,10 +1968,14 @@
             }
         });
 
-        // Interactive elements
+        // Interactive elements - now with validation
         document.querySelectorAll('.dietary-tag').forEach(tag => {
             tag.addEventListener('click', () => {
                 tag.classList.toggle('active');
+                console.log('Dietary tag clicked:', tag.textContent.trim(), 'Active:', tag.classList.contains('active'));
+                console.log('All active tags:', Array.from(document.querySelectorAll('.dietary-tag.active')).map(t => t.textContent.trim()));
+                // Trigger validation when dietary preferences change
+                validateCurrentSelections();
             });
         });
 
@@ -1946,6 +2269,11 @@
                 document.getElementById("errorModal").classList.add("hidden");
             };
         });
+
+
+        document.getElementById("closeKosherModal").onclick = () => {
+                document.getElementById("kosherModal").classList.add("hidden");
+            };
 
         function displayFullRecipe(recipe) {
             const ingredients = recipe.all_ingredients || recipe.ingredients || [];

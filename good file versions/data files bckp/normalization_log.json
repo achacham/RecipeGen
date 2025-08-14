@@ -1,0 +1,80 @@
+[
+  {
+    "original": "apples",
+    "normalized": "apple",
+    "type": "fuzzy_match",
+    "count": 1
+  },
+  {
+    "original": "black_beans",
+    "normalized": "black_bean",
+    "type": "fuzzy_match",
+    "count": 1
+  },
+  {
+    "original": "challots",
+    "normalized": "shallot",
+    "type": "synonym",
+    "count": 7
+  },
+  {
+    "original": "chicken_breasts",
+    "normalized": "chicken_breast",
+    "type": "synonym",
+    "count": 5
+  },
+  {
+    "original": "chickpeas",
+    "normalized": "chickpea",
+    "type": "synonym",
+    "count": 6
+  },
+  {
+    "original": "minced_beef",
+    "normalized": "ground_beef",
+    "type": "synonym",
+    "count": 9
+  },
+  {
+    "original": "noodles",
+    "normalized": "noodle",
+    "type": "synonym",
+    "count": 3
+  },
+  {
+    "original": "onions",
+    "normalized": "onion",
+    "type": "synonym",
+    "count": 18
+  },
+  {
+    "original": "peanuts",
+    "normalized": "peanut",
+    "type": "fuzzy_match",
+    "count": 6
+  },
+  {
+    "original": "potatoes",
+    "normalized": "potato",
+    "type": "synonym",
+    "count": 48
+  },
+  {
+    "original": "scallions",
+    "normalized": "scallion",
+    "type": "synonym",
+    "count": 2
+  },
+  {
+    "original": "shallots",
+    "normalized": "shallot",
+    "type": "synonym",
+    "count": 5
+  },
+  {
+    "original": "tomatoes",
+    "normalized": "tomato",
+    "type": "synonym",
+    "count": 19
+  }
+]

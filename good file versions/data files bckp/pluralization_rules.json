@@ -1,0 +1,54 @@
+{
+  "version": "1.0",
+  "irregular_plurals": {
+    "olives": "olive",
+    "leaves": "leaf",
+    "loaves": "loaf",
+    "calves": "calf",
+    "knives": "knife",
+    "halves": "half",
+    "geese": "goose",
+    "feet": "foot",
+    "teeth": "tooth",
+    "children": "child",
+    "men": "man",
+    "women": "woman",
+    "mice": "mouse"
+  },
+  "no_change_words": [
+    "fish", "sheep", "deer", "series", "species", 
+    "salmon", "trout", "tuna", "squid", "shrimp"
+  ],
+  "not_plural_endings_in_s": [
+    "couscous", "hummus", "lens", "molasses", "sumac",
+    "anise", "bass", "grass", "watercress", "lemongrass"
+  ],
+  "rules": [
+    {
+      "pattern": "ies$",
+      "condition": "length > 3 and char[-4] not in vowels",
+      "replacement": "y",
+      "examples": ["berries→berry", "cherries→cherry"]
+    },
+    {
+      "pattern": "oes$",
+      "replacement": "o",
+      "examples": ["tomatoes→tomato", "potatoes→potato"]
+    },
+    {
+      "pattern": "(ch|sh|ss|x|z)es$",
+      "replacement": "$1",
+      "examples": ["peaches→peach", "dishes→dish"]
+    },
+    {
+      "pattern": "ves$",
+      "special_handling": "check_irregular_first",
+      "examples": ["olives→olive", "knives→knife"]
+    },
+    {
+      "pattern": "s$",
+      "replacement": "",
+      "condition": "default_rule"
+    }
+  ]
+}

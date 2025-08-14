@@ -148,56 +148,111 @@ def is_geography_question(text):
 def validate_ingredients(ingredient_slugs, mode="jewish"):
     problems = []
     
-    if mode != "jewish":
-        return problems
+    if mode == "jewish":
+        types_present = set()
+        meat_names = []
+        fish_names = []
+        dairy_names = []
+        has_non_kosher = False  # 🛡️ Guard flag
 
-    types_present = set()
-    meat_names = []
-    fish_names = []
-    dairy_names = []
-    has_non_kosher = False  # 🛡️ Guard flag
+        for slug in ingredient_slugs:
+            ing = INGREDIENTS_BY_SLUG.get(slug)
+            if not ing:
+                problems.append({"slug": slug, "error": "Unknown ingredient"})
+                continue
 
+            ing_type = ing.get("type")
+            kashrut = ing.get("kashrut")
+
+            # Check for non-kosher items (skip requires-supervision unless it's explicitly non-kosher)
+            if kashrut == "non-kosher":
+                has_non_kosher = True  # 🛡️ Set the guard flag
+                problems.append({
+                "slug": slug,
+                "error": f"{ing['name']} is not permitted in Jewish cuisine."
+            })
+
+            # Track types for mixing validation
+            if ing_type:
+                types_present.add(ing_type)
+
+                # Track kosher items for mixing rules
+                if ing_type == "meats" and kashrut in ["kosher", "requires-supervision"]:
+                    meat_names.append(ing['name'])
+                elif ing_type == "fish" and kashrut == "kosher":
+                    fish_names.append(ing['name'])
+                elif ing_type in ["dairy", "milk product"]:
+                    dairy_names.append(ing['name'])
+
+        # ❗ Don't apply mixing rules if a non-kosher item is present
+        if not has_non_kosher:
+            if meat_names and dairy_names:
+                problems.append({
+                    "error": "Our Jewish cuisine follows kosher law, which prohibits the mixture of meat and dairy products."
+                })
+            # CHANGE THIS LINE: elif → if
+            if meat_names and fish_names:
+                problems.append({
+                    "error": "Our Jewish cuisine follows kosher law, which prohibits the mixture of meat and fish."
+                })
+                
+    elif mode == "vegetarian":
+        problems.extend(validate_vegetarian_ingredients(ingredient_slugs))
+    elif mode == "gluten-free":
+        problems.extend(validate_gluten_free_ingredients(ingredient_slugs))
+
+    return problems
+
+def validate_vegetarian_ingredients(ingredient_slugs):
+    """Validate ingredients for vegetarian dietary restrictions using your kashrut wisdom"""
+    problems = []
+    
     for slug in ingredient_slugs:
         ing = INGREDIENTS_BY_SLUG.get(slug)
         if not ing:
-            problems.append({"slug": slug, "error": "Unknown ingredient"})
             continue
-
-        ing_type = ing.get("type")
-        kashrut = ing.get("kashrut")
-
-        # Check for non-kosher items (skip requires-supervision unless it's explicitly non-kosher)
-        if kashrut == "non-kosher":
-            has_non_kosher = True  # 🛡️ Set the guard flag
+            
+        # Use your existing is_meat flag from ingredients.json
+        if ing.get("is_meat") == True:
             problems.append({
-            "slug": slug,
-            "error": f"{ing['name']} is not permitted in Jewish cuisine."
-        })
-
-        # Track types for mixing validation
-        if ing_type:
-            types_present.add(ing_type)
-
-            # Track kosher items for mixing rules
-            if ing_type == "meats" and kashrut in ["kosher", "requires-supervision"]:
-                meat_names.append(ing['name'])
-            elif ing_type == "fish" and kashrut == "kosher":
-                fish_names.append(ing['name'])
-            elif ing_type in ["dairy", "milk product"]:
-                dairy_names.append(ing['name'])
-
-    # ❗ Don't apply mixing rules if a non-kosher item is present
-    if not has_non_kosher:
-        if meat_names and dairy_names:
-            problems.append({
-                "error": "Our Jewish cuisine follows kosher law, which prohibits the mixture of meat and dairy products."
+                "slug": slug,
+                "error": f"{ing['name']} is not suitable for vegetarian cuisine."
             })
-        # CHANGE THIS LINE: elif → if
-        if meat_names and fish_names:
-            problems.append({
-                "error": "Our Jewish cuisine follows kosher law, which prohibits the mixture of meat and fish."
-            })
+    
+    return problems
 
+def validate_gluten_free_ingredients(ingredient_slugs):
+    """Validate ingredients for gluten-free dietary restrictions"""
+    problems = []
+    
+    # Gluten-containing ingredients (based on type and name)
+    gluten_types = ["grain"]
+    gluten_ingredients = ["wheat", "barley", "rye", "pasta", "noodle", "bread", "flour"]
+    
+    for slug in ingredient_slugs:
+        ing = INGREDIENTS_BY_SLUG.get(slug)
+        if not ing:
+            continue
+            
+        ing_type = ing.get("type", "").lower()
+        ing_name = ing.get("name", "").lower()
+        
+        # Check if ingredient type contains gluten
+        if ing_type in gluten_types:
+            # Allow rice and other gluten-free grains
+            if not any(safe in ing_name for safe in ["rice", "corn", "quinoa"]):
+                problems.append({
+                    "slug": slug,
+                    "error": f"{ing['name']} contains gluten and is not suitable for gluten-free cuisine."
+                })
+        
+        # Check if ingredient name contains gluten
+        elif any(gluten_word in ing_name for gluten_word in gluten_ingredients):
+            problems.append({
+                "slug": slug,
+                "error": f"{ing['name']} contains gluten and is not suitable for gluten-free cuisine."
+            })
+    
     return problems
 
 
@@ -285,27 +340,6 @@ def get_database_recipe_count():
         return "unknown"
 
 # === Routes ===
-
-# ================================================================================
-# TEMPORARY TEST ROUTE - REMOVE BEFORE PRODUCTION
-# Purpose: Test the error logging system without waiting for real errors
-# Added: 2025-08-13 for error logging system testing
-# TODO: Remove this route before deploying to production
-# ================================================================================
-@app.route('/test_error_logging')
-def test_error_logging():
-    """
-    TEMPORARY: Test route to verify error logging functionality works correctly
-    DELETE THIS ROUTE before production deployment
-    """
-    error_event = log_system_error(
-        error_type="test_error",
-        user_request={"test": "data"},
-        console_snapshot="Test console output",
-        resolution="test_resolution"
-    )
-    return jsonify({"message": "Error logged", "error_id": error_event['error_id']})
-# ================================================================================
 
 @app.route('/mockup')
 def serve_mockup():
@@ -648,12 +682,115 @@ def validate_ingredients_api():
     try:
         data = request.get_json(force=True)
         ingredient_slugs = data.get("ingredients", [])
-        mode = data.get("mode", "jewish")
-        problems = validate_ingredients(ingredient_slugs, mode=mode)
-        return jsonify({"problems": problems, "count": len(problems)})
+        modes = data.get("modes", [data.get("mode", "jewish")])
+        
+        all_problems = []
+        for mode in modes:
+            problems = validate_ingredients(ingredient_slugs, mode=mode)
+            all_problems.extend(problems)
+        
+        return jsonify({"problems": all_problems, "count": len(all_problems)})
     except Exception as e:
         logger.error(f"Validation error: {e}")
         return jsonify({"error": "Validation failed", "details": str(e)}), 500
+
+def validate_dietary_rules(ingredient_slugs, dietary_type, culinary_config, ingredient_families):
+    """Validate ingredients against dietary rules using existing architecture"""
+    problems = []
+    
+    if dietary_type not in culinary_config.get('dietary_rules', {}):
+        return problems
+    
+    rules = culinary_config['dietary_rules'][dietary_type]
+    
+    # Track ingredients by type for mixing validation
+    meat_ingredients = []
+    dairy_ingredients = []
+    fish_ingredients = []
+    
+    for slug in ingredient_slugs:
+        ing = INGREDIENTS_BY_SLUG.get(slug)
+        if not ing:
+            continue
+            
+        ing_name = ing.get('name', '').lower()
+        ing_type = ing.get('type', '').lower()
+        
+        # Check forbidden ingredient families (leverages your ingredient_families.json)
+        if 'forbidden_ingredient_families' in rules:
+            for family_name in rules['forbidden_ingredient_families']:
+                if family_name in ingredient_families:
+                    family = ingredient_families[family_name]
+                    if any(family_item.lower() in ing_name for family_item in family['includes']):
+                        problems.append({
+                            "slug": slug,
+                            "error": f"{ing['name']} is not suitable for {dietary_type.replace('_', '-')} cuisine."
+                        })
+                        continue
+        
+        # Check forbidden individual ingredients
+        if 'forbidden_individual' in rules:
+            if any(forbidden.lower() in ing_name for forbidden in rules['forbidden_individual']):
+                problems.append({
+                    "slug": slug,
+                    "error": f"{ing['name']} is not suitable for {dietary_type.replace('_', '-')} cuisine."
+                })
+                continue
+        
+        # Check forbidden types
+        if 'forbidden_types' in rules:
+            if ing_type in rules['forbidden_types']:
+                # Check if it's an allowed exception (for gluten-free grains)
+                if 'allowed_grains' in rules and ing_type == 'grain':
+                    if not any(allowed.lower() in ing_name for allowed in rules['allowed_grains']):
+                        problems.append({
+                            "slug": slug,
+                            "error": f"{ing['name']} contains gluten and is not suitable for {dietary_type.replace('_', '-')} cuisine."
+                        })
+                else:
+                    problems.append({
+                        "slug": slug,
+                        "error": f"{ing['name']} is not suitable for {dietary_type.replace('_', '-')} cuisine."
+                    })
+                continue
+        
+        # Check vegetarian rule (uses existing is_meat flag)
+        if 'forbidden_when_is_meat' in rules and rules['forbidden_when_is_meat']:
+            if ing.get('is_meat') == True:
+                problems.append({
+                    "slug": slug,
+                    "error": f"{ing['name']} is not suitable for vegetarian cuisine."
+                })
+                continue
+        
+        # Track for mixing prohibitions (kosher meat+dairy, meat+fish)
+        if dietary_type == "kosher":
+            if ing_type == "meats" and ing.get('is_meat'):
+                meat_ingredients.append(ing['name'])
+            elif ing_type in ["dairy", "milk product"]:
+                dairy_ingredients.append(ing['name'])
+            elif ing_type == "fish":
+                fish_ingredients.append(ing['name'])
+    
+    # Check mixing prohibitions (for kosher)
+    if 'mixing_prohibitions' in rules:
+        for prohibition in rules['mixing_prohibitions']:
+            group1_types = prohibition['group1']
+            group2_types = prohibition['group2']
+            
+            if meat_ingredients and dairy_ingredients:
+                if any(t in group1_types for t in ["meats"]) and any(t in group2_types for t in ["dairy", "milk product"]):
+                    problems.append({
+                        "error": "Our Jewish cuisine follows kosher law, which prohibits the mixture of meat and dairy products."
+                    })
+            
+            if meat_ingredients and fish_ingredients:
+                if any(t in group1_types for t in ["meats"]) and any(t in group2_types for t in ["fish"]):
+                    problems.append({
+                        "error": "Our Jewish cuisine follows kosher law, which prohibits the mixture of meat and fish."
+                    })
+    
+    return problems
 
 @app.route('/history', methods=['GET'])
 def get_history():

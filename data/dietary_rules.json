@@ -1,0 +1,69 @@
+{
+  "kosher": {
+    "prohibited_items": [
+      "pork", "bacon", "ham", 
+      "shrimp", "prawns", "lobster", "crab", "seafood",
+      "shellfish", "clams", "oysters", "mussels", "scallops"
+    ],
+    "prohibited_types": ["seafood"],
+    "kosher_fish": [
+      "salmon", "tuna", "cod", "halibut", "tilapia", "trout", 
+      "sea_bass", "mackerel", "anchovy", "fish"
+    ],
+    "meat_items": [
+      "beef", "chicken", "lamb", "turkey", "veal", 
+      "ground_beef", "chicken_breast", "chicken_thigh"
+    ],
+    "dairy_items": [
+      "milk", "cheese", "butter", "cream", "yogurt", "sour_cream",
+      "mozzarella", "cheddar", "parmesan", "ricotta", "feta",
+      "emmental_cheese"
+    ],
+    "mixing_rules": {
+      "meat_dairy": "prohibited",
+      "meat_fish": "prohibited"
+    }
+  },
+  
+  "vegetarian": {
+    "prohibited_types": ["meats", "fish", "seafood"],
+    "prohibited_items": []
+  },
+  
+  "gluten_free": {
+    "prohibited_items": [
+      "wheat", "flour", "bread", "pasta", "noodle", 
+      "barley", "rye", "couscous", "bulgur", "semolina",
+      "spaghetti", "penne", "linguine", "fettuccine", 
+      "rigatoni", "fusilli", "macaroni", "lasagna"
+    ],
+    "safe_grains": [
+      "rice", "white_rice", "basmati_rice", "quinoa", 
+      "corn", "oats", "buckwheat", "millet", "amaranth"
+    ]
+  },
+  
+  "dairy_free": {
+    "prohibited_types": ["dairy", "milk product"],
+    "prohibited_items": [
+      "milk", "cheese", "butter", "cream", "yogurt", 
+      "sour_cream", "ice_cream", "whey", "casein",
+      "mozzarella", "cheddar", "parmesan", "ricotta", 
+      "feta", "emmental_cheese", "swiss", "gouda", "brie"
+    ]
+  },
+  
+  "protein_types": [
+    "meats", "fish", "seafood", "legume", "dairy", "eggs"
+  ],
+  
+  "spicy_items": [
+    "chili_pepper", "jalapeno", "habanero", "cayenne", 
+    "hot_sauce", "red_pepper_flakes", "wasabi", "horseradish"
+  ],
+  
+  "quick_30min_incompatible": [
+    "roast", "brisket", "stew_meat", "whole_chicken", 
+    "dried_beans", "dried_chickpeas"
+  ]
+}

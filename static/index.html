@@ -134,8 +134,8 @@
         }
 
         .logo-text {
-            font-family: 'Dancing Script', 'Brush Script MT', cursive;
-            font-weight: 600; /* Add weight for better visibility */
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-weight: 800; /* Already set to 800 which is quite bold! Adjust 100-900 as needed */
             background: linear-gradient(135deg, var(--primary) 0%, var(--pink) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -200,7 +200,7 @@
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
             border-radius: 25px;
-            padding: 1.5rem; /* Reduced from 2.5rem */
+            padding: 1.0rem; /* Reduced from 2.5rem */
             box-shadow: 
                 0 25px 50px rgba(0, 0, 0, 0.1),
                 0 0 0 1px rgba(255, 255, 255, 0.2);
@@ -298,7 +298,7 @@
             border: 1px solid rgba(255, 255, 255, 0.3);
             display: flex;
             flex-direction: column;
-            height: 170px;
+            height: 180px;
             transition: all 0.3s ease;
         }
 
@@ -311,7 +311,7 @@
 
         .chat-header {
             background: linear-gradient(135deg, var(--primary) 0%, var(--orange) 100%);
-            padding: 0.25rem 0.75rem; /* Much more conservative padding */
+            padding: 0.2rem 0.5rem; /* Much more conservative padding */
             display: flex;
             align-items: center;
             gap: 0.75rem; /* Reduced gap */
@@ -341,20 +341,21 @@
             font-size: 0.9rem; /* Smaller title */
         }
 
+ 
         .chat-messages {
             flex: 1;
-            padding: 1rem;
+            padding: 0.5rem;
             background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 249, 250, 0.9) 100%);
             display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;  /* CHANGED FROM center TO flex-end */
+            overflow-y: auto;
             position: relative;
-            /* CRITICAL: Without this min-height, flex shrinks message area too small and vertical centering fails. 
-            70px ensures proper centering within 170px container. */
-            min-height: 70px; /* Ensure minimum space for centering */
+            min-height: 70px;
+            padding-top: 2px;
         }
-
+      
         .chat-messages::-webkit-scrollbar {
             width: 6px;
         }
@@ -370,7 +371,7 @@
         }
 
         .message {
-            margin-bottom: 1rem; /* Reduced from 1.5rem */
+            margin-bottom: 0.5rem; /* Reduced from 1.5rem */
             animation: messageSlide 0.4s ease;
         }
 
@@ -387,7 +388,7 @@
 
         .message-content {
             max-width: 85%;
-            padding: 0.75rem 1rem; /* Reduced padding */
+            padding: 0.4rem 0.6rem; /* Reduced padding */
             border-radius: 20px;
             font-size: 0.85rem; /* Reduced from 0.95rem */
             line-height: 1.5; /* Reduced from 1.6 */
@@ -454,7 +455,7 @@
         }
 
         .chat-input-container {
-            padding: 1rem; /* Reduced from 1.5rem */
+            padding: 0.5rem; /* Reduced from 1.5rem */
             background: rgba(255, 255, 255, 0.8);
             display: flex;
             gap: 0.75rem; /* Reduced from 1rem */
@@ -558,6 +559,35 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
         }
+
+
+        /* Expandable tags - indicate they're clickable dropdowns */
+        .expandable-tag {
+            cursor: pointer;
+            position: relative;
+        }
+
+        .expandable-tag:hover {
+            background: rgba(255, 107, 107, 0.15) !important;
+        }
+
+        /* Different active colors based on selection level */
+        .expandable-tag.active[data-level="1"] { /* Mild/15min */
+            background: linear-gradient(135deg, #96ceb4 0%, #88d8b0 100%) !important;
+        }
+
+        .expandable-tag.active[data-level="2"] { /* Medium/30min */
+            background: linear-gradient(135deg, #feca57 0%, #ff9ff3 100%) !important;
+        }
+
+        .expandable-tag.active[data-level="3"] { /* Hot/45min */
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%) !important;
+        }
+
+        .expandable-tag.active[data-level="4"] { /* Extra/1hr+ */
+            background: linear-gradient(135deg, #ee5a24 0%, #b33939 100%) !important;
+        }
+
 
         /* Generate Button */
         .generate-btn {
@@ -1042,8 +1072,12 @@
                         <div class="dietary-tag">🥛 Dairy-Free</div>
                         <div class="dietary-tag">🌾 Gluten-Free</div>
                         <div class="dietary-tag">✡️ Kosher</div>
-                        <div class="dietary-tag">🌶️ Spicy</div>
-                        <div class="dietary-tag">⚡ Quick (30min)</div>
+                        <div class="dietary-tag expandable-tag" id="spiceTag" data-type="spice" title="Click to cycle spice levels">
+                            🌶️ <span id="spiceText">Spicy</span> <span style="font-size: 0.7rem; opacity: 0.7;">▼</span>
+                        </div>
+                        <div class="dietary-tag expandable-tag" id="timeTag" data-type="time" title="Click to cycle cooking times">
+                            ⚡ <span id="timeText">Quick</span> <span style="font-size: 0.7rem; opacity: 0.7;">▼</span>
+                        </div>
                     </div>
                 </div>
 
@@ -1243,6 +1277,8 @@
 
         // Generate intelligent, compact ingredient confirmation messages
         function generateIntelligentIngredientMessage() {
+            console.log('🟡 GENERATING CELEBRATION MESSAGE');
+            console.trace('Called from:');  // ADD THESE TWO LINES
             const cuisine = userSelections.cuisine;
             const dishType = userSelections.dishType;
             
@@ -1530,18 +1566,262 @@
             updateTabBadges();
         });
 
-        confirmSelection.addEventListener('click', () => {
+
+        async function validateCurrentSelections() {
+            console.log('🔴 validateCurrentSelections STARTED');  // ADD THIS
+            console.trace('VALIDATION CALLED FROM:');  // ADD THIS - shows call stack
+            
+            const activeDietaryTags = Array.from(document.querySelectorAll('.dietary-tag.active'));
+            console.log('🔴 Active dietary tags found:', activeDietaryTags.length);  // ADD THIS
+            
+            if (activeDietaryTags.length === 0) {
+                console.log('🔴 No dietary tags - EXITING');  // ADD THIS
+                return;
+            }
+            
+            // Get dietary modes from active tags
+            const dietaryModes = [];
+            activeDietaryTags.forEach(tag => {
+                const text = tag.textContent.trim().toLowerCase();
+                if (text.includes('vegetarian')) dietaryModes.push('vegetarian');
+                if (text.includes('gluten')) dietaryModes.push('gluten_free');
+                if (text.includes('dairy')) dietaryModes.push('dairy_free');
+                if (text.includes('kosher')) dietaryModes.push('kosher');
+            });
+            
+            console.log('🔴 Dietary modes to validate:', dietaryModes);  // ADD THIS
+            
+            // Get ingredient slugs
+            const ingredientSlugs = selectedIngredients.map(name => {
+                const ingredient = ingredientsData.find(ing => ing.name === name);
+                return ingredient ? ingredient.slug : name.toLowerCase().replace(/\s+/g, '-');
+            });
+            
+            console.log('🔴 Ingredient slugs to validate:', ingredientSlugs);  // ADD THIS
+            console.log('🔴 About to fetch /validate_ingredients');  // ADD THIS
+            
+            try {
+                console.log('🔴 FETCH #1 - About to call /validate_ingredients');
+                const response = await fetch('/validate_ingredients', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        ingredients: ingredientSlugs,
+                        dietary_modes: dietaryModes
+                    })
+                });
+                
+                console.log('🔴 Response received:', response.status);  // ADD THIS
+                const data = await response.json();
+                console.log('🔴 VALIDATION DATA:', data);  // ADD THIS
+                
+                if (data.problems && Object.keys(data.problems).length > 0) {
+                    console.log('🔴 SHOWING MODAL WITH PROBLEMS:', data.problems);  // ADD THIS
+                    window.activeConflicts = data.problems;
+                    showEnhancedKosherModal(data.problems);
+                } else {
+                    console.log('🔴 No problems found - no modal to show');  // ADD THIS
+                }
+            } catch (error) {
+                console.error('🔴 VALIDATION ERROR:', error);  // ADD THIS
+            }
+        }
+
+
+        function showEnhancedKosherModal(conflicts) {
+            // Remove any existing modal first
+            const existingModal = document.getElementById('dietaryConflictModal');
+            if (existingModal) {
+                existingModal.remove();
+            }
+            
+            // Count total conflicts
+            let totalConflicts = 0;
+            Object.values(conflicts).forEach(items => {
+                totalConflicts += items.length;
+            });
+            
+            // Build conflict list HTML
+            let conflictListHTML = '';
+            Object.entries(conflicts).forEach(([diet, items]) => {
+                const dietName = diet.replace('_', ' ').charAt(0).toUpperCase() + diet.replace('_', ' ').slice(1);
+                conflictListHTML += `
+                    <div style="margin-bottom: 1rem;">
+                        <h4 style="color: var(--primary); margin-bottom: 0.5rem;">❌ ${dietName} Conflicts:</h4>
+                        <ul style="list-style: none; padding-left: 1rem;">
+                            ${items.map(item => `
+                                <li style="padding: 0.25rem 0;">
+                                    • ${item.error}
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                `;
+            });
+            
+            // Create modal HTML
+            const modalHTML = `
+                <div id="dietaryConflictModal" class="ingredient-modal show" style="z-index: 2000;">
+                    <div class="modal-content" style="max-width: 600px;">
+                        <div class="modal-header">
+                            <h3 class="modal-title">⚠️ Dietary Conflicts Found</h3>
+                        </div>
+                        <div style="padding: 1rem; max-height: 400px; overflow-y: auto;">
+                            ${conflictListHTML}
+                        </div>
+                        <div class="modal-footer">
+                            <button class="modal-btn secondary" id="keepAllBtn">
+                                Keep All (${totalConflicts} items)
+                            </button>
+                            <button class="modal-btn primary" id="removeConflictsBtn">
+                                Remove Conflicts
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Add modal to page
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+            // Attach event listeners to modal buttons
+            setTimeout(() => {
+                const keepBtn = document.getElementById('keepAllBtn');
+                const removeBtn = document.getElementById('removeConflictsBtn');
+                const modal = document.getElementById('dietaryConflictModal');
+                
+                if (keepBtn) {
+                    keepBtn.onclick = () => {
+                        console.log('User chose to keep conflicting ingredients');
+                        if (modal) modal.remove();
+                        window.activeConflicts = null;
+                        // Just close the modal - DON'T generate any message
+                    };
+                }
+                
+                if (removeBtn) {
+                    removeBtn.onclick = () => {
+                        console.log('User chose to remove conflicts');
+                        if (modal) modal.remove();
+                        removeConflictingIngredients();
+                        ingredientModal.classList.remove('show');
+                    };
+                }
+            }, 10);
+        }
+
+        function keepConflictingIngredients() {
+            console.log('User keeping conflicting ingredients');
+            // Don't generate message here - it's already handled by confirmSelection
+            // The message will appear when modal closes
+        }
+
+    function removeConflictingIngredients() {
+    // Remove conflicting ingredients from selection
+    if (window.activeConflicts) {
+        const itemsToRemove = [];
+        Object.values(window.activeConflicts).forEach(items => {
+            items.forEach(item => {
+                // Collect the names to remove
+                if (item.name) {
+                    itemsToRemove.push(item.name);
+                }
+            });
+        });
+        
+        // Remove from selectedIngredients array
+        selectedIngredients = selectedIngredients.filter(ing => 
+            !itemsToRemove.includes(ing)
+        );
+        
+        // Remove visual selection in ingredient modal
+        const ingredientElements = document.querySelectorAll('.ingredient-item');
+        ingredientElements.forEach(element => {
+            if (itemsToRemove.includes(element.textContent) || 
+                itemsToRemove.includes(element.dataset.ingredient)) {
+                element.classList.remove('selected');
+            }
+        });
+        
+        // Update tab badges to reflect removed items
+        updateTabBadges();
+    }
+    
+    console.log('Removed conflicting ingredients, remaining:', selectedIngredients);
+    
+    // NOW celebrate the cleaned selection
+    if (selectedIngredients.length > 0) {
+        generateIntelligentIngredientMessage();
+    }
+}
+
+
+        confirmSelection.addEventListener('click', async () => {
+            console.log('🔴 CONFIRM CLICKED - STARTING VALIDATION');
+            
             if (selectedIngredients.length > 0) {
-                generateIntelligentIngredientMessage();
+                const activeDietaryTags = Array.from(document.querySelectorAll('.dietary-tag.active'));
+                if (activeDietaryTags.length > 0) {
+                    console.log('🔴 CALLING validateCurrentSelections');
+                    await validateCurrentSelections();
+                    
+                    // DEBUG: Check if conflicts are set
+                    console.log('🔴 AFTER VALIDATION - window.activeConflicts:', window.activeConflicts);
+                    
+                    if (!window.activeConflicts || Object.keys(window.activeConflicts).length === 0) {
+                        console.log('🔴 NO CONFLICTS - CELEBRATING');
+                        generateIntelligentIngredientMessage();
+                    } else {
+                        console.log('🔴 CONFLICTS FOUND - STAYING SILENT');
+                    }
+                } else {
+                    generateIntelligentIngredientMessage();
+                }
             }
             ingredientModal.classList.remove('show');
         });
 
-        // Auto-resize textarea
+         // Auto-resize textarea
         chatInput.addEventListener('input', function() {
             this.style.height = 'auto';
             this.style.height = Math.min(this.scrollHeight, 80) + 'px';
         });
+
+
+        function showTypingIndicator() {
+            console.log('TYPING INDICATOR CREATED!');  // ADD THIS LINE
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message bot';
+            typingDiv.id = 'typingIndicator';
+            
+            const indicatorDiv = document.createElement('div');
+            indicatorDiv.className = 'typing-indicator';
+            indicatorDiv.innerHTML = `
+                <div class="typing-dots">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+                <span style="color: var(--gray); font-size: 0.75rem; font-style: italic;">RecipeGen is thinking...</span>
+            `;
+            
+            typingDiv.appendChild(indicatorDiv);
+            chatMessages.appendChild(typingDiv);
+
+            // Hide only bot messages, keep the latest user message visible briefly
+            setTimeout(() => {
+                const botMsgs = chatMessages.querySelectorAll('.message.bot:not(#typingIndicator)');
+                botMsgs.forEach(msg => msg.style.display = 'none');
+                // Then hide user message after another delay
+                setTimeout(() => {
+                    const userMsgs = chatMessages.querySelectorAll('.message.user');
+                    userMsgs.forEach(msg => msg.style.display = 'none');
+                }, 1000); // Hide user message 1 second after bot messages
+            }, 500);  // Start hiding bot messages after 0.5 seconds
+            chatMessages.scrollTop = -15;
+            
+        }
+
 
         // Send message function
         async function sendMessage() {
@@ -1562,22 +1842,33 @@
 
             try {
                 // Call REAL chat API with business protection
-                const response = await fetch('http://localhost:3000/chat', {
+                const response = await fetch('/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ message: message })
                 });
                 
                 const data = await response.json();
+                console.log('Got chat response from server:', data);
+                console.log('About to hide typing indicator');
                 
-                // Add bot response
+            setTimeout(() => {
+                hideTypingIndicator();
+                console.log('hideTypingIndicator was called');
                 addMessage(data.reply || 'Sorry, I encountered an error. Please try again.', 'bot');
+                chatSendBtn.disabled = false;
+                sendIcon.className = 'fas fa-paper-plane';
+            }, 700); // 2 second delay to show typing animation
+
+                chatSendBtn.disabled = false;
+                sendIcon.className = 'fas fa-paper-plane';
                 
             } catch (error) {
                 console.error('Chat error:', error);
-                addMessage('Sorry, I encountered an error. Please try again.', 'bot');
-            } finally {
-                hideTypingIndicator();
+                setTimeout(() => {
+                    hideTypingIndicator();
+                    addMessage('Sorry, I encountered an error. Please try again.', 'bot');
+                }, 2000); // Same delay for error messages
                 chatSendBtn.disabled = false;
                 sendIcon.className = 'fas fa-paper-plane';
             }
@@ -1585,58 +1876,55 @@
 
         // Add message to chat
         function addMessage(text, type) {
+            const existingTyping = document.getElementById('typingIndicator');
+            if (existingTyping) {
+                existingTyping.remove();
+            }
+            
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${type}`;
+
+            if (type === 'bot') {
+                messageDiv.style.marginTop = '-5px';  // Negative margin to pull bot message up
+            }
             
             const contentDiv = document.createElement('div');
             contentDiv.className = 'message-content';
             
             if (type === 'bot') {
-                contentDiv.innerHTML = text; // Just show the text with its emoji
+                contentDiv.innerHTML = text;
             } else {
                 contentDiv.textContent = text;
             }
             
-            // Clear ALL previous messages and ensure clean slate
-            chatMessages.innerHTML = '';
-            // Remove any typing indicators that might be lingering
-            const existingTyping = document.getElementById('typingIndicator');
-            if (existingTyping) {
-                existingTyping.remove();
-            }
             messageDiv.appendChild(contentDiv);
             chatMessages.appendChild(messageDiv);
 
-        }
+          // Message visibility management for 180px container
+          const allMessages = chatMessages.querySelectorAll('.message');
+          if (type === 'user') {
+              // Hide ALL previous messages when user types
+              allMessages.forEach(msg => {
+                  if (msg !== messageDiv) {  // Don't hide the message we just added
+                      msg.style.display = 'none';
+                  }
+              });
+              // Ensure the new user message is visible
+              messageDiv.style.display = 'block';
+          }
+          // Bot messages don't need scrollTop since it doesn't work anyway
 
-        // Show typing indicator
-        function showTypingIndicator() {
-            const typingDiv = document.createElement('div');
-            typingDiv.className = 'message bot';
-            typingDiv.id = 'typingIndicator';
-            
-            const indicatorDiv = document.createElement('div');
-            indicatorDiv.className = 'typing-indicator';
-            indicatorDiv.innerHTML = `
-                <div class="typing-dots">
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
-                </div>
-                <span style="color: var(--gray); font-size: 0.75rem; font-style: italic;">RecipeGen is thinking...</span>
-            `;
-            
-            typingDiv.appendChild(indicatorDiv);
-            chatMessages.appendChild(typingDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
         // Hide typing indicator
         function hideTypingIndicator() {
             const indicator = document.getElementById('typingIndicator');
+            console.log('Hiding typing indicator:', indicator);
             if (indicator) {
                 indicator.remove();
             }
+            // Ensure we're scrolled to top after removing typing
+            chatMessages.scrollTop = 0;
         }
 
         // Event listeners
@@ -1649,11 +1937,76 @@
             }
         });
 
-        // Interactive elements
-        document.querySelectorAll('.dietary-tag').forEach(tag => {
+        // Interactive elements - Regular dietary tags only (not expandable ones)
+        document.querySelectorAll('.dietary-tag:not(.expandable-tag)').forEach(tag => {
             tag.addEventListener('click', () => {
                 tag.classList.toggle('active');
             });
+        });
+
+        // Expandable tag functionality with visual levels
+        const spiceOptions = [
+            {text: 'Spicy', value: null, level: 0},      // Default/off state
+            {text: 'Mild', value: 'mild', level: 1},
+            {text: 'Medium', value: 'medium', level: 2},
+            {text: 'Hot 🔥', value: 'hot', level: 3},
+            {text: 'Extra 🔥🔥', value: 'extra', level: 4},
+            {text: 'INSANE 🌋💀', value: 'insane', level: 5}
+        ];
+
+        const timeOptions = [
+            {text: 'Quick', value: null, level: 0},      // Default/off state
+            {text: '15 min', value: '15', level: 1},
+            {text: '30 min', value: '30', level: 2},
+            {text: '45 min', value: '45', level: 3},
+            {text: '60+ min', value: '60', level: 4}
+        ];
+
+        let spiceIndex = 0;
+        let timeIndex = 0;
+
+        document.getElementById('spiceTag').addEventListener('click', function(e) {
+            e.stopPropagation();
+            spiceIndex = (spiceIndex + 1) % spiceOptions.length;
+            const option = spiceOptions[spiceIndex];
+            
+            document.getElementById('spiceText').textContent = option.text;
+            
+            if (option.value === null) {
+                this.classList.remove('active');
+                this.removeAttribute('data-level');
+                userSelections.spiceLevel = null;
+            } else {
+                this.classList.add('active');
+                this.setAttribute('data-level', option.level);
+                userSelections.spiceLevel = option.value;
+            }
+            
+            // Visual feedback on click
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => this.style.transform = '', 100);
+        });
+
+        document.getElementById('timeTag').addEventListener('click', function(e) {
+            e.stopPropagation();
+            timeIndex = (timeIndex + 1) % timeOptions.length;
+            const option = timeOptions[timeIndex];
+            
+            document.getElementById('timeText').textContent = option.text;
+            
+            if (option.value === null) {
+                this.classList.remove('active');
+                this.removeAttribute('data-level');
+                userSelections.cookingTime = null;
+            } else {
+                this.classList.add('active');
+                this.setAttribute('data-level', option.level);
+                userSelections.cookingTime = option.value;
+            }
+            
+            // Visual feedback on click
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => this.style.transform = '', 100);
         });
 
         // Generate button - shows chef selection modal
@@ -1679,10 +2032,34 @@
 
         // Video status polling function
         async function pollVideoStatus() {
+            // Safety check - don't start polling without a task ID
+            if (!window.currentTaskId) {
+                console.log('⚠️ No task ID available for polling');
+                return;
+            }
+            
+            console.log('📊 Starting video status polling for task:', window.currentTaskId);
+            
             const pollInterval = setInterval(async () => {
+                // Double-check task ID still exists
+                if (!window.currentTaskId) {
+                    console.log('⚠️ Task ID lost, stopping polling');
+                    clearInterval(pollInterval);
+                    return;
+                }
+                
                 try {
                     const statusResponse = await fetch(`/check_video_status/${window.currentTaskId}`);
+                    
+                    // Check if response is valid
+                    if (!statusResponse.ok) {
+                        console.log('⚠️ Status check failed:', statusResponse.status);
+                        clearInterval(pollInterval);
+                        return;
+                    }
+                    
                     const status = await statusResponse.json();
+                    console.log('📊 Video status:', status.status);
                     
                     if (status.ready || status.status === 'completed') {
                         clearInterval(pollInterval);
@@ -1696,22 +2073,20 @@
                             videoSrc = status.video_url;
                         }
                         
+                        // Video failed, but still allow recipe unlock
                         document.querySelector('.info-card').innerHTML = `
-                            <div class="text-center py-6">
-                                <h3 class="text-2xl font-bold mb-4">${window.currentRecipeTitle}</h3>
-                                <div class="mb-4 p-4 bg-green-100 rounded-lg">
-                                    <div class="text-lg font-bold mb-2 text-green-700">🎬 Your recipe trailer is ready!</div>
-                                    <video controls class="w-full rounded shadow mb-4" src="${videoSrc}">
-                                        Your browser does not support the video tag.
-                                    </video>
-                                </div>
-                                <div class="p-4 bg-yellow-100 rounded-lg">
-                                    <div class="text-2xl font-bold text-green-700 mb-2">${window.currentRecipePrice}</div>
-                                    <div class="text-sm text-gray-700 mb-4">Full recipe with detailed steps, techniques & chef secrets</div>
-                                    <button onclick="unlockRecipe()" 
-                                            class="bg-green-600 text-white px-6 py-3 rounded-lg font-bold text-lg hover:bg-green-700 transition-all">
-                                        🔓 Unlock Full Recipe
-                                    </button>
+                            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
+                                <div class="text-center py-6">
+                                    <h3 class="text-2xl font-bold mb-4">${window.currentRecipeTitle}</h3>
+                                    <div class="p-4 bg-yellow-100 rounded-lg">
+                                        <div class="text-sm text-gray-600 mb-2">⚠️ Video generation unavailable</div>
+                                        <div class="text-2xl font-bold text-green-700 mb-2">${window.currentRecipePrice}</div>
+                                        <div class="text-sm text-gray-700 mb-4">Full recipe with detailed steps & techniques</div>
+                                        <button onclick="unlockRecipe()" 
+                                                class="bg-green-600 text-white px-6 py-3 rounded-lg font-bold text-lg hover:bg-green-700 transition-all">
+                                            🔓 Unlock Full Recipe
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         `;
@@ -1803,7 +2178,7 @@
             document.getElementById('chefSelectionModal').classList.remove('show');
             
             console.log('👨‍🍳 Chef selected:', chefType);
-            
+
             // Start recipe generation with selected chef
             generateRecipeWithChef();
         }
@@ -1840,6 +2215,14 @@
                 </div>
             `;
             
+            // Get spice and time values
+            const spiceLevel = document.getElementById('spiceTag').classList.contains('active') ? userSelections.spiceLevel : null;
+            const maxCookingTime = document.getElementById('timeTag').classList.contains('active') ? userSelections.cookingTime : null;
+
+            console.log('🔥 SENDING TO BACKEND:');
+            console.log('- Spice Level:', spiceLevel);
+            console.log('- Max Cooking Time:', maxCookingTime);
+            
             try {
                 const response = await fetch('/generate_recipe_instant', {
                     method: 'POST',
@@ -1852,23 +2235,34 @@
                             return ingredient ? ingredient.slug : name.toLowerCase().replace(/\s+/g, '-');
                         }),
                         dietary_preferences: selectedDietaryTags,
-                        chef_preference: window.selectedChef
+                        chef_preference: window.selectedChef,
+                        spice_level: spiceLevel,
+                        max_cooking_time: maxCookingTime
                     })
                 });
                 
                 const data = await response.json();
                 
                 if (data.success) {
-                    // Update to "Recipe found" state
+                  // Check for spice mismatch and show modal if needed
+                    if (data.spice_mismatch) {
+                        setTimeout(() => {
+                            showSpiceMismatchModal(data.spice_mismatch);
+                        }, 500);
+                    }  
+
                     document.getElementById('progressText').innerHTML = '✅ Recipe found! Creating your 8-second recipe trailer...';
                     document.querySelector('.loader-dots').innerHTML = 'Watch the highlights, then unlock the full recipe!';
+                    // Force re-center by resetting the entire progress container
+                    document.getElementById('recipeProgress').style.cssText = '';
                     // Ensure parent container stays centered
                     document.getElementById('recipeProgress').style.cssText = 'display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; text-align: center; padding: 2rem;';
                     
                     // Store recipe data for later unlock
                     window.currentRecipeId = data.recipe_id;
                     window.currentTaskId = data.task_id;
-                    window.currentRecipeTitle = data.recipe_title || data.teaser;
+                    // Fix common apostrophe issues in recipe titles
+                    window.currentRecipeTitle = (data.recipe_title || data.teaser).replace(/Tsos/g, "Tso's");
                     window.currentRecipePrice = data.price;
                     
                     // Start polling for video completion
@@ -1948,6 +2342,14 @@
         });
 
         function displayFullRecipe(recipe) {
+
+        // DEBUG: Log ALL recipe data to see what we're getting
+        console.log('🔍 FULL RECIPE DATA:', recipe);
+        console.log('🕐 prep_time:', recipe.prep_time);
+        console.log('🕐 cook_time:', recipe.cook_time); 
+        console.log('🕐 total_time:', recipe.total_time);
+        console.log('🕐 readyInMinutes:', recipe.readyInMinutes);
+
             const ingredients = recipe.all_ingredients || recipe.ingredients || [];
             
             const recipeHTML = `
@@ -1961,7 +2363,18 @@
               <div class="flex gap-4 text-gray-600 mb-6 justify-center">
                 <span>🍽️ ${recipe.cuisine}</span>
                 <span>👥 ${recipe.servings || 4} servings</span>
-                <span>⏱️ ${((parseInt(recipe.prep_time) || 0) + (parseInt(recipe.cook_time) || 0)) || 35} minutes</span>
+                  <span>⏱️ ${(() => {
+                      let time = recipe.total_time || 
+                                recipe.readyInMinutes || 
+                                ((parseInt(recipe.prep_time) || 0) + (parseInt(recipe.cook_time) || 0));
+                      
+                      // Sanity check: stir-fry/main dishes shouldn't be under 15 minutes
+                      if (time < 15 && recipe.dish_type !== 'salad' && recipe.dish_type !== 'dessert') {
+                          console.log('⚠️ Unrealistic time detected:', time, 'minutes - using default');
+                          return 35; // Default fallback for unrealistic times
+                      }
+                      return time || 35;
+                  })()} minutes</span>
               </div>
                 
                 <div class="grid md:grid-cols-2 gap-6">
@@ -2055,6 +2468,25 @@
             // Restore buttons
             buttons.style.display = originalDisplay;
           }
+        }
+
+
+        // Show spice mismatch modal
+        function showSpiceMismatchModal(mismatch) {
+            const modalHTML = `
+                <div id="spiceMismatchModal" class="ingredient-modal show" style="z-index: 3000;">
+                    <div class="modal-content" style="max-width: 500px; padding: 2rem;">
+                        <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">🌶️ Spice Level Notice</h3>
+                        <p style="margin-bottom: 1rem;">You requested <strong style="color: var(--primary)">${mismatch.requested}</strong> spice level, but this recipe appears to be <strong style="color: var(--primary)">${mismatch.actual}</strong>.</p>
+                        <p style="margin-bottom: 1.5rem; color: var(--gray);">${mismatch.message}</p>
+                        <button onclick="document.getElementById('spiceMismatchModal').remove()" 
+                                class="modal-btn primary" style="width: 100%;">
+                            Understood - Continue
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
         }
 
         // Show elegant error modal instead of ugly alert

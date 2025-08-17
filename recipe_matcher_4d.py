@@ -310,7 +310,8 @@ class RecipeMatcher4D:
             print("⚠️ Local database not found - will use APIs only")
             return False
     
-    def _search_local_database(self, cuisine: str, ingredients: List[str], dish_type: str) -> Optional[Dict]:
+    def _search_local_database(self, cuisine: str, ingredients: List[str], dish_type: str,
+                          spice_level: str = None, max_cooking_time: str = None) -> Optional[Dict]:
         """
         Search LOCAL RecipeGen database with SMART ingredient matching!
         Handles chicken → all chicken parts, but preserves specificity
@@ -382,11 +383,11 @@ class RecipeMatcher4D:
                 params.extend(expanded_ingredients)
             
                        
-            # Build the full query
+            # Build the full query - include total_time for filtering
             query = f'''
                 SELECT r.id, r.title, r.cuisine, r.dish_type, r.ingredients, 
-                       r.instructions, r.prep_time, r.cook_time, r.servings,
-                       r.source, r.image_url, r.quality_score
+                    r.instructions, r.prep_time, r.cook_time, r.servings,
+                    r.source, r.image_url, r.quality_score, r.total_time
                 FROM recipes r
                 WHERE r.cuisine = ?
                 {dish_type_condition}
@@ -395,15 +396,85 @@ class RecipeMatcher4D:
                 LIMIT 10
             '''
             
+            # DEBUG: Log the query to see what's being searched
+            print(f"   🔍 DEBUG QUERY: Searching for cuisine='{cuisine}', dish_type='{dish_type}'")
+            print(f"   🔍 DEBUG: Ingredients being searched: {expanded_ingredients}")
+            print(f"   🔍 DEBUG: Query will return top 10 by quality_score and times_served")
+
             # Execute query and validate protein matches
             cursor.execute(query, params)
             temp_results = cursor.fetchall()
 
+            # Apply TIME filter (hard filter - makes sense)
+            if max_cooking_time and max_cooking_time != 'any':
+                try:
+                    max_time = int(max_cooking_time)
+                    filtered_by_time = []
+                    for row in temp_results:
+                        # Use total_time (index 12) if available, otherwise sum prep+cook
+                        total_time = row[12] if row[12] else (row[6] or 0) + (row[7] or 0)
+                        if total_time and total_time <= max_time:
+                            filtered_by_time.append(row)
+                    
+                    if len(filtered_by_time) < len(temp_results):
+                        print(f"   ⏱️ Time filter: {len(filtered_by_time)}/{len(temp_results)} recipes under {max_time} min")
+                    temp_results = filtered_by_time
+                except (ValueError, TypeError):
+                    pass  # If can't parse time, don't filter
+
+            # Calculate SPICE SCORES for sorting (NOT filtering!)
+            if spice_level and spice_level != 'none' and len(temp_results) > 0:
+                spice_scored_results = []
+                
+                for row in temp_results:
+                    title_lower = row[1].lower()  # title is at index 1
+                    spice_score = 0
+                    
+                    # Score based on spice indicators in title
+                    if spice_level == 'mild':
+                        if any(word in title_lower for word in ['mild', 'gentle', 'sweet']):
+                            spice_score = 100  # Perfect match
+                        elif not any(word in title_lower for word in ['spicy', 'hot', 'chili', 'fiery']):
+                            spice_score = 80   # Probably mild (no spice words)
+                        else:
+                            spice_score = 20   # Has spice words, probably not mild
+                            
+                    elif spice_level in ['medium', 'hot', 'extra', 'insane']:
+                        # Progressive scoring for spicy levels
+                        spice_words = {
+                            'medium': ['spicy', 'zesty', 'tangy', 'seasoned'],
+                            'hot': ['hot', 'spicy', 'chili', 'pepper', 'fiery'],
+                            'extra': ['very hot', 'extra spicy', 'fiery', 'jalapeño'],
+                            'insane': ['ghost', 'habanero', 'scorpion', 'carolina', 'volcanic']
+                        }
+                        
+                        level_words = spice_words.get(spice_level, [])
+                        if any(word in title_lower for word in level_words):
+                            spice_score = 100  # Has matching spice words
+                        elif any(word in title_lower for word in ['spicy', 'hot', 'chili']):
+                            spice_score = 50   # Has some spice
+                        else:
+                            spice_score = 10   # No spice indicators
+                    
+                    spice_scored_results.append((row, spice_score))
+                
+                # Sort by spice score (best matches first), then by quality score
+                spice_scored_results.sort(key=lambda x: (x[1], x[0][11]), reverse=True)
+                temp_results = [row for row, score in spice_scored_results]
+                
+                # Log what we did
+                best_score = spice_scored_results[0][1] if spice_scored_results else 0
+                if best_score < 50:
+                    print(f"   🌶️ Note: No perfect {spice_level} matches, using best available")
+                else:
+                    print(f"   🌶️ Sorted by {spice_level} preference (best match: {best_score}% confidence)")
+
             # Right before the validation
             print(f"   🔍 Validating {len(temp_results)} recipes for protein match...", flush=True)
-            
+
             # VALIDATE PROTEIN MATCH
             results = []
+
             if has_protein_request:
                 # Try each protein combination in order (all → fewer → single)
                 for protein_combo in protein_combinations:
@@ -449,8 +520,17 @@ class RecipeMatcher4D:
                         sys.stdout.flush()
             
             if results:
-                # Convert to RecipeGen format
-                best_recipe = results[0]  # Highest quality/most served
+                
+                # Pick randomly from top recipes for variety
+                import random
+                
+                if len(results) > 1:
+                    # Randomly select from available results
+                    best_recipe = random.choice(results[:min(5, len(results))])
+                    print(f"   🎲 Randomly selected: {best_recipe[1]}")
+                else:
+                    best_recipe = results[0]
+
                 recipe = {
                     'id': best_recipe[0],
                     'title': best_recipe[1],
@@ -475,6 +555,27 @@ class RecipeMatcher4D:
                 conn.commit()
                 
                 print(f"   ✅ Found in LOCAL database: {recipe['title']}")
+
+                # Add spice mismatch flag if needed
+                if spice_level and spice_level != 'none':
+                    title_lower = recipe['title'].lower()
+                    
+                    # Detect mismatch
+                    if spice_level == 'mild':
+                        if any(word in title_lower for word in ['spicy', 'hot', 'chili', 'fiery', 'pepper']):
+                            recipe['spice_mismatch'] = {
+                                'requested': spice_level,
+                                'actual': 'spicy',
+                                'message': 'This recipe appears to be spicy'
+                            }
+                    elif spice_level in ['hot', 'extra', 'insane']:
+                        if not any(word in title_lower for word in ['spicy', 'hot', 'chili', 'pepper', 'fiery']):
+                            recipe['spice_mismatch'] = {
+                                'requested': spice_level,
+                                'actual': 'mild',
+                                'message': 'This recipe appears to be mild'
+                            }
+
                 conn.close()
                 return recipe
             
@@ -536,7 +637,15 @@ class RecipeMatcher4D:
                             validated_partial.append(match)
                 
                 if validated_partial:
-                    best_match = validated_partial[0]
+                    
+                    # Also randomize partial matches
+                    import random
+                    if len(validated_partial) > 1:
+                        best_match = random.choice(validated_partial[:min(5, len(validated_partial))])
+                        print(f"   🎲 Randomly selected partial match: {best_match[1]}")
+                    else:
+                        best_match = validated_partial[0]
+
                     recipe = {
                         'id': best_match[0],
                         'title': best_match[1],
@@ -953,7 +1062,10 @@ class RecipeMatcher4D:
             }
         }
     
-    def find_recipe(self, cuisine: str, ingredients: List[str], dish_type: str, chef_preference: str = 'traditional') -> Optional[Dict]:
+    def find_recipe(self, cuisine: str, ingredients: List[str], dish_type: str, 
+                chef_preference: str = 'traditional',
+                spice_level: str = None,
+                max_cooking_time: str = None) -> Optional[Dict]:
         """
         4D Recipe Search with LOCAL DATABASE PRIORITY
         """
@@ -968,7 +1080,8 @@ class RecipeMatcher4D:
         # NEW LEVEL 1: Search LOCAL RecipeGen database FIRST!
         if self.local_db_available:
             print("📚 LEVEL 1: Searching LOCAL RecipeGen database...")
-            local_recipe = self._search_local_database(cuisine_lower, ingredients, dish_type)
+            local_recipe = self._search_local_database(cuisine_lower, ingredients, dish_type,
+                                          spice_level, max_cooking_time)
             
             if local_recipe:
                 # Validate cuisine match
@@ -1040,7 +1153,7 @@ class RecipeMatcher4D:
                     # Try local database first
                     if self.local_db_available:
                         print(f"\n   🔄 Trying sister country in LOCAL DB: {sister}")
-                        local_sister = self._search_local_database(sister, ingredients, dish_type)
+                        local_sister = self._search_local_database(sister, ingredients, dish_type, spice_level, max_cooking_time)
                         if local_sister:
                             local_sister['note'] = f"Similar {sister.title()} recipe"
                             return local_sister

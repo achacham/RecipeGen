@@ -1,5 +1,5 @@
 {
-  "count": 186,
+  "count": 187,
   "cuisines": [
     "afghan",
     "albanian",
@@ -172,6 +172,7 @@
     "tibetan",
     "timorese",
     "tongan",
+    "trinbagonian",
     "trinidadian",
     "tunisian",
     "turkish",
@@ -193,5 +194,5 @@
     "culinary_regions.json",
     "local_database"
   ],
-  "last_updated": "2025-08-14T07:04:29.771672"
+  "last_updated": "2025-08-17T11:05:35.903161"
 }

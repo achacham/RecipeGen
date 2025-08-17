@@ -145,61 +145,6 @@ def is_geography_question(text):
     ]
     return any(p in text for p in patterns)
 
-def validate_ingredients(ingredient_slugs, mode="jewish"):
-    problems = []
-    
-    if mode != "jewish":
-        return problems
-
-    types_present = set()
-    meat_names = []
-    fish_names = []
-    dairy_names = []
-    has_non_kosher = False  # 🛡️ Guard flag
-
-    for slug in ingredient_slugs:
-        ing = INGREDIENTS_BY_SLUG.get(slug)
-        if not ing:
-            problems.append({"slug": slug, "error": "Unknown ingredient"})
-            continue
-
-        ing_type = ing.get("type")
-        kashrut = ing.get("kashrut")
-
-        # Check for non-kosher items (skip requires-supervision unless it's explicitly non-kosher)
-        if kashrut == "non-kosher":
-            has_non_kosher = True  # 🛡️ Set the guard flag
-            problems.append({
-            "slug": slug,
-            "error": f"{ing['name']} is not permitted in Jewish cuisine."
-        })
-
-        # Track types for mixing validation
-        if ing_type:
-            types_present.add(ing_type)
-
-            # Track kosher items for mixing rules
-            if ing_type == "meats" and kashrut in ["kosher", "requires-supervision"]:
-                meat_names.append(ing['name'])
-            elif ing_type == "fish" and kashrut == "kosher":
-                fish_names.append(ing['name'])
-            elif ing_type in ["dairy", "milk product"]:
-                dairy_names.append(ing['name'])
-
-    # ❗ Don't apply mixing rules if a non-kosher item is present
-    if not has_non_kosher:
-        if meat_names and dairy_names:
-            problems.append({
-                "error": "Our Jewish cuisine follows kosher law, which prohibits the mixture of meat and dairy products."
-            })
-        # CHANGE THIS LINE: elif → if
-        if meat_names and fish_names:
-            problems.append({
-                "error": "Our Jewish cuisine follows kosher law, which prohibits the mixture of meat and fish."
-            })
-
-    return problems
-
 
 import json
 import uuid
@@ -316,6 +261,16 @@ def serve_ingredients():
     import os
     script_dir = os.path.dirname(os.path.abspath(__file__))
     data_dir = os.path.join(script_dir, 'data')
+    file_path = os.path.join(data_dir, 'ingredients.json')
+    
+    print(f"DEBUG: Script dir: {script_dir}")
+    print(f"DEBUG: Data dir: {data_dir}")
+    print(f"DEBUG: Looking for file at: {file_path}")
+    print(f"DEBUG: File exists? {os.path.exists(file_path)}")
+    
+    if not os.path.exists(file_path):
+        return f"File not found at {file_path}", 404
+    
     return send_from_directory(data_dir, 'ingredients.json')
 
 @app.route('/output/<filename>')
@@ -510,7 +465,21 @@ def generate_recipe_instant():
         else:
             # Normal 4D search
             chef_preference = data.get("chef_preference", "traditional")
-            matched_recipe = recipe_matcher_4d.find_recipe(cuisine, ingredients, dish_type, chef_preference)
+            # Get spice and time preferences
+            spice_level = data.get('spice_level')
+            max_cooking_time = data.get('max_cooking_time')
+
+            matched_recipe = recipe_matcher_4d.find_recipe(
+                cuisine, ingredients, dish_type, chef_preference,
+                spice_level=spice_level,
+                max_cooking_time=max_cooking_time
+            )
+
+            # Check for spice mismatch
+            if matched_recipe and matched_recipe.get('spice_mismatch'):
+                # Store mismatch info for frontend to display
+                print(f"   🌶️ Spice mismatch detected: User wanted {matched_recipe['spice_mismatch']['requested']}, "
+                    f"recipe is {matched_recipe['spice_mismatch']['actual']}")
 
         # ====================================================       
         # Always deliver what the user requested
@@ -586,13 +555,51 @@ def generate_recipe_instant():
                 VALUES (?, ?, ?, ?, ?, ?, ?)
             ''', (recipe_id, 0, dish_type, json.dumps(ingredients), "GENERATING", task_id, matched_recipe_id))
             
-            # Store matched recipe data in SAME transaction
-            if matched_recipe:
-                matched_recipe_json = json.dumps(matched_recipe)
-                conn.execute(
-                    'UPDATE recipes SET matched_recipe_data = ? WHERE recipe_id = ?',
-                    (matched_recipe_json, recipe_id)
-                )
+            # Generate AI chef tips if recipe found
+            if matched_recipe and matched_recipe.get('title'):
+                try:
+                    # Generate intelligent chef tips using OpenAI
+                    tip_prompt = f"""Generate exactly 2 brief, specific chef tips for making {matched_recipe.get('title')}. 
+                    Cuisine: {cuisine}
+                    Dish type: {dish_type}
+                    Main ingredients: {', '.join(ingredient_names[:3])}
+
+                    Each tip should be ONE sentence (15-20 words max).
+                    Focus on the most important technique or flavor tip.
+                    Be specific, not generic. Format as two bullet points."""
+                    
+                    # AI Generation Settings:
+                    # temperature=0.0-0.3: Conservative, factual (same input→same output)
+                    # temperature=0.5-0.8: Balanced creativity (varied but coherent) ← CURRENT: 0.7
+                    # temperature=1.0-2.0: High creativity (can get wild/weird)
+                    # max_tokens: ~1.3 tokens per word, so 80 tokens ≈ 60 words
+                    tip_response = openai.ChatCompletion.create(
+                        model="gpt-3.5-turbo",
+                        messages=[
+                            {"role": "system", "content": "You are an expert chef providing specific, practical cooking tips."},
+                            {"role": "user", "content": tip_prompt}
+                        ],
+                        max_tokens=80,
+                        temperature=0.7
+                    )
+                    
+                    chef_tips = tip_response.choices[0].message.content.strip()
+                    
+                    # Add tips to the matched recipe data
+                    matched_recipe['chef_secrets'] = chef_tips
+                    matched_recipe_json = json.dumps(matched_recipe)
+                    
+                    # Update the stored recipe data with AI tips
+                    conn.execute(
+                        'UPDATE recipes SET matched_recipe_data = ? WHERE recipe_id = ?',
+                        (matched_recipe_json, recipe_id)
+                    )
+                    
+                    print(f"✨ Generated AI chef tips for {matched_recipe.get('title')}")
+                    
+                except Exception as e:
+                    print(f"⚠️ Could not generate AI tips: {e}")
+                    # Continue without tips rather than failing
                 
         # Queue BOTH recipe generation AND video generation
         db.create_video_task(
@@ -611,7 +618,7 @@ def generate_recipe_instant():
         recipe_title = matched_recipe.get('title', f"{cuisine.title()} {dish_type}") if matched_recipe else f"{cuisine.title()} {dish_type}"
         recipe_image = matched_recipe.get('image_url', '') if matched_recipe else ''
 
-        return jsonify({
+        response_data = {
             "success": True,
             "recipe_id": recipe_id,
             "task_id": task_id,
@@ -619,7 +626,13 @@ def generate_recipe_instant():
             "recipe_title": recipe_title,  # Add actual recipe title
             "recipe_image": recipe_image,    # Add recipe image if available
             "price": "$2.99"
-        })
+        }
+                
+        # Add spice mismatch if present
+        if matched_recipe and matched_recipe.get('spice_mismatch'):
+            response_data['spice_mismatch'] = matched_recipe['spice_mismatch']
+                
+        return jsonify(response_data)
     except Exception as e:
         logger.error(f"Error: {e}")
         return jsonify({"error": str(e)}), 500
@@ -643,17 +656,72 @@ def generate_recipe(recipe_id):
                 return jsonify({'error': 'Failed to generate recipe'}), 500
     return jsonify({'error': 'Recipe not found'}), 404
 
+# Load dietary rules configuration
+with open("data/dietary_rules.json", encoding="utf-8") as f:
+    DIETARY_RULES = json.load(f)
+
+
 @app.route('/validate_ingredients', methods=['POST'])
 def validate_ingredients_api():
     try:
         data = request.get_json(force=True)
         ingredient_slugs = data.get("ingredients", [])
-        mode = data.get("mode", "jewish")
-        problems = validate_ingredients(ingredient_slugs, mode=mode)
-        return jsonify({"problems": problems, "count": len(problems)})
+        dietary_modes = data.get("dietary_modes", [])
+        
+        all_problems = {}
+        
+        for mode in dietary_modes:
+            problems = []
+            mode_rules = DIETARY_RULES.get(mode, {})
+            
+            for slug in ingredient_slugs:
+                ing = INGREDIENTS_BY_SLUG.get(slug)
+                if not ing:
+                    continue
+                    
+                # Check prohibited items
+                # Track if we already flagged this item
+                item_flagged = False
+
+                # Check prohibited items
+                if slug in mode_rules.get('prohibited_items', []):
+                    problems.append({
+                        "slug": slug,
+                        "name": ing['name'],
+                        "error": f"{ing['name']} is not suitable for {mode.replace('_', ' ')}!"
+                    })
+                    item_flagged = True
+
+                # Check prohibited types (only if not already flagged)
+                if not item_flagged and ing.get('type') in mode_rules.get('prohibited_types', []):
+                    problems.append({
+                        "slug": slug,
+                        "name": ing['name'],
+                        "error": f"{ing['name']} is not suitable for {mode.replace('_', ' ')}!"
+                    })
+            
+            # Special kosher mixing rules
+            if mode == 'kosher':
+                meat_items = [s for s in ingredient_slugs if s in mode_rules.get('meat_items', [])]
+                dairy_items = [s for s in ingredient_slugs if s in mode_rules.get('dairy_items', [])]
+                fish_items = [s for s in ingredient_slugs if s in mode_rules.get('kosher_fish', [])]
+                
+                if meat_items and dairy_items:
+                    problems.append({
+                        "error": "Cannot mix meat and dairy (Kosher law)"
+                    })
+                if meat_items and fish_items:
+                    problems.append({
+                        "error": "Cannot mix meat and fish (Kosher law)"
+                    })
+            
+            if problems:
+                all_problems[mode] = problems
+        
+        return jsonify({"problems": all_problems})
     except Exception as e:
         logger.error(f"Validation error: {e}")
-        return jsonify({"error": "Validation failed", "details": str(e)}), 500
+        return jsonify({"error": "Validation failed"}), 500
 
 @app.route('/history', methods=['GET'])
 def get_history():
@@ -693,40 +761,30 @@ def chat():
     print("🟢 User message:", user_message)
     text = user_message.lower()
 
+    # Minimal safety net - only for the most critical business protection
+    if ("recipe" in text or "ingredients" in text) and ("give me" in text or "tell me" in text or "show me" in text):
+        return jsonify({
+            "reply": "I'd love to help! RecipeGen™ creates complete recipes with professional video for just $2.99. Use the generator above to get started!"
+        })
+
     # Keep ALL the nuanced filtering logic
-    off_topic_patterns = [
-        "president", "trump", "biden", "putin", "election", "politics",
-        "soccer", "sex", "intimacy", "sensual", "football", "player", "news", "weather", "stock", "market",
-        "company", "business", "music", "movie", "actor", "actress", "sport",
-        "game", "science", "math", "state", "number", "capital", "country", "who is", "money",
-        "celebrity", "politician", "government", "pandemic", "covid", "virus", "universe", "physics",
-        "mount", "mountain", "everest", "how tall", "altitude", "height", "landmark", "show", "gossip",
-        "mars", "venus", "jupiter", "planet", "space", "astronomy", "nasa", "moon", "solar system"
-    ]
-
-    if any(kw in text for kw in off_topic_patterns):
-        return jsonify({
-            "reply": (
-                "I'm only able to answer questions about recipes, ingredients, cooking, or how to use RecipeGen. "
-                "Please ask about food, ingredients, or this site."
-            )
-        })
-        
-    # PROTECT BUSINESS MODEL - Block recipe giveaways
-    recipe_blocking_patterns = [
-        "recipe for", "how to make", "how to cook", "how to prepare", 
-        "ingredients for", "instructions for", "steps to make",
-        "cooking method", "preparation steps", "how do i cook",
-        "what ingredients", "cooking instructions", "recipe steps",
-        "how to bake", "how to fry", "how to grill", "how to roast",
-        "tell me the recipe", "give me the recipe", "full recipe",
-        "complete recipe", "step by step", "cooking process"
-    ]
-
-    if any(pattern in text for pattern in recipe_blocking_patterns):
-        return jsonify({
-            "reply": "I'd love to help you create that recipe! Please use our recipe generator above - just select your cuisine and ingredients, and I'll create the complete recipe with detailed instructions and video for $2.99. It's much better than anything I could type here!"
-        })
+    # off_topic_patterns = [
+    #    "president", "trump", "biden", "putin", "election", "politics",
+    #    "soccer", "sex", "intimacy", "sensual", "football", "player", "news", "weather", "stock", "market",
+    #    "company", "business", "music", "movie", "actor", "actress", "sport",
+    #    "game", "science", "math", "state", "number", "capital", "country", "who is", "money",
+    #    "celebrity", "politician", "government", "pandemic", "covid", "virus", "universe", "physics",
+    #    "mount", "mountain", "everest", "how tall", "altitude", "height", "landmark", "show", "gossip",
+    #    "mars", "venus", "jupiter", "planet", "space", "astronomy", "nasa", "moon", "solar system"
+    # ]
+     
+    # if any(kw in text for kw in off_topic_patterns):
+    #return jsonify({
+    #    "reply": (
+    #        "I'm only able to answer questions about recipes, ingredients, cooking, or how to use RecipeGen. "
+    #        "Please ask about food, ingredients, or this site."
+    #    )
+    # })
 
     # Special handling for login questions
     if "login" in text or "log in" in text:
@@ -751,7 +809,29 @@ def chat():
         resp = openai.ChatCompletion.create(
             model="gpt-4",
             messages=[
-                {"role": "system", "content": "You are RecipeGen."},
+                
+            {"role": "system", "content": """You are a culinary assistant for RecipeGen™. 
+
+            CRITICAL BUSINESS RULE: Never provide recipes, ingredients, or cooking instructions. 
+            When users ask about cooking, making, or preparing ANY food:
+            - Say it sounds delicious
+            - Mention that RecipeGen™ can create a professional recipe with video for $2.99
+            - NEVER give ingredients lists
+            - NEVER give cooking steps
+            - NEVER give measurements or quantities
+            - NEVER give cooking times or temperatures
+
+            TOPIC BOUNDARIES: You ONLY discuss:
+            - Food, cooking, ingredients, cuisines (without giving recipes)
+            - How to use RecipeGen™ website
+            - Dietary restrictions and food combinations
+            - General culinary advice
+
+            For ANY non-food topics (politics, sports, celebrities, weather, etc.):
+            Say: "I'm a culinary assistant focused on food and cooking. Please ask me about ingredients, cuisines, or how to use RecipeGen™ to create amazing recipes!"
+
+            Always redirect recipe requests to the paid service. This protects the business model."""},
+
                 {"role": "user", "content": user_message}
             ],
             max_tokens=150

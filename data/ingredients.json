@@ -3,8 +3,6 @@
     "name": "Anchovy",
     "slug": "anchovy",
     "type": "fish",
-    "is_protein": true,
-    "is_meat": true,
     "cuisine": [
       "brazilian",
       "italian",
@@ -25,7 +23,6 @@
     "name": "Apple",
     "slug": "apple",
     "type": "fruit",
-    "is_protein": false,
     "cuisine": [
       "indian",
       "polish",
@@ -41,7 +38,6 @@
     "name": "Basil",
     "slug": "basil",
     "type": "herb",
-    "is_protein": false,
     "cuisine": [
       "brazilian",
       "italian",
@@ -54,13 +50,12 @@
     "name": "Basmati Rice",
     "slug": "basmati_rice",
     "type": "grain",
-    "is_protein": false,
     "cuisine": [
       "indian",
       "pakistani",
       "iranian",
       "jamaican",
-      "trinidadian"
+      "trinbagonian"
     ],
     "image": "basmati_rice.jpg"
   },
@@ -68,8 +63,6 @@
     "name": "Beef",
     "slug": "beef",
     "type": "meats",
-    "is_protein": true,
-    "is_meat": true,
     "cuisine": [
       "brazilian",
       "argentinian",
@@ -84,6 +77,7 @@
       "jamaican",
       "french",
       "chinese",
+      "thai",
       "korean",
       "japanese",
       "indonesian",
@@ -92,10 +86,7 @@
       "malaysian",
       "russian",
       "mexican",
-      "american",
-      "kazakh",
-      "uzbek",
-      "kyrgyz"
+      "american"
     ],
     "image": "beef.jpg",
     "kashrut": "kosher",
@@ -105,7 +96,6 @@
     "name": "Black Beans",
     "slug": "black_bean",
     "type": "legume",
-    "is_protein": false,
     "cuisine": [
       "brazilian",
       "cuban",
@@ -117,7 +107,6 @@
     "name": "Black Pepper",
     "slug": "black_pepper",
     "type": "spice",
-    "is_protein": false,
     "cuisine": [
       "korean"
     ],
@@ -127,7 +116,6 @@
     "name": "Bordeaux",
     "slug": "bordeaux",
     "type": "wine",
-    "is_protein": false,
     "cuisine": [
       "french"
     ],
@@ -138,7 +126,6 @@
     "name": "Butter",
     "slug": "butter",
     "type": "milk product",
-    "is_protein": false,
     "cuisine": [
       "french",
       "greek",
@@ -158,7 +145,6 @@
     "name": "Cabbage",
     "slug": "cabbage",
     "type": "vegetable",
-    "is_protein": false,
     "cuisine": [
       "mexican",
       "american",
@@ -173,7 +159,6 @@
     "name": "Cardamom",
     "slug": "cardamom",
     "type": "spice",
-    "is_protein": false,
     "cuisine": [
       "indian"
     ],
@@ -183,8 +168,6 @@
     "name": "Chicken",
     "slug": "chicken",
     "type": "meats",
-    "is_protein": true,
-    "is_meat": true,
     "cuisine": [
       "brazilian",
       "chinese",
@@ -207,10 +190,9 @@
     "notes": "Only kosher with shechita and supervision. Never with dairy."
   },
   {
-    "name": "Chickpea",
-    "slug": "chickpea",
+    "name": "Chickpeas",
+    "slug": "chickpeas",
     "type": "legume",
-    "is_protein": false,
     "cuisine": [
       "indian",
       "greek",
@@ -226,10 +208,9 @@
     "image": "chickpeas.jpg"
   },
   {
-    "name": "Chili Pepper",
-    "slug": "chili_pepper",
+    "name": "Chili Peppers",
+    "slug": "chili_peppers",
     "type": "vegetable",
-    "is_protein": false,
     "cuisine": [
       "indian",
       "mexican",
@@ -243,7 +224,6 @@
     "name": "Cilantro",
     "slug": "cilantro",
     "type": "herb",
-    "is_protein": false,
     "cuisine": [
       "brazilian",
       "indian",
@@ -255,7 +235,6 @@
     "name": "Cinnamon",
     "slug": "cinnamon",
     "type": "spice",
-    "is_protein": false,
     "cuisine": [
       "greek",
       "mexican",
@@ -268,7 +247,6 @@
     "name": "Coconut Milk",
     "slug": "coconut_milk",
     "type": "culinary components",
-    "is_protein": false,
     "cuisine": [
       "brazilian",
       "thai"
@@ -279,7 +257,6 @@
     "name": "Coriander",
     "slug": "coriander",
     "type": "spice",
-    "is_protein": false,
     "cuisine": [
       "brazilian",
       "indian"
@@ -290,8 +267,6 @@
     "name": "Crab",
     "slug": "crab",
     "type": "seafood",
-    "is_protein": true,
-    "is_meat": true,
     "cuisine": [
       "brazilian",
       "chinese",
@@ -313,7 +288,6 @@
     "name": "Cumin",
     "slug": "cumin",
     "type": "spice",
-    "is_protein": false,
     "cuisine": [
       "cuban",
       "indian"
@@ -324,7 +298,6 @@
     "name": "Dill",
     "slug": "dill",
     "type": "herb",
-    "is_protein": false,
     "cuisine": [
       "greek",
       "russian"
@@ -332,31 +305,9 @@
     "image": "dill.jpg"
   },
   {
-    "name": "Eggs",
-    "slug": "eggs",
-    "type": "dairy",
-    "is_protein": true,
-    "is_meat": false,
-    "cuisine": [
-      "french",
-      "american",
-      "chinese",
-      "japanese",
-      "korean",
-      "italian",
-      "spanish",
-      "mexican",
-      "indian"
-    ],
-    "image": "eggs.jpg",
-    "kashrut": "kosher",
-    "notes": "Must be checked for blood spots."
-  },
-  {
     "name": "Emmental Cheese",
     "slug": "emmental_cheese",
     "type": "milk product",
-    "is_protein": false,
     "cuisine": [
       "french",
       "austrian",
@@ -371,44 +322,15 @@
     "name": "Fenugreek",
     "slug": "fenugreek",
     "type": "vegetable",
-    "is_protein": false,
     "cuisine": [
       "indian"
     ],
     "image": "fenugreek.jpg"
   },
   {
-    "name": "Fish",
-    "slug": "fish",
-    "type": "fish",
-    "is_protein": true,
-    "is_meat": true,
-    "cuisine": [
-      "japanese",
-      "chinese",
-      "korean",
-      "thai",
-      "vietnamese",
-      "indonesian",
-      "malaysian",
-      "filipino",
-      "indian",
-      "brazilian",
-      "mexican",
-      "greek",
-      "italian",
-      "spanish",
-      "french"
-    ],
-    "image": "fish.jpg",
-    "kashrut": "contextual",
-    "notes": "Only kosher fish with fins and scales."
-  },
-  {
     "name": "Fish Sauce",
     "slug": "fish_sauce",
     "type": "culinary components",
-    "is_protein": false,
     "cuisine": [
       "korean",
       "thai"
@@ -421,7 +343,6 @@
     "name": "Galangal",
     "slug": "galangal",
     "type": "spice",
-    "is_protein": false,
     "cuisine": [
       "thai",
       "indonesian",
@@ -435,7 +356,6 @@
     "name": "Garlic",
     "slug": "garlic",
     "type": "vegetable",
-    "is_protein": false,
     "cuisine": [
       "brazilian",
       "chinese",
@@ -455,7 +375,6 @@
     "name": "Ginger",
     "slug": "ginger",
     "type": "spice",
-    "is_protein": false,
     "cuisine": [
       "chinese",
       "indian",
@@ -467,7 +386,6 @@
     "name": "Guava",
     "slug": "guava",
     "type": "fruit",
-    "is_protein": false,
     "cuisine": [
       "brazilian",
       "cuban",
@@ -484,7 +402,6 @@
     "name": "Honey",
     "slug": "honey",
     "type": "sweetener",
-    "is_protein": false,
     "cuisine": [
       "greek",
       "jewish",
@@ -499,8 +416,6 @@
     "name": "Lamb",
     "slug": "lamb",
     "type": "meats",
-    "is_protein": true,
-    "is_meat": true,
     "cuisine": [
       "greek",
       "italian",
@@ -519,13 +434,12 @@
     "name": "Lemongrass",
     "slug": "lemongrass",
     "type": "vegetable",
-    "is_protein": false,
     "cuisine": [
       "vietnamese",
       "nigerian",
       "haitian",
       "cuban",
-      "trinidadian",
+      "trinbagonian",
       "jamaican",
       "indonesian",
       "malaysian",
@@ -534,10 +448,9 @@
     "image": "lemongrass.jpg"
   },
   {
-    "name": "Lime",
-    "slug": "lime",
+    "name": "Limes",
+    "slug": "limes",
     "type": "fruit",
-    "is_protein": false,
     "cuisine": [
       "cuban",
       "mexican"
@@ -545,26 +458,9 @@
     "image": "lime.jpg"
   },
   {
-    "name": "Lobster",
-    "slug": "lobster",
-    "type": "seafood",
-    "is_protein": true,
-    "is_meat": true,
-    "cuisine": [
-      "american",
-      "french",
-      "italian",
-      "chinese",
-      "japanese"
-    ],
-    "image": "lobster.jpg",
-    "kashrut": "non-kosher"
-  },
-  {
     "name": "Merlot",
     "slug": "merlot",
     "type": "wine",
-    "is_protein": false,
     "cuisine": [
       "french",
       "italian"
@@ -577,7 +473,6 @@
     "name": "Milk",
     "slug": "milk",
     "type": "milk product",
-    "is_protein": false,
     "cuisine": [
       "french",
       "austrian",
@@ -594,7 +489,6 @@
     "name": "Mint",
     "slug": "mint",
     "type": "herb",
-    "is_protein": false,
     "cuisine": [
       "greek",
       "indian"
@@ -602,10 +496,9 @@
     "image": "mint.jpg"
   },
   {
-    "name": "Noodle",
-    "slug": "noodle",
+    "name": "Noodles",
+    "slug": "noodles",
     "type": "grain",
-    "is_protein": false,
     "cuisine": [
       "chinese",
       "thai",
@@ -617,7 +510,6 @@
     "name": "Olive Oil",
     "slug": "olive_oil",
     "type": "culinary components",
-    "is_protein": false,
     "cuisine": [
       "greek",
       "italian",
@@ -626,10 +518,9 @@
     "image": "olive_oil.jpg"
   },
   {
-    "name": "Olive",
-    "slug": "olive",
+    "name": "Olives",
+    "slug": "olives",
     "type": "vegetable",
-    "is_protein": false,
     "cuisine": [
       "greek",
       "italian"
@@ -637,10 +528,9 @@
     "image": "olives.jpg"
   },
   {
-    "name": "Onion",
-    "slug": "onion",
+    "name": "Onions",
+    "slug": "onions",
     "type": "vegetable",
-    "is_protein": false,
     "cuisine": [
       "french",
       "british",
@@ -648,11 +538,7 @@
       "jewish",
       "american",
       "indian",
-      "russian",
-      "kenyan",
-      "ethiopian",
-      "ugandan",
-      "tanzanian"
+      "russian"
     ],
     "image": "onions.jpg"
   },
@@ -660,7 +546,6 @@
     "name": "Oregano",
     "slug": "oregano",
     "type": "herb",
-    "is_protein": false,
     "cuisine": [
       "cuban",
       "greek",
@@ -673,7 +558,6 @@
     "name": "Palm Oil",
     "slug": "palm_oil",
     "type": "culinary components",
-    "is_protein": false,
     "cuisine": [
       "thai",
       "jewish",
@@ -687,7 +571,6 @@
     "name": "Paprika",
     "slug": "paprika",
     "type": "spice",
-    "is_protein": false,
     "cuisine": [
       "hungarian",
       "moroccan",
@@ -704,7 +587,6 @@
     "name": "Parsley",
     "slug": "parsley",
     "type": "herb",
-    "is_protein": false,
     "cuisine": [
       "french",
       "brazilian"
@@ -715,19 +597,9 @@
     "name": "Pasta",
     "slug": "pasta",
     "type": "grain",
-    "is_protein": false,
     "cuisine": [
       "italian",
-      "american",
-      "chinese",
-      "japanese",
-      "korean",
-      "thai",
-      "vietnamese",
-      "mongolian",
-      "taiwanese",
-      "kazakh",
-      "uzbek"
+      "american"
     ],
     "image": "pasta.jpg"
   },
@@ -735,7 +607,6 @@
     "name": "Peanut",
     "slug": "peanut",
     "type": "legume",
-    "is_protein": false,
     "cuisine": [
       "nigerian",
       "ethiopian",
@@ -752,16 +623,10 @@
     "name": "Plantain",
     "slug": "plantain",
     "type": "fruit",
-    "is_protein": false,
     "cuisine": [
       "nigerian",
       "puerto rican",
-      "brazilian",
-      "ugandan",
-      "kenyan",
-      "tanzanian",
-      "rwandan",
-      "ghanaian"
+      "brazilian"
     ],
     "image": "plantain.jpg",
     "notes": "Tropical cooking banana"
@@ -770,8 +635,6 @@
     "name": "Pork",
     "slug": "pork",
     "type": "meats",
-    "is_protein": true,
-    "is_meat": true,
     "cuisine": [
       "brazilian",
       "argentinian",
@@ -797,7 +660,6 @@
     "name": "Port Wine",
     "slug": "port_wine",
     "type": "wine",
-    "is_protein": false,
     "cuisine": [
       "portuguese",
       "brazilian"
@@ -807,10 +669,9 @@
     "notes": "All grape wine requires kosher supervision."
   },
   {
-    "name": "Potato",
-    "slug": "potato",
+    "name": "Potatoes",
+    "slug": "potatoes",
     "type": "vegetable",
-    "is_protein": false,
     "cuisine": [
       "korean",
       "argentinian",
@@ -822,30 +683,9 @@
     "image": "potatoes.jpg"
   },
   {
-    "name": "Prawns",
-    "slug": "prawns",
-    "type": "seafood",
-    "is_protein": true,
-    "is_meat": true,
-    "cuisine": [
-      "thai",
-      "chinese",
-      "indian",
-      "vietnamese",
-      "malaysian",
-      "singaporean",
-      "indonesian",
-      "spanish",
-      "italian"
-    ],
-    "image": "prawns.jpg",
-    "kashrut": "non-kosher"
-  },
-  {
     "name": "Red Wine",
     "slug": "red_wine",
     "type": "wine",
-    "is_protein": false,
     "cuisine": [
       "french",
       "italian"
@@ -858,7 +698,6 @@
     "name": "Rosemary",
     "slug": "rosemary",
     "type": "herb",
-    "is_protein": false,
     "cuisine": [
       "turkish",
       "egyptian",
@@ -877,7 +716,6 @@
     "name": "Saffron",
     "slug": "saffron",
     "type": "spice",
-    "is_protein": false,
     "cuisine": [
       "indian",
       "spanish",
@@ -891,7 +729,6 @@
     "name": "Sake",
     "slug": "sake",
     "type": "wine",
-    "is_protein": false,
     "cuisine": [
       "japanese",
       "south korean",
@@ -908,13 +745,11 @@
     "name": "Salmon",
     "slug": "salmon",
     "type": "fish",
-    "is_protein": true,
-    "is_meat": true,
     "cuisine": [
       "japanese",
       "jamaican",
       "jewish",
-      "trinidadian",
+      "trinbagonian",
       "scandinavian",
       "spanish",
       "italian",
@@ -926,10 +761,9 @@
     "notes": "Kosher species, always check for scales."
   },
   {
-    "name": "Scallion",
-    "slug": "scallion",
+    "name": "Scallions",
+    "slug": "scallions",
     "type": "vegetable",
-    "is_protein": false,
     "cuisine": [
       "italian",
       "chinese",
@@ -944,31 +778,9 @@
     "image": "scallion.jpg"
   },
   {
-    "name": "Seafood",
-    "slug": "seafood",
-    "type": "seafood",
-    "is_protein": true,
-    "is_meat": true,
-    "cuisine": [
-      "japanese",
-      "chinese",
-      "korean",
-      "thai",
-      "vietnamese",
-      "italian",
-      "spanish",
-      "french",
-      "american"
-    ],
-    "image": "seafood.jpg",
-    "kashrut": "contextual",
-    "notes": "Only kosher species with fins and scales."
-  },
-  {
     "name": "Sesame Oil",
     "slug": "sesame_oil",
     "type": "culinary components",
-    "is_protein": false,
     "cuisine": [
       "chinese",
       "japanese",
@@ -978,14 +790,14 @@
     "image": "sesame_oil.jpg"
   },
   {
-    "name": "Shallot",
-    "slug": "shallot",
+    "name": "Shallots",
+    "slug": "shallots",
     "type": "vegetable",
-    "is_protein": false,
     "cuisine": [
       "french",
       "thai",
       "indonesian",
+      "thai",
       "vietnamese",
       "turkish"
     ],
@@ -995,7 +807,6 @@
     "name": "Sherry",
     "slug": "sherry",
     "type": "wine",
-    "is_protein": false,
     "cuisine": [
       "spanish",
       "french",
@@ -1007,30 +818,9 @@
     "notes": "All grape wine requires kosher supervision."
   },
   {
-    "name": "Shrimp",
-    "slug": "shrimp",
-    "type": "seafood",
-    "is_protein": true,
-    "is_meat": true,
-    "cuisine": [
-      "thai",
-      "chinese",
-      "japanese",
-      "vietnamese",
-      "american",
-      "italian",
-      "spanish",
-      "mexican",
-      "indian"
-    ],
-    "image": "shrimp.jpg",
-    "kashrut": "non-kosher"
-  },
-  {
     "name": "Sour Cream",
     "slug": "sour_cream",
     "type": "milk product",
-    "is_protein": false,
     "cuisine": [
       "russian",
       "mexican",
@@ -1045,7 +835,6 @@
     "name": "Soy Sauce",
     "slug": "soy_sauce",
     "type": "culinary components",
-    "is_protein": false,
     "cuisine": [
       "chinese",
       "korean",
@@ -1063,14 +852,13 @@
     "name": "Tamarind",
     "slug": "tamarind",
     "type": "fruit",
-    "is_protein": false,
     "cuisine": [
       "thai",
       "puerto rican",
       "indian",
       "mexican",
       "jamaican",
-      "trinidadian"
+      "trinbagonian"
     ],
     "image": "tamarind.jpg"
   },
@@ -1078,7 +866,6 @@
     "name": "Tarragon",
     "slug": "tarragon",
     "type": "herb",
-    "is_protein": false,
     "cuisine": [
       "french",
       "romanian",
@@ -1095,13 +882,12 @@
     "name": "Thyme",
     "slug": "thyme",
     "type": "herb",
-    "is_protein": false,
     "cuisine": [
       "french",
       "egyptian",
       "american",
       "jamaican",
-      "trinidadian",
+      "trinbagonian",
       "italian",
       "israeli",
       "lebanese"
@@ -1109,28 +895,9 @@
     "image": "thyme.jpg"
   },
   {
-    "name": "Tofu",
-    "slug": "tofu",
-    "type": "legume",
-    "is_protein": true,
-    "is_meat": false,
-    "cuisine": [
-      "chinese",
-      "japanese",
-      "korean",
-      "vietnamese",
-      "thai",
-      "indonesian"
-    ],
-    "image": "tofu.jpg",
-    "kashrut": "kosher",
-    "notes": "Plant-based protein, always kosher."
-  },
-  {
-    "name": "Tomato",
-    "slug": "tomato",
+    "name": "Tomatoes",
+    "slug": "tomatoes",
     "type": "vegetable",
-    "is_protein": false,
     "cuisine": [
       "brazilian",
       "greek",
@@ -1143,46 +910,12 @@
     "image": "tomato.jpg"
   },
   {
-    "name": "Tuna",
-    "slug": "tuna",
-    "type": "fish",
-    "is_protein": true,
-    "is_meat": true,
-    "cuisine": [
-      "japanese",
-      "italian",
-      "american",
-      "spanish",
-      "french"
-    ],
-    "image": "tuna.jpg",
-    "kashrut": "kosher",
-    "notes": "Kosher species with fins and scales."
-  },
-  {
-    "name": "Turkey",
-    "slug": "turkey",
-    "type": "meats",
-    "is_protein": true,
-    "is_meat": true,
-    "cuisine": [
-      "american",
-      "mexican",
-      "italian",
-      "jewish"
-    ],
-    "image": "turkey.jpg",
-    "kashrut": "kosher",
-    "notes": "Only kosher with shechita and supervision."
-  },
-  {
     "name": "Turmeric",
     "slug": "turmeric",
     "type": "spice",
-    "is_protein": false,
     "cuisine": [
       "indian",
-      "trinidadian",
+      "trinbagonian",
       "jamaican",
       "moroccan",
       "malaysian",
@@ -1195,8 +928,6 @@
     "name": "Veal",
     "slug": "veal",
     "type": "meats",
-    "is_protein": true,
-    "is_meat": true,
     "cuisine": [
       "french",
       "greek",
@@ -1205,6 +936,7 @@
       "austrian",
       "spanish",
       "hungarian",
+      "spanish",
       "portuguese"
     ],
     "image": "veal.jpg",
@@ -1212,10 +944,9 @@
     "notes": "Only kosher with shechita and supervision."
   },
   {
-    "name": "White Mushroom",
-    "slug": "white_mushroom",
+    "name": "White Mushrooms",
+    "slug": "white_mushrooms",
     "type": "fungi",
-    "is_protein": false,
     "cuisine": [
       "italian",
       "russian",
@@ -1227,7 +958,6 @@
     "name": "White Rice",
     "slug": "white_rice",
     "type": "grain",
-    "is_protein": false,
     "cuisine": [
       "brazilian",
       "chinese",
@@ -1242,7 +972,6 @@
     "name": "Rice Wine",
     "slug": "rice_wine",
     "type": "wine",
-    "is_protein": false,
     "cuisine": [
       "chinese",
       "korean",
@@ -1256,7 +985,6 @@
     "name": "White Wine",
     "slug": "white_wine",
     "type": "wine",
-    "is_protein": false,
     "cuisine": [
       "french",
       "italian",
@@ -1270,7 +998,6 @@
     "name": "Zucchini",
     "slug": "zucchini",
     "type": "vegetable",
-    "is_protein": false,
     "cuisine": [
       "french",
       "egyptian",
